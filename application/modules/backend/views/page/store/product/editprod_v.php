@@ -88,7 +88,7 @@
 					
 					<div class="inputSet">
 						<div class="label"><span>Description</span></div>
-						<div class="input">	<?ck_editor('p_desc', $prod->l_desc)?></div>
+						<div class="input">	<?ck_editor('p_desc',false ,$prod->l_desc)?></div>
 					
 						<div class="clear"></div>
 					</div>

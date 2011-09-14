@@ -9,7 +9,7 @@
 		<div class="desc">
 			<span>Description</span>
 
-			<?ck_editor('description', $nav->description)?>
+			<?ck_editor('description',false, $nav->description)?>
 		</div>
 		<div class="right">
 			<input type="submit" name="update" value="Submit" class="button save-button-Ui">

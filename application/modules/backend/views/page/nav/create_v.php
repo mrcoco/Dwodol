@@ -9,7 +9,7 @@
 		<div class="desc">
 			<span>Description</span>
 		
-			<?ck_editor('description')?>
+			<?=ck_editor('description')?>
 		</div>
 		<div class="right">
 			<input type="submit" name="create" value="Submit" class="button save-button-Ui">

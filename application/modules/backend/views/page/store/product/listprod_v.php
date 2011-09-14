@@ -28,11 +28,11 @@ foreach($prods as $prod){
 	$p = $q['prod'];
 	$c = $q['cat'];
 	$attrs = $q['attrb'];
-	$img = modules::run('store/product/prodImg', $prod->p_id);
+	
 	$stock = $p->stock;
 	?>
  <tr>
- 	<td><img src="<?=site_url('store/product/thumb/100-50-crop/dir/assets/modules/store/product_img/'.$img->path)?>"></td>
+ 	<td><img src="<?=prod_media($p->id, '100-50-crop');?>"></td>
     <td class="vTop">
 		<div class="prodDet">
 			<span class="left"><?=$p->name?></span><span class="right"><?=$p->sku?></span>

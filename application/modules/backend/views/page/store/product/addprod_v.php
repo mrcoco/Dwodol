@@ -38,13 +38,19 @@
 				</div>
 				<div class="inputSet">
 					<div class="label"><span>Category<span></div>
-					<div class="input"><?=form_dropdown('main_cat_id', array_merge(array('0' => 'select one'), modules::run('store/category/catselopt')));?></div>
+					<div class="input"><?=form_dropdown('main_cat_id', modules::run('store/category/catselopt')	);
+					?></div>
 					<div class="clear"></div>
 				</div>
 				<div class="inputSet">
 					<div class="label"><span>Global Stock<span></div>
 					<div class="input"><input type="text" name="main_stock" value=""></div>
 					<div class="clear"></div>
+				</div>
+				<div class="inputSet">
+						<div class="label"><span>Weight<span></div>
+						<div class="input"><input type="text" name="main_weight" value=""></div>
+						<div class="clear"></div>
 				</div>
 				<div class="inputSet">
 					<div class="label"><span>Publish<span></div>
@@ -59,7 +65,7 @@
 			<legend>Description</legend>
 				<div class="fieldset_wrapper">
 					<?=load_ck_editor()?>
-					<?=ck_editor('main_l_desc')?>
+					<?=ck_editor('main_l_desc', 'main_desc')?>
 				</div>
 			</fieldset>
 	
@@ -75,13 +81,13 @@
 					<div class="cloneAble_area">
 						<div class="inputColl_ver">
 							<div class="item">
-								<label for="attr_attribute">Attribute</label><input type="text" name="attr_attribute[]" value="">
+								<label for="attr_attribute">Attribute</label><input type="text" name="attr_attribute[0]" value="">
 							</div>
 							<div class="item">
-								<label for="attr_stock">Stock</label><input type="text" name="attr_stock[]" value="">
+								<label for="attr_stock">Stock</label><input type="text" name="attr_stock[0]" value="">
 							</div>
 							<div class="item">
-								<label for="attr_prod_opt">Price Option</label><input type="text" name="attr_prod_opt[]" value="">
+								<label for="attr_prod_opt">Price Option</label><input type="text" name="attr_prod_opt[0]" value="">
 							</div>						
 						</div>
 					</div>
@@ -91,18 +97,21 @@
 					$(document).ready(function(){
 						
 						var trigger = $('#clone_attr');
+
 						$('#clone_attr').live('click', function(){
+							var index = $('.content.attr_prod_form .cloneAble_area .inputColl_ver').size();
+							
 							var clone_area = $('.cloneAble_area');
 							var tpl = ''+
 							'<div class="inputColl_ver">'+
 								'<div class="item">'+
-									'<label for="attr_attribute">Attribute</label><input type="text" name="attr_attribute[]" value="">'+
+									'<label for="attr_attribute">Attribute</label><input type="text" name="attr_attribute['+index+']" value="">'+
 								'</div>'+
 								'<div class="item">'+
-									'<label for="attr_stock">Stock</label><input type="text" name="attr_stock[]" value="">'+
+									'<label for="attr_stock">Stock</label><input type="text" name="attr_stock['+index+']" value="">'+
 								'</div>'+
 								'<div class="item">'+
-									'<label for="attr_prod_opt">Price Option</label><input type="text" name="attr_prod_opt[]" value="">'+
+									'<label for="attr_prod_opt">Price Option</label><input type="text" name="attr_prod_opt['+index+']" value="">'+
 								'</div>'+						
 							'</div>';
 							$(tpl).appendTo(clone_area).hide().show('fade',{direction: 'up'});
@@ -143,9 +152,7 @@
 				</div>
 			</div>
 			<div class="the_medias left grid_600">
-				
-				<div class="item" id="909"></div>
-				<div class="item" id="901"></div>
+			
 				<div class="clear"></div>
 			</div>
 			<div class="clear"></div>
@@ -330,8 +337,6 @@
 			</div>
 			<div class="the_relations left">
 			
-				<div class="item" id="9029"></div>
-				<div class="item" id="11"></div>
 				<div class="clear"></div>
 			</div>
 			<div class="clear"></div>
@@ -440,12 +445,19 @@
 			$('.the_relations .item').each(function(index,value){ relations = relations+','+$(this).attr('id') });
 			formData['medias'] = medias.substring(1, medias.length);
 			formData['relations'] = relations.substring(1, relations.length);
-		
+			formData['main_l_desc'] = main_desc.getData();
 			$.ajax({
 				data : formData,
-				url : '<?=site_url();?>',
+				url : '<?=backend_url("store/b_product/ajx_addprod");?>',
 				dataType : 'json',
-				type : 'post'
+				type : 'post',
+				success : function(res){
+					if(res.status == 'success'){
+						window.location('<?=backend_url("store/b_product/listprod");?>')
+					}else{
+						addMsg('check again your input, we found some warning', 'warning');
+					}
+				}
 			})
 		});
 	});

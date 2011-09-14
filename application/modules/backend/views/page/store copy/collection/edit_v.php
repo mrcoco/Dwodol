@@ -4,7 +4,7 @@
 			<input type="text" name="title" value="<?=$coll->name?>" class="grid_500 mb10">
 			
 
-		<?ck_editor('text_editor', $coll->description)?>
+		<?ck_editor('text_editor',false, $coll->description)?>
 		<script>
 		$(document).ready(function(){
 

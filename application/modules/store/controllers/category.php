@@ -47,6 +47,7 @@ class category extends MX_Controller {
 	}
 	function catselopt(){
 		$array =  array();
+		$array['0'] = 'none';
 		if($cats =$this->showAllCat()):
 			foreach($cats as $cat) :
 				$array[$cat->id] = $cat->name;

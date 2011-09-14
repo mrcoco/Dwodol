@@ -364,7 +364,7 @@ class Product extends MX_Controller {
 		return $this->mdl->relation_create($data);
 	}
 	function api_relation_update($id, $data){
-		return $this->mdl->relation_update($data);
+		return $this->mdl->relation_update($id, $data);
 	}
 	function api_relation_delete($id){
 		return $this->mdl->relation_delete($id); 

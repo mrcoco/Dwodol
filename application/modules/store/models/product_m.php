@@ -379,16 +379,14 @@ class Product_m extends CI_Model {
 	//--------------------------------//
 	
 	
-	// API REVISION , NOT READY YET IMPLEMENT
+
 	function create($data){
 		$this->db->where('sku', element('sku', $data));
 		$pre = $this->db->get('store_product');
 		if($pre->num_rows() == 0){
-			if($this->db->insert('store_product', $data)){
-				return $this->getbyid($this->db->insert_id());
-			}else{
-				return false;
-			}
+			$this->db->insert('store_product', $data);
+			return $this->getbyid($this->db->insert_id(),  false, '*', false);
+			
 		}else{
 			return false;
 		}
@@ -397,7 +395,7 @@ class Product_m extends CI_Model {
 		if($this->getbyid($id, false, false)){
 			$this->db->where('id', $id);
 			if($this->db->update('store_product')){
-				return $this->getbyid($id, false, false);
+				return $this->getbyid($id, false, '*', false);
 			}else{
 				return false;
 			}

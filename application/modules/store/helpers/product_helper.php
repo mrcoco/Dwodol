@@ -41,13 +41,15 @@
 
 		return call_user_func_array('merge',$storage);
 	}
-	function prod_attr_to_array($key_attr){		
+	function prod_attr_to_array($key_attr){	
+		
 	 $attribute = explode (';',$key_attr);		
 	       foreach ($attribute as $pair) {		
 	               list ($k,$v) = explode (':',$pair);		
-	               $pairs[$k] = $v;		
-	       }		
-	       return $pairs;		
+	               $pairs[trim($k)] = trim($v);		
+	       }
+		ksort($pairs);		
+	    return $pairs ;		
 	}
 	function prod_attr_to_key($array){
 		$output = '';
@@ -97,5 +99,15 @@
 		}
 		return $word;
 	}
-	
+	function prod_attr_formater($attr_key){
+		return prod_attr_to_key(prod_attr_to_array($attr_key));
+	}
+	function prod_media($id, $size_term = false){
+		$base = ($size_term != false) ? 'store/product/thumb/'.$size_term.'/dir/' : '' ;
+		if($q = modules::run('store/product/api_getmedia',$id)){
+			return base_url().$base.'assets/modules/store/product_img/'.$q->path;
+		}else{
+			return base_url().$base.'assets/modules/store/product_img/no_image.jpg';
+		}
+	}
 ;?>

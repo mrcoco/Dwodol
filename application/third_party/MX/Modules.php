@@ -3,11 +3,9 @@
 global $CFG;
 
 /* get module locations from config settings or use the default module location and offset */
-is_array(Modules::$locations = $CFG->item('modules_locations')) OR Modules::$locations = array(
-	APPPATH.'modules/' => '../modules/',
-	APPPATH.'modules_backend/' => '../modules_backend/',
-	'./dwodol/extensions/' => '../../dwodol/extensions/', 
-);
+is_array(
+Modules::$locations = $CFG->item('modules_locations')
+	);
 
 /* PHP5 spl_autoload */
 spl_autoload_register('Modules::autoload');
@@ -133,7 +131,13 @@ class Modules
 		if(is_file($location = APPPATH.'libraries/'.$class.EXT)) {
 			include_once $location;
 			return;
-		}		
+		}	
+		
+		/* autoload Dw_libraries classes */
+		if(is_file($location = DWPATH.'core/libraries'.$class.EXT)) {
+			include_once $location;
+			return;
+		}	
 	}
 
 	/** Load a module file **/
@@ -172,7 +176,15 @@ class Modules
 	public static function find($file, $module, $base) {
 	
 		$segments = explode('/', $file);
-
+		$mod_loc = Modules::$locations;
+		/*
+		if($segments[0] == 'backend'){
+			unset($segments[0]);
+			$segments = array_values($segments);
+			$mod_loc = $this->config->item('modules_admin_locations');
+		}
+		*/
+		
 		$file = array_pop($segments);
 		$file_ext = strpos($file, '.') ? $file : $file.EXT;
 		
@@ -182,8 +194,8 @@ class Modules
 		if ( ! empty($segments)) {
 			$modules[array_shift($segments)] = ltrim(implode('/', $segments).'/','/');
 		}	
-
-		foreach (Modules::$locations as $location => $offset) {					
+		
+		foreach ($mod_loc as $location => $offset) {					
 			foreach($modules as $module => $subpath) {			
 				$fullpath = $location.$module.'/'.$base.$subpath;
 				

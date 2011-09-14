@@ -77,9 +77,10 @@ class MX_Router extends CI_Router
 		if($segments[0] == 'backend'){
 			unset($segments[0]);
 			$segments = array_values($segments);
-			$mod_loc = array('./dwodol/extensions/' => '../../dwodol/extensions/', );
+			$mod_loc = $this->config->item('modules_admin_locations');
 		}
 		*/
+		
 		/* get the segments array elements */
 		list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 

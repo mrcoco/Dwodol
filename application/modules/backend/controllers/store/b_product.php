@@ -10,6 +10,7 @@ class B_product extends MX_Controller {
 		$this->load->model('store/product_m');
 		$this->dodol_auth->userRoleCheck('owner');
 		$this->load->helper('store/product');
+
 	}
 	
 	//php 4 constructor
@@ -196,12 +197,43 @@ class B_product extends MX_Controller {
 		echo json_encode($return);
 		
 	}
-    function _exec_addprod(){
+    function ajx_addprod(){
+		enable_get();
+		$return = 'nothing';
+		$is_ajax = ($this->input->get('ajx')) ? true : false;
 		$main_info 	= post_filter('main_');
 		$attrs    	= post_filter('attr_');
-		$relations  = $this->input->post('relations');
-		$medias     = $this->input->post('medias');
+		$relations  = explode(',',$this->input->post('relations'));
+		$medias     = explode(',',$this->input->post('medias'));
+		$main_q = modules::run('store/product/api_create', $main_info) ;
+		if($main_q != false):
+			foreach($relations as $rel) {
+				modules::run('store/product/api_relation_update', $rel,  array('p_own' => $main_q->id));
+			}
+			foreach($medias as $med){
+				$this->load->controller('store/product')->api_media_update($med, array('prod_id' => $main_q->id ));
+			}
+			for($i = 0; $i<count($attrs['attribute']) ; $i++){
+				$this->load->controller('store/product')->api_attribute_create(
+					array(
+						'attribute' 	=> prod_attr_formater($attrs['attribute'][$i]), 
+						'stock' 		=> $attrs['stock'][$i],
+						'price_opt'		=> $attrs['prod_opt'][$i],
+						'prod_id' 		=> $main_q->id, 
+						)
+					);
+			}
+			$return =  array('prod' => $main_q, 'status' => 'success');
+		else:
+
+			$return = array();
+		endif;
+		echo json_encode($return);
 		
+		
+	}
+	function test(){
+		echo prod_attr_formater(' size: l; color: blue');
 	}
 	function editprod(){
 		$idprod = $this->uri->segment(5);

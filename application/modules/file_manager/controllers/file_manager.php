@@ -18,7 +18,9 @@ class File_manager extends MX_Controller {
 		$data['path'] = $this->root_folder;
 	 	$this->dodol_theme->render()->build('index', $data);
 	}
-	
+	function suh(){
+		echo $this->router->fetch_module();
+	}
 	function ajx_request_all(){
 		$path = $this->input->post('path');
 

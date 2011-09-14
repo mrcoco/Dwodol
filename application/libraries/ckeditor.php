@@ -128,7 +128,7 @@ class CKEditor
 	 * $CKEditor->editor("field1", "<p>Initial value.</p>", $config, $events);
 	 * @endcode
 	 */
-	public function editor($name, $value = "", $config = array(), $events = array())
+	public function editor($name, $var = false, $value = "", $config = array(), $events = array())
 	{
 		$attr = "";
 		foreach ($this->textareaAttributes as $key => $val) {
@@ -142,6 +142,7 @@ class CKEditor
 		$_config = $this->configSettings($config, $events);
 
 		$js = $this->returnGlobalEvents();
+		$js .= ($var != false) ? "var ".$var." = " : '';
 		if (!empty($_config))
 			$js .= "CKEDITOR.replace('".$name."', ".$this->jsEncode($_config).");";
 		else

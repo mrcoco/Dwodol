@@ -11,7 +11,7 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://".$_SERVER['SERVER_NAME']."/culture-update.com/";
+$config['base_url']	= "http://".$_SERVER['SERVER_NAME']."/dwodol/";
 
 /*
 |--------------------------------------------------------------------------
@@ -323,6 +323,27 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+
+/*
+|--------------------------------------------------------------------------
+| Modules Location
+|--------------------------------------------------------------------------
+| 
+| 
+| 
+| 
+| 
+|
+*/
+$config['modules_locations'] = array(
+	APPPATH.'modules/' => '../modules/',
+	DWPATH.'extensions/' => '../../dwodol/extensions/', 
+);
+$config['modules_admin_locations'] = array(
+	APPPATH.'modules_admin/' => '../modules_admin/',
+	DWPATH.'extensions_admin/' => '../../dwodol/extensions_admin/',
+);
+$config['module_backend_trigger'] = 'backend';
 
 /* End of file config.php */
 /* Location: ./system/application/config/config.php */

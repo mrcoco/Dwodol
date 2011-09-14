@@ -1,0 +1,223 @@
+/* @group 	  FONT FACE	 */
+@font-face {
+    font-family: 'TimelessRegular';
+    src: url('font/timeless-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+/* @end */
+
+/* @group MAIN BLOCKING */
+.wrapper {
+
+}
+.header {
+	background-position: center bottom;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid #CCCCCC;
+    height: 75px;
+    margin-bottom: 10px;
+    padding-bottom: 13px;
+    position: relative;
+}
+.header .logo {
+	padding: 25px 0px;
+	width: 870px;
+}
+.footer {
+
+}
+.component {
+		background: url(../img/bottom_border_shadow.png) no-repeat center bottom;
+		min-height: 300px;
+		padding-bottom: 30px;
+}
+.component .topBar {
+	height: 30px;
+	position: relative;
+	margin-bottom: 15px;
+}
+.component .topBar .barRight {
+	height: 30px;
+}
+
+/* @end */
+
+
+/* @group TYPO */
+body {
+	font-family: TimelessRegular;
+	color: #484848;
+	font-size: 13px;
+	letter-spacing: -0.5px;
+}
+.headingPage {
+	
+}
+h1.heading {
+	font-weight: normal;
+}
+h1, h2, h3, h4, h5, h6, h7 {
+	font-weight: normal;
+}
+h1 {
+	font-size: 33px;
+}
+h2 {
+	font-size: 31px;
+}
+h3 {
+	font-size: 29px;
+}
+h4{
+	font-size: 27px;
+}
+h5{
+	font-size: 25px;
+}
+h6{
+	font-size: 23px;
+}
+
+
+/* @end */
+
+
+/* @group MISC */
+span.nav{
+	border: 1px solid #d5d5d5;
+	display: block;
+	padding: 3px 5px;	
+	background: #f3f3f3
+}
+span.nav a {
+
+	display: block;
+	text-shadow: 0 1px 0 #fff;
+	color: #292929;
+	text-decoration: none;
+
+}
+span.nav a.next {
+	padding-right: 20px;
+	background: url(../img/icon/arrowright32_16px.png) no-repeat right center;
+}
+span.nav a.prev {
+	padding-left: 20px;
+	background: #f3f3f3 url(../img/icon/leftarrow32_16px.png) no-repeat left center;
+}
+.list_decor_right {
+	background: url(../img/list_decor.png) no-repeat right top;
+	height: 9px;
+}
+.list_decor_left {
+	background: url(../img/list_decor.png) no-repeat left bottom;
+	height: 9px;
+}
+/* @group Pagination */
+
+.component .pagination a,.component .pagination span  {
+	background: none;
+	border: none;
+	border-right: 1px dotted #ccc;
+	color: #474747;
+	text-transform: capitalize;
+	border-radius:0px;
+}
+.component .pagination li:last-child a,.component .pagination li:last-child span {
+	border-right: none;
+}
+
+
+
+/* @end */
+ul.horizontal {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+ul.horizontal li {
+	margin: 0px;
+	float: left;
+}
+
+
+
+/* @end */
+
+
+
+/* @group PAGE SPECIAL */
+
+
+
+/* @end */
+
+/* @group CORE BLOCK */
+.topBar .navTop .horizontal li a {
+	display: block;
+	padding: 0px 10px;
+	text-decoration: none;
+}
+.topBar .navTop .horizontal li {
+	line-height: 25px;
+	height: 25px;
+}
+.topBar .userMenu p {
+	line-height: 25px;
+	height: 25px;
+	margin: 0px;
+	padding: 0px;
+	margin:0px;
+}
+.topBar .userMenu p .cart_info:hover .cart_icon {
+	background: url(../img/cart_icon.png) no-repeat center top;
+
+}
+
+.topBar .userMenu p .cart_icon {
+	background: url(../img/cart_icon.png) no-repeat center bottom;
+	height: 13px;
+	width: 13px;
+	display: inline-block;
+	margin-right: 5px;
+}
+.topBar .userMenu a {
+	text-decoration: none;
+}
+
+
+/* @end */
+
+/* @group Component Style */
+
+/* @group store */
+/* PRODUCT SNAP
+----------------------------------------------------------------------------------------------------*/
+.productSnap { width:260px; height:320px; float:left; margin:0 10px 10px 3px; margin-bottom:20px; display: table;}
+.productSnap a {text-decoration: none; color:#fff}
+.productSnap .productImg img { width:260px; height:320px}
+.productSnap .productDetail { border-top:1px solid #ccc;  border-bottom:1px solid #ccc; padding: 5px 0px; margin-top:5px;}
+.productSnap .productPrice {float: right;}
+.productSnap .productImg {position: relative;}
+.productSnap .productImg .snap_tool {width:150px; left: 30px;position:absolute; top:200px; ; background:url(../img/store/opacity_black.png);padding:15px 10px 0px; display:none;}
+.productSnap .productImg .snap_tool p { line-height:30px; margin:0px; text-align:center; font-size: 80%;}
+.productSnap .productImg .snap_tool p span {-webkit-border-radius: 3px;
+   -moz-border-radius: 3px;
+        border-radius: 3px;padding: 3px 5px; background:#ccc; color:#000; margin-right:5px;}
+.productSnap .productImg .snap_tool h3.prod_name {text-transform: capitalize; margin-bottom:10px; padding:0px; line-height:15px; text-align:center; font-size:14px; color:#fff; font-family:Myriad; font-style: italic;}
+.productSnap .productImg .snap_tool .product_detail { height:20px; margin:0px -10px 0px; background: url('../img/store/bg_detail_product_snap.png') repeat-x;
+color:#fff; font-size:10px; padding:0px 5px;}
+.productSnap .productImg .snap_tool .triangle  { margin-top:-20px; margin-bottom:10px;
+	background: url('../img/opacity_black_triangle.png') no-repeat scroll top center;
+	height: 5px;
+}
+
+
+/* @end */
+
+
+
+/* @end */
+

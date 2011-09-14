@@ -1,0 +1,41 @@
+.twitter-Ui .heading {
+	background: #000 url(../img/twitter_logo_right.png) no-repeat 10px 18px;
+	height: 50px;
+	border-top-right-radius : 5px;
+	border-top-left-radius : 5px;
+	position: relative;
+	
+}
+.twitter-Ui {
+	width: 350px;
+	border-top-right-radius : 5px;
+	position: relative;
+}
+.twitter-Ui .stream {
+	border: 1px solid #000;
+	min-height: 150px;
+	background: white;
+	border-top : none;
+}
+.twitter-Ui .toolbar{
+	position: absolute;
+	right: 5px;
+	bottom: 0px;
+}
+.twitter-Ui .toolbar span {
+	
+	display: inline-table;
+	
+}
+.twitter-Ui .toolbar span a{
+	padding: 6px 8px 7px;
+	text-decoration: none;
+	color: #fff;
+	display: block;
+}
+.twitter-Ui .toolbar span:hover a {
+	background: #fff;
+	color: #000;
+	border-top-right-radius : 3px;
+	border-top-left-radius : 3px;
+}

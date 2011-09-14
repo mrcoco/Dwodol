@@ -1,0 +1,306 @@
+#home {
+	
+}
+img[style*="float: left"] {
+	margin-right: 10px;
+}
+img[style*="float: right"] {
+	margin-left: 10px;
+}
+#home .news_block {
+	
+}
+#home .news_block .item{
+
+	display: table-cell;
+	padding: 10px;
+	text-align: justify;
+}
+#home .news_block .item h3 {
+	font-size: 20px;
+	margin-bottom: 5px;
+}
+#home .featured_prod .item {
+	display: table-cell;
+	padding: 0px 10px;
+
+}
+#home .featured_prod .item .prod_img img {
+	width: 100%;
+	
+}
+
+#extend_store_store_layout .sideBar {
+	width : 210px;
+	float: left;
+}
+#extend_store_store_layout .main_layer {
+	width: 730px;
+	float: right;
+
+}
+#product_view .product_name {
+	line-height: 32px;
+	margin: 0px 0px 10px;
+	padding-bottom: 10px;
+	background: url(../img/list_product_name.png) no-repeat center bottom;
+}
+#product_view .product_content .content {
+	margin-top: 20px;
+}
+#product_view .product_content {
+	width: 390px;
+}
+#product_view .product_media {
+	width: 320px;
+}
+#product_view .product_media .currentImg{
+	margin-bottom: 10px;
+}
+#product_view .product_media .otherImg .item{
+	float: none;
+	display: inline-table;
+	margin-right: 3px;
+}
+
+
+.store_category_menu  ul {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+.store_category_menu  li {
+	margin-left: 0px;
+}
+.store_category_menu  ul li:hover{
+	background: #f5f5f5;
+}
+.store_category_menu  ul li:hover a{
+	color: #3a3a3a;
+	text-shadow: 0 1px 0 #fff;
+}
+.store_category_menu  ul li span a  {
+	display: block;
+	padding: 3px 10px;
+	text-decoration: none;
+}
+
+
+.productSnap{
+	margin: 0px;
+	padding: 0px;
+	width: 240px;
+	height: 295px;
+	margin-left: 2px;
+}
+#product_browse .browseProduct  .productSnap .productImg img, #category_view .browseProduct  .productSnap .productImg img{
+	width: 240px;
+	height: 295px;
+}
+#extend_blog_blog_layout .main_layer {
+	width: 710px;
+	border-right: 1px dotted #ccc;
+	margin-right: 10px;
+	padding-right: 20px;
+	
+}
+#extend_blog_blog_layout .sideBar  {
+	width: 210px;
+
+	
+}
+#extend_blog_blog_layout .sideBar .category_menu ul li {
+	list-style: none;
+	margin-left: 0px;
+	padding:3px 10px;
+}
+#extend_blog_blog_layout .sideBar .category_menu ul li a{
+	display: block;
+	text-decoration: none;
+	text-transform: capitalize
+	}
+#extend_blog_blog_layout .sideBar .category_menu ul li:hover {
+	background: #f5f5f5;
+}
+#extend_blog_blog_layout .sideBar .category_menu ul li:hover a {
+	color: #3a3a3a;
+	text-shadow: 0 1px 0 #fff;
+}
+.post_list .post_item {
+padding-bottom: 10px;
+margin-bottom: 10px;
+	
+}
+.post_list .post_item .post_title {
+	font-size: 28px;
+    line-height: 28px;
+    margin: 0;
+}
+.post_list .post_item .content{
+	padding-bottom: 20px;
+	margin-top: 10px;
+}
+.post_list .post_item .post_title a{
+	text-decoration: none;
+}
+#blog_single .post .heading h1 {
+	margin-bottom: 0px;
+	padding: 0px;
+	line-height: 34px;
+}
+#blog_single .post .content {
+	margin-top: 20px;
+}
+#blog_single .comment_form {
+	
+}
+.post .content img[style*="float: left"] {
+	margin-right: 10px;
+}
+.post .content img[style*="float: right"] {
+	margin-left: 10px;
+}
+#blog_single .comment_part h3.part_title {
+	margin: 0px;
+	padding: 0px;
+
+}
+#blog_single .comment_part .comment_list {
+	margin-top: 15px;
+}
+#blog_single .comment_form .author_data span{
+	display: inline-table;
+	width: 30%;
+	margin-right: 20px;
+
+}
+#blog_single .comment_form .author_data span input{
+	width: 100%;
+	padding: 5px 3px;
+}
+#blog_single .comment_content {
+	margin-top: 10px;
+}
+#blog_single .comment_content textarea{
+	width: 683px;
+	height: 100px;
+}
+#blog_single .comment_list .item {
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	position: relative;
+}
+#blog_single .comment_list .item .avatar {
+	 background: url("http://themeshaper.com/wp-content/themes/duster-themeshaper/images/comment-arrow.png") no-repeat scroll right 20px transparent;
+    height: 75px;
+    position: absolute;
+    width: 109px;
+    z-index: 3;
+}
+#blog_single .comment_list .item .avatar img {
+	width: 75px;
+	background: #e3e3e3;
+	border: 1px solid #d2d2d2;
+	padding: 3px;
+}
+#blog_single .comment_list .item .content{
+	width: 580px;
+	border: 1px solid #e4e1ea;
+	padding: 10px;
+	border-radius: 3px;
+
+}
+#blog_single .comment_list .item .content .meta {
+	
+	margin-bottom: 10px;
+}
+#blog_single .comment_list .item .content .meta span {
+	
+}
+#blog_single .comment_list .item .content .meta .author{
+	font-weight: bold;
+	border-color: #f4f4f4;
+}
+#file_manager_index .main_section {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+#file_manager_index .folder_tree ul li {
+	list-style: none;
+	margin: 0px;
+	padding: 3px 5px 3px 20px;
+}
+#file_manager_index .toolbar {
+	border-bottom: 1px solid #88afcc;
+	padding-bottom: 20px;
+}
+#file_manager_index .toolbar .tool  {
+	color: #416580;
+	text-shadow: 0 1px 0 #bbc9e6;
+	background: #88afcc;
+	padding: 5px 10px;
+	border-radius:3px;
+	margin-right: 10px;
+	font-size: 12px;
+}
+#file_manager_index .toolbar .tool.go{
+	
+}
+#file_manager_index .toolbar .tool.new_folder{
+	
+}
+#file_manager_index .toolbar .tool.upload{
+	
+}
+#file_manager_index .toolbar .tool.up{
+	
+}
+#file_manager_index input[name="new_folder_name"] {
+	border: none;
+	font-size: 100%;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+#file_manager_index input[type="text"] {
+	border: 1px solid #88afcc;
+	padding: 4px 5px;
+}
+#file_manager_index .main_section .folder_container .item{
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+#file_manager_index .main_section .folder_container .item p{
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+}
+#file_manager_index .icon_file {
+	width: 100px;
+	text-align: center;
+	background: url(../img/file_manager/icon/file_bg.png) no-repeat center center;
+	height: 100px;
+	position: relative;
+	cursor: pointer;
+}
+#file_manager_index .icon_file .file_extension {
+	font-size: 12px;
+	text-shadow: 0 1px 0 #bbc9e6;
+	display: block;
+	text-transform: capitalize;
+	position: absolute;
+	left: 25px;
+	top: 25px;
+	letter-spacing: 1px;
+	color: #416580;
+
+}
+#file_manager_index .icon_file.dir{
+	width: 100px;
+	text-align: center;
+	background: url(../img/file_manager/icon/folder.png) no-repeat center center;
+	height: 100px;
+	position: relative;
+	cursor: pointer;
+}
+#file_manager_index .icon_file.dir .file_extension {
+	display: none;
+}

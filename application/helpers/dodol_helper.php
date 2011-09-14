@@ -293,10 +293,9 @@ function load_ck_editor(){
 	<script src="'.base_url().'/assets/global_js/ckfinder/ckfinder.js" type="text/javascript" charset="utf-8"></script>
 	');
 }
-function ck_editor($id='myeditor', $value = ''){
+function ck_editor($id='myeditor', $var = false,$value = ''){
 	$ci =& get_instance();
  	$ci->load->library('ckeditor');
-	$ci->load->library('ckFinder');
 	//configure base path of ckeditor folder
 	$ci->ckeditor->basePath = base_url().'/assets/global_js/ckeditor/';
 
@@ -322,7 +321,7 @@ function ck_editor($id='myeditor', $value = ''){
 	$ci->ckeditor->config['uiColor'] = 'transparent';
 	$ci->ckeditor->config['filebrowserImageUploadUrl'] = site_url('file_manager/ck_upload_img');
 	//configure ckfinder with ckeditor config
-	echo $ci->ckeditor->editor($id, $value);
+	echo $ci->ckeditor->editor($id, $var, $value);
 }
 function load_text_editor($id){
 		$this->_ci->load->helper('url');

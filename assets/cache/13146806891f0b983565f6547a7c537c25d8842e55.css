@@ -1,15 +1,15 @@
 .cloud-zoom-lens{background-color:#fff;cursor:move}.cloud-zoom-title{font-family:Arial,Helvetica,sans-serif;position:absolute !important;background-color:#fff;color:#000;width:100%;text-align:center;font-weight:bold;font-size:10px;padding:3px;bottom:0px}.cloud-zoom-big{overflow:hidden}.cloud-zoom-loading{color:#000;background:#fff;padding:3px;border:1px
 solid #CCC}
-@font-face{font-family:'TimelessRegular';src:url('http://localhost/culture-update.com/assets/theme/theme_front/cu/css/font/timeless-webfont.ttf') format('truetype');font-weight:normal;font-style:normal}.wrapper{}.header{background-position:center bottom;background-repeat:no-repeat;border-bottom:1px solid #CCC;height:75px;margin-bottom:10px;padding-bottom:13px;position:relative}.header
+@font-face{font-family:'TimelessRegular';src:url('http://localhost/dwodol/assets/theme/theme_front/cu/css/font/timeless-webfont.ttf') format('truetype');font-weight:normal;font-style:normal}.wrapper{}.header{background-position:center bottom;background-repeat:no-repeat;border-bottom:1px solid #CCC;height:75px;margin-bottom:10px;padding-bottom:13px;position:relative}.header
 .logo{padding:25px
-0px;width:870px}.footer{}.component{background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/bottom_border_shadow.png) no-repeat center bottom;min-height:300px;padding-bottom:30px}.component
+0px;width:870px}.footer{}.component{background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/bottom_border_shadow.png) no-repeat center bottom;min-height:300px;padding-bottom:30px}.component
 .topBar{height:30px;position:relative;margin-bottom:15px}.component .topBar
 .barRight{height:30px}body{font-family:TimelessRegular;color:#484848;font-size:13px;letter-spacing: -0.5px}.headingPage{}h1.heading{font-weight:normal}h1,h2,h3,h4,h5,h6,h7{font-weight:normal}h1{font-size:33px}h2{font-size:31px}h3{font-size:29px}h4{font-size:27px}h5{font-size:25px}h6{font-size:23px}span.nav{border:1px
 solid #d5d5d5;display:block;padding:3px
 5px;background:#f3f3f3}span.nav
 a{display:block;text-shadow:0 1px 0 #fff;color:#292929;text-decoration:none}span.nav
-a.next{padding-right:20px;background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/icon/arrowright32_16px.png) no-repeat right center}span.nav
-a.prev{padding-left:20px;background:#f3f3f3 url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/icon/leftarrow32_16px.png) no-repeat left center}.list_decor_right{background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/list_decor.png) no-repeat right top;height:9px}.list_decor_left{background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/list_decor.png) no-repeat left bottom;height:9px}.component .pagination a,.component .pagination
+a.next{padding-right:20px;background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/icon/arrowright32_16px.png) no-repeat right center}span.nav
+a.prev{padding-left:20px;background:#f3f3f3 url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/icon/leftarrow32_16px.png) no-repeat left center}.list_decor_right{background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/list_decor.png) no-repeat right top;height:9px}.list_decor_left{background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/list_decor.png) no-repeat left bottom;height:9px}.component .pagination a,.component .pagination
 span{background:none;border:none;border-right:1px dotted #ccc;color:#474747;text-transform:capitalize;border-radius:0px}.component .pagination li:last-child a,.component .pagination li:last-child
 span{border-right:none}ul.horizontal{list-style:none;margin:0px;padding:0px}ul.horizontal
 li{margin:0px;float:left}.topBar .navTop .horizontal li
@@ -17,8 +17,8 @@ a{display:block;padding:0px
 10px;text-decoration:none}.topBar .navTop .horizontal
 li{line-height:25px;height:25px}.topBar .userMenu
 p{line-height:25px;height:25px;margin:0px;padding:0px;margin:0px}.topBar .userMenu p .cart_info:hover
-.cart_icon{background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/cart_icon.png) no-repeat center top}.topBar .userMenu p
-.cart_icon{background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/cart_icon.png) no-repeat center bottom;height:13px;width:13px;display:inline-block;margin-right:5px}.topBar .userMenu
+.cart_icon{background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/cart_icon.png) no-repeat center top}.topBar .userMenu p
+.cart_icon{background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/cart_icon.png) no-repeat center bottom;height:13px;width:13px;display:inline-block;margin-right:5px}.topBar .userMenu
 a{text-decoration:none}.productSnap{width:260px;height:320px;float:left;margin:0
 10px 10px 3px;margin-bottom:20px;display:table}.productSnap
 a{text-decoration:none;color:#fff}.productSnap .productImg
@@ -27,16 +27,16 @@ img{width:260px;height:320px}.productSnap
 0px;margin-top:5px}.productSnap
 .productPrice{float:right}.productSnap
 .productImg{position:relative}.productSnap .productImg
-.snap_tool{width:150px;left:30px;position:absolute;top:200px;;background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/store/opacity_black.png);padding:15px
+.snap_tool{width:150px;left:30px;position:absolute;top:200px;;background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/store/opacity_black.png);padding:15px
 10px 0px;display:none}.productSnap .productImg .snap_tool
 p{line-height:30px;margin:0px;text-align:center;font-size:80%}.productSnap .productImg .snap_tool p
 span{-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;padding:3px
 5px;background:#ccc;color:#000;margin-right:5px}.productSnap .productImg .snap_tool
 h3.prod_name{text-transform:capitalize;margin-bottom:10px;padding:0px;line-height:15px;text-align:center;font-size:14px;color:#fff;font-family:Myriad;font-style:italic}.productSnap .productImg .snap_tool
 .product_detail{height:20px;margin:0px
--10px 0px;background:url('http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/store/bg_detail_product_snap.png') repeat-x;color:#fff;font-size:10px;padding:0px
+-10px 0px;background:url('http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/store/bg_detail_product_snap.png') repeat-x;color:#fff;font-size:10px;padding:0px
 5px}.productSnap .productImg .snap_tool
-.triangle{margin-top:-20px;margin-bottom:10px;background:url('http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/opacity_black_triangle.png') no-repeat scroll top center;height:5px}
+.triangle{margin-top:-20px;margin-bottom:10px;background:url('http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/opacity_black_triangle.png') no-repeat scroll top center;height:5px}
 #home{}img[style*="float: left"]{margin-right:10px}img[style*="float: right"]{margin-left:10px}#home
 .news_block{}#home .news_block
 .item{display:table-cell;padding:10px;text-align:justify}#home .news_block .item
@@ -47,7 +47,7 @@ img{width:100%}#extend_store_store_layout
 .sideBar{width:210px;float:left}#extend_store_store_layout
 .main_layer{width:730px;float:right}#product_view
 .product_name{line-height:32px;margin:0px
-0px 10px;padding-bottom:10px;background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/list_product_name.png) no-repeat center bottom}#product_view .product_content
+0px 10px;padding-bottom:10px;background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/list_product_name.png) no-repeat center bottom}#product_view .product_content
 .content{margin-top:20px}#product_view
 .product_content{width:390px}#product_view
 .product_media{width:320px}#product_view .product_media
@@ -102,7 +102,7 @@ solid #88afcc;padding:4px
 5px}#file_manager_index .main_section .folder_container
 .item{width:100px;height:100px;float:left}#file_manager_index .main_section .folder_container .item
 p{text-align:center;margin:0px;padding:0px}#file_manager_index
-.icon_file{width:100px;text-align:center;background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/file_manager/icon/file_bg.png) no-repeat center center;height:100px;position:relative;cursor:pointer}#file_manager_index .icon_file
+.icon_file{width:100px;text-align:center;background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/file_manager/icon/file_bg.png) no-repeat center center;height:100px;position:relative;cursor:pointer}#file_manager_index .icon_file
 .file_extension{font-size:12px;text-shadow:0 1px 0 #bbc9e6;display:block;text-transform:capitalize;position:absolute;left:25px;top:25px;letter-spacing:1px;color:#416580}#file_manager_index
-.icon_file.dir{width:100px;text-align:center;background:url(http://localhost/culture-update.com/assets/theme/theme_front/cu/css/../img/file_manager/icon/folder.png) no-repeat center center;height:100px;position:relative;cursor:pointer}#file_manager_index .icon_file.dir
+.icon_file.dir{width:100px;text-align:center;background:url(http://localhost/dwodol/assets/theme/theme_front/cu/css/../img/file_manager/icon/folder.png) no-repeat center center;height:100px;position:relative;cursor:pointer}#file_manager_index .icon_file.dir
 .file_extension{display:none}

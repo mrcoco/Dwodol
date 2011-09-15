@@ -3,75 +3,75 @@
 
 /* Store Add Product
 ----------------------------------------------------------------------------------------------------*/
-#b_product_addProd .attr_prod_form h3 {
+#addeditprod .attr_prod_form h3 {
 	padding: 10px;
   	text-align: center;
   	margin-bottom: 20px;
   	border-bottom: 1px solid #DDDDDD;
 }
-#b_product_addProd .attr_prod_form .inputColl_ver .item{
+#addeditprod .attr_prod_form .inputColl_ver .item{
 	width: 250px;
 	margin-right: 20px;
 	}
-#b_product_addProd .attr_prod_form .inputColl_ver div.item:last-child{
+#addeditprod .attr_prod_form .inputColl_ver div.item:last-child{
 	margin-right: 0px;
 }
-#b_product_addProd .attr_prod_form .inputColl_ver{
+#addeditprod .attr_prod_form .inputColl_ver{
 	border-bottom: 1px solid #DDDDDD;
 	margin-bottom: 10px;
 	padding-bottom: 10px;
 }
-#b_product_addProd .attr_prod_form .inputColl_ver .item label{
+#addeditprod .attr_prod_form .inputColl_ver .item label{
 	display: block;
 }
-#b_product_addProd .attr_prod_form .inputColl_ver .item input{
+#addeditprod .attr_prod_form .inputColl_ver .item input{
 	width: 233px;
 }
-#b_product_addProd .attr_prod_form .fieldset_wrapper {
+#addeditprod .attr_prod_form .fieldset_wrapper {
 	padding-top: 10px;
 }
-#b_product_addProd .attr_prod_form #clone_attr{
+#addeditprod .attr_prod_form #clone_attr{
 	font-size: 12px;
 	position: absolute;
 	right :20px;
 }
-#b_product_addProd .seo textarea{
+#addeditprod .seo textarea{
 	height: 150px;
 }
-#b_product_addProd .seo .left.box2, #b_product_addProd .seo .right.box2{
+#addeditprod .seo .left.box2, #b_product_addProd .seo .right.box2{
 	padding-bottom: 25px;
 }
 
-#b_product_addProd .prod_media .form_engine p {
+#addeditprod .prod_media .form_engine p {
 	margin-bottom: 5px;
 }
-#b_product_addProd .prod_media .form_engine .drop_area{
+#addeditprod .prod_media .form_engine .drop_area{
 	background: #F6F6F6;
 	padding: 15px;
 	border-radius: 5px;
 	height: 50px;
 }
-#b_product_addProd .prod_media .form_engine .drop_area p {
+#addeditprod .prod_media .form_engine .drop_area p {
 	text-align: center;
 }
 
-#b_product_addProd .prod_media .the_medias {
+#addeditprod .prod_media .the_medias {
 	margin-left: 20px;
 	padding-left: 20px;
 	min-height:  300px;
 	border-left: 1px solid #ddd;
 }
-#b_product_addProd .prod_media .the_medias .item {
+#addeditprod .prod_media .the_medias .item {
 	float: left;
 	margin-right: 10px;
 	position: relative;
 }
-#b_product_addProd .prod_media .the_medias .item:hover .button.delete{
+#addeditprod .prod_media .the_medias .item:hover .button.delete{
 
 	display: block;
 	
 }
-#b_product_addProd .prod_media .the_medias .item .button.delete {
+#addeditprod .prod_media .the_medias .item .button.delete {
 	position: absolute;
 	top: 5px;
 	left: 5px;
@@ -79,16 +79,16 @@
 	display: none;
 	padding: 1px 5px;
 }
-#b_product_addProd .prod_media .the_medias .item img {
+#addeditprod .prod_media .the_medias .item img {
 	width: 190px;
 }
-#b_product_addProd .prod_media .the_medias .item .name_media{
+#addeditprod .prod_media .the_medias .item .name_media{
 	text-align: center;
 	padding: 6px;
 	cursor: pointer;
 	margin-bottom: 0px;
 }
-#b_product_addProd .prod_media .the_medias .item .input_name_media{
+#addeditprod .prod_media .the_medias .item .input_name_media{
 	border: none !important;
 	box-shadow: none !important;
 	size: 11px;	
@@ -97,7 +97,7 @@
 	width: 178px;
 	display: none;
 }
-#b_product_addProd .relation .the_relations {
+#addeditprod .relation .the_relations {
 	margin-left: 20px;
 	padding-left: 20px;
 	border-left: 1px solid #ddd;
@@ -106,21 +106,21 @@
 	min-height: 350px;
 	
 }
-#b_product_addProd .relation .the_relations .item {
+#addeditprod .relation .the_relations .item {
 	float: left;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	position: relative;
 	width: 190px;
 }
-#b_product_addProd .relation .the_relations .item img{
+#addeditprod .relation .the_relations .item img{
 	width: 190px;
 }
-#b_product_addProd .relation .the_relations .item p{
+#addeditprod .relation .the_relations .item p{
 	margin-bottom: 0px;
 	text-align: right;
 }
-#b_product_addProd .relation .the_relations .item .button.delete{
+#addeditprod .relation .the_relations .item .button.delete{
 	position: absolute;
 	left: 5px;
 	top: 5px;
@@ -129,22 +129,22 @@
 	display: none;
 
 }
-#b_product_addProd .relation .the_relations .item:hover .button.delete{
+#addeditprod .relation .the_relations .item:hover .button.delete{
 	display: block;
 }
-#b_product_addProd .relation .form_engine {
+#addeditprod .relation .form_engine {
 	width: 300px;
 }
-#b_product_addProd .relation .form_engine .result {
+#addeditprod .relation .form_engine .result {
 	padding-top: 15px;
 }
 
-#b_product_addProd .relation .form_engine .result .item{
+#addeditprod .relation .form_engine .result .item{
 	border-bottom: 1px solid #DDD;
 	margin-bottom: 10px;
 	position: relative;	
 }
-#b_product_addProd .relation .form_engine .result .item .button.add{
+#addeditprod .relation .form_engine .result .item .button.add{
 	position: absolute;
 	right: 0px;
 	bottom: 3px;
@@ -152,11 +152,11 @@
 	font-size: 10px;
 
 }
-#b_product_addProd .relation .form_engine .result .item img {
+#addeditprod .relation .form_engine .result .item img {
 	float: left;
 	margin-right: 10px;
 }
-#b_product_addProd .relation .form_engine .result .item p
+
 #b_order_browse .list_order .trigger { cursor: pointer; right:3px ;top:3px;  background:#fff;}
 #b_order_browse .list_order .update_form {background:#fff;; z-index:3; margin-top:-3px; border:1px solid #a1a1a1; border-radius:3px;}
 #b_order_browse .list_order .update_form ul { padding:0px; margin:0px;}

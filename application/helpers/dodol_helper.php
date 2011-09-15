@@ -293,7 +293,7 @@ function load_ck_editor(){
 	<script src="'.base_url().'/assets/global_js/ckfinder/ckfinder.js" type="text/javascript" charset="utf-8"></script>
 	');
 }
-function ck_editor($id='myeditor', $var = false,$value = ''){
+function ck_editor($id='myeditor', $var = false, $value = ''){
 	$ci =& get_instance();
  	$ci->load->library('ckeditor');
 	//configure base path of ckeditor folder
@@ -432,3 +432,29 @@ function tinyurl($text){
 		$text = preg_replace($search, $replace, $text);
 		return $text;
 }
+function mod_run($mod){
+	$args = func_get_args();
+	$output = call_user_func_array(array('modules', 'run'), $args);
+	return $output;
+}
+function get_image($url, $return = false){
+	
+	$img_file=$url;
+
+	$img_file = file_get_contents($img_file);
+	$name = random_string('alnum', 32);
+	$file_loc = './assets/cache/img/'.$name.'.jpg';
+
+	$file_handler=fopen($file_loc,'w');
+
+	if(fwrite($file_handler,$img_file)==false){
+	    return '';
+	}
+	fclose($file_handler);
+		if($return != false){
+			return base_url().str_replace('./assets/', 'assets/', $file_loc);
+		}else{
+			return $file_loc;
+		}
+}
+	

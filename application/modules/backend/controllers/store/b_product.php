@@ -33,14 +33,28 @@ class B_product extends MX_Controller {
 			'pT'        => 'Add Product',
 			);
 		$this->dodol_theme->render()->build('page/store/product/addprod_v', $data);
-		if($this->input->post('submit')){
-		$this->exe_addprod();
-		}
+	
+	}
+	function editprod(){
+		$id = $this->uri->segment(5);
+		if(!$q = $this->load->controller('store/product')->api_getbyid($id, array('media', 'medias', 'attributes', 'relations')))return $this->dodol_theme->not_found();
+
+		$data = array(
+			'prod' 		=> element('product', $q),
+			'media' 	=> element('media', $q),
+			'relations' => element('relations', $q),
+			'medias' 	=> element('medias', $q),
+			'attributes' => element('attributes', $q)
+		);
+		$data['pT'] = 'Edit Product - '.element('product', $q)->name;
+		$this->dodol_theme->render()
+						  ->build('page/store/product/editprod_v', $data);
 	}
 
 	function ajx_media(){
 		enable_get();
 		$func = $this->input->get('func');
+		$id_p = ($this->input->post('p_id')) ? $this->input->post('p_id') : 0;
 		$return = array();
 		switch($func)
 		{
@@ -74,6 +88,7 @@ class B_product extends MX_Controller {
 							'publish' => 'y',
 							'default' => 0,
 							'sort' => $i,
+							'prod_id' => $id_p,
 							'path' => element('file_name', $item),
 						);
 						if($this->input->post('media_prodid')) $data['prod_id'] =$this->input->post('media_prodid');
@@ -161,7 +176,8 @@ class B_product extends MX_Controller {
 			break;
 			case 'add'	:
 				$id = $this->input->post('id');
-				$query = modules::run('store/product/api_relation_create', array('p_rel' => $id) );
+				$id_p = ($this->input->post('p_own')) ? $this->input->post('p_own') : '';
+				$query = modules::run('store/product/api_relation_create', array('p_rel' => $id, 'p_own' => $id_p) );
 				if($query){
 					$qp = modules::run('store/product/api_getbyid', $id, array('media') );
 					$prod = $qp['product'];
@@ -207,13 +223,17 @@ class B_product extends MX_Controller {
 		$medias     = explode(',',$this->input->post('medias'));
 		$main_q = modules::run('store/product/api_create', $main_info) ;
 		if($main_q != false):
+			// Adding Rlations
 			foreach($relations as $rel) {
 				modules::run('store/product/api_relation_update', $rel,  array('p_own' => $main_q->id));
 			}
+			// Adding medias
 			foreach($medias as $med){
 				$this->load->controller('store/product')->api_media_update($med, array('prod_id' => $main_q->id ));
 			}
+			// Adding Attributes
 			for($i = 0; $i<count($attrs['attribute']) ; $i++){
+				if($attrs['attribute'][$i] == '') continue;
 				$this->load->controller('store/product')->api_attribute_create(
 					array(
 						'attribute' 	=> prod_attr_formater($attrs['attribute'][$i]), 
@@ -223,19 +243,74 @@ class B_product extends MX_Controller {
 						)
 					);
 			}
+			// add messages success
+			$this->messages->add('Success create product with name '.$main_q->name, 'success');
 			$return =  array('prod' => $main_q, 'status' => 'success');
+			// end ajax, redirect to list prod
+			redirect('backend/store/b_product/listprod');
 		else:
 
-			$return = array();
+			$return = array('status' => 'fail');
 		endif;
 		echo json_encode($return);
 		
 		
 	}
-	function test(){
-		echo prod_attr_formater(' size: l; color: blue');
+	function ajx_editprod(){
+		enable_get();
+		$return = 'nothing';
+		$is_ajax = ($this->input->get('ajx')) ? true : false;
+		$main_info 	= post_filter('main_');
+		$attrs    	= post_filter('attr_');
+		$relations  = explode(',',$this->input->post('relations'));
+		$medias     = explode(',',$this->input->post('medias'));
+		$main_q = modules::run('store/product/api_update', $this->input->post('prodid'), $main_info) ;
+		if($main_q != false):
+			// Adding Rlations
+			foreach($relations as $rel) {
+				$this->load->controller('store/product')->api_relation_update( $rel,  array('p_own' => $main_q->id));
+			}
+			// Adding medias
+			foreach($medias as $med){
+				$this->load->controller('store/product')->api_media_update($med, array('prod_id' => $main_q->id ));
+			}
+			// Adding Attributes
+			for($i = 0; $i<count($attrs['attribute']) ; $i++){
+				if($attrs['attribute'][$i] == '') continue;
+				if(isset($attrs['id'][$i])) :
+				//do update
+				$this->load->controller('store/product')->api_attribute_update($attrs['id'][$i],
+					array(
+						'attribute' 	=> prod_attr_formater($attrs['attribute'][$i]), 
+						'stock' 		=> $attrs['stock'][$i],
+						'price_opt'		=> $attrs['prod_opt'][$i],
+						)
+					);
+				else:
+				// do insert
+				$this->load->controller('store/product')->api_attribute_create(
+					array(
+						'attribute' 	=> prod_attr_formater($attrs['attribute'][$i]), 
+						'stock' 		=> $attrs['stock'][$i],
+						'price_opt'		=> $attrs['prod_opt'][$i],
+						'prod_id' 		=> $main_q->id, 
+						)
+					);
+				
+				endif;
+			}
+			// add messages success
+			$this->messages->add('Success update product with name '.$main_q->name, 'success');
+			$return =  array('prod' => $main_q, 'status' => 'success');
+			// end ajax, redirect to list prod
+			return redirect('backend/store/b_product/listprod');
+		else:
+
+			$return = array('status' => 'fail');
+		endif;
+		echo json_encode($return);
 	}
-	function editprod(){
+	function _editprod(){
 		$idprod = $this->uri->segment(5);
 		$param = array(
 			'id' => $idprod,

@@ -46,6 +46,7 @@ class Product extends MX_Controller {
 		$param['media'] = true;
 		//$this->dodol_asset->append_global('css', 'style.css');
 		$data['prod'] 		= $this->api_getbyid($param['id'], array('media', 'medias', 'relations', 'attributes'));
+		if($data['prod'] == false)return $this->dodol_theme->not_found();
 		$data['loadSide'] 	= false;
 		$data['pT']        	= $data['prod']['product']->name;
 		$this->dodol_theme->set_layout('extend/store/store');
@@ -345,7 +346,10 @@ class Product extends MX_Controller {
 		return $this->mdl->attribute_create($data);
 	}
 	function api_attribute_update($id, $data){
-		return $this->mdl->attribute_update($data);
+		if($q = $this->mdl->attribute_update($id, $data) ) {
+		
+		}
+		return $q;
 	}
 	function api_attribute_delete($id){
 		return $this->mdl->attribute_delete($id); 
@@ -361,6 +365,7 @@ class Product extends MX_Controller {
 	}
 	// RELATION TRANSACTIONS
 	function api_relation_create($data){
+		
 		return $this->mdl->relation_create($data);
 	}
 	function api_relation_update($id, $data){

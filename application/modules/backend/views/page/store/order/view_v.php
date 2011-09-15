@@ -1,8 +1,11 @@
 <div class="order_detail">
 	<div class="left_pane grid_250 left">
+		<img src="<?=site_url('store/order/barcode/'.$data_order->id.'.jpg');?>"/>
 		<div class="box2 customer_data">
+			
 			<div class="left photo_user grid_60 mr10">
-				aadad
+				
+				
 			</div>
 			<div class="left data_user grid_130">
 			<p>

@@ -252,35 +252,40 @@ class Tester extends MX_Controller {
 	}
 	function tweet(){
 		$tw = $this->load->library('twitter/epitwitter');
-		$link = $tw->getAuthenticateUrl(null,array('oauth_callback' => 'http://127.0.0.1/culture-update.com/tester/tweet_callback/'));
+		$link = $tw->getAuthenticateUrl(null,array('oauth_callback' => 'http://127.0.0.1/dwodol/tester/tweet_callback/'));
 		echo '<a href="'.$link.'">Connect</a>';
 		
 	}
 	function tweet_callback(){
-		
-	
+		enable_get();		
+
 		if(!$this->session->userdata('twitter_session')):
-		$tw = $this->load->library('twitter/epitwitter');
-		enable_get();
-		echo print_arrayRecrusive($this->input->get());
-		$tw->setToken($this->input->get('oauth_token'));
-		$token = $tw->getAccessToken();
-		$render['token'] = $token;
-		echo ('oauth_token ='. $token->oauth_token .'<br/>');
-		echo ('oauth_token_secret ='. $token->oauth_token_secret.'<br/>');
-		$data = array(
+			if(!$this->input->get('oauth_token')) redirect('tester/tweet');
+			$tw = $this->load->library('twitter/epitwitter');
+			$tw->setToken($this->input->get('oauth_token'));
+			$token = $tw->getAccessToken();
+			$render['token'] = $token;
+			
+			$data = array(
 					'twitter_session' => array(
 											'oauth_token' => $token->oauth_token, 
-											'oauth_token_secret' => $token->oauth_token_secret
+											'oauth_token_secret' => $token->oauth_token_secret,
 											)
 					);
-		$this->session->set_userdata($data);
+			$this->session->set_userdata($data);
 		else:
 		
 			if($this->input->post('send_tweet')):
-		
-			$tw = $this->load->library('twitter/epitwitter',$this->session->userdata['twitter_session']['oauth_token'], $this->session->userdata['twitter_session']['oauth_token_secret']);	
-			$status = $tw->post_statusesUpdate(array('status' => $this->input->post('status')));
+			$tw_sess = $this->session->userdata('twitter_session');
+			$tw = $this->load->library('twitter/epitwitter');	
+			$tw->setToken(element('oauth_token', $tw_sess),element('oauth_token_secret', $tw_sess));
+			$image = get_image('http://localhost/dwodol/store/product/thumb/500-500-crop/dir/assets/modules/store/product_img/p_299_m_121_Detail.jpg');
+			$status = $tw->post('/statuses/update_with_media.json', 
+								array(
+									'status' => $this->input->post('status'),
+									'@media[]' => "@{$image}",
+									)
+								);
 			endif;
 		endif;
 		$render['tw_data'] = $this->session->userdata('twitter_session');
@@ -323,7 +328,44 @@ class Tester extends MX_Controller {
 		$this->zend->load('Zend/Barcode');
 	  	Zend_Barcode::render('code39', 'image', array('text' => 'CU0987-081188'), array());
 	}
-
+	function twig(){
+		$data = array(
+			'array' => array(
+				'suh' => array(
+					'kampret' => 78, 
+					'kaki' => 5,
+					), 
+				'pret'	 => array(
+					'kampret' => 8, 
+					'kaki' => 9,),
+				 'jing' => array(
+					'kampret' => 1, 
+					'kaki' => 3,)
+				)
+			);
+		$this->load->library('dependency/Twig'); 
+		foreach( element('user', get_defined_functions()) as $func_name ){
+	
+		$this->twig->add_function($func_name);
+		}
+		
+		$this->twig->display('test_twig.html', $data);
+		
+	
+	}
+	function kampret(){
+		echo 89;
+	}
+	function get_image(){
+		echo get_image('http://localhost/dwodol/store/product/thumb/500-500-crop/dir/assets/modules/store/product_img/p_299_m_121_Detail.jpg');
+	}
+	function twitt(){
+		print_r($this->session->userdata('twitter_session'));
+	}
+	function send_tw(){
+		$this->load->helper('dodol_twitter');
+		tw_update('from function');
+	}
 
 
 }

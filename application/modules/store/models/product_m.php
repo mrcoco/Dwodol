@@ -394,7 +394,7 @@ class Product_m extends CI_Model {
 	function update($id, $data){
 		if($this->getbyid($id, false, false)){
 			$this->db->where('id', $id);
-			if($this->db->update('store_product')){
+			if($this->db->update('store_product', $data)){
 				return $this->getbyid($id, false, '*', false);
 			}else{
 				return false;
@@ -570,7 +570,7 @@ class Product_m extends CI_Model {
 	function attribute_update($id, $data){
 		if($this->attribute_getbyid($id)){
 			$this->db->where('id', $id);
-			if($this->db->update('store_product-attrb', $data)){
+			if($this->db->update('store_product_attrb', $data)){
 				return $this->attribute_getbyid($id);
 			}else{
 				return false;

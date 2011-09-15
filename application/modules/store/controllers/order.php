@@ -182,7 +182,7 @@ if(!$data){
 		$cod_ord = explode('.', $this->uri->segment(4));
 		
 		// validation the code_order
-		if(element('1', $cod_ord) != 'svg'){
+		if(element('1', $cod_ord) != 'jpg'){
 			return $this->dodol_theme->not_found();
 		}
 		$order_num = element('0', $cod_ord);
@@ -195,7 +195,7 @@ if(!$data){
 		
 		$this->load->library('zend');
 		$this->zend->load('Zend/Barcode');
-		$options = array('text' => $bc_text, 'drawText' => false, 'barHeight' => 100, 'barThickWidth' => 2);
+		$options = array('text' => $bc_text, 'drawText' => false, 'barHeight' => 30, 'barThickWidth' => 3);
 
 		Zend_Barcode::render('code39', 'image', $options, array());
 		}

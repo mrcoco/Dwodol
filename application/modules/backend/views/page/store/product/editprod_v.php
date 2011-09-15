@@ -1,419 +1,500 @@
-<div class="editProd">
-<form enctype="multipart/form-data" method="post" action="<?=current_url()?>">
+<div id="addeditprod">
+<div class="tab-Ui" id="product_tab">
+	<div class="right submit_tool">
+		<span class="button" id="submitprod">Publish</span>
+	</div>
+	<div class="tab_pane">
+		<ul>
+			<li><a>Main Info Product</a></li>
+			<li><a>Invetory and Stock</a></li>
+			<li><a>S.E.O Setup</a></li>
+			<li><a>Media</a></li>
+			<li><a>Relation</a></li>
+		</ul>
+	</div>
+	<div class="clear"></div>
+	<div class="tab_content form-Ui">
 	
-	<script type="text/javascript" charset="utf-8">
-		$(function() {
-				$( "#addProdTab" ).tabs();
-			});
-	</script>
-<div class="tab-Ui" id="addProdTab">
-		<div class="right" style="margin-bottom:-40px">
-		<input type="submit" name="submit" value="save" class="button save-button-Ui" style="margin-right:5px;"/>
-		<a href="<?=site_url();?>backend/store/b_product/listprod/"><span class="button cancel-button-Ui" >Cancel</span></a>
-	</div>	
-		<br class="clear"/>
-	
-		<ul class="nav">
-	<li><a href="#tab_1">Main Info</a></li>
-	<li><a href="#tab_2">Inventory and Stock</a></li>
-	<li><a href="#tab_3">S.E.O Setup</a></li>
-	<li><a href="#tab_4">Product Media</a></li>
-	<li><a href="#tab_5">Product Association</a></li>
-</ul>
-
-		<div id="tab_1" class="item">
-		<div class="form-Ui productInfo">
-					<div class="inputSet">
-						<div class="label"><span>Product Name</span></div>
-						<div class="input">
-							
-							<input type="text" value="<?=$prod->name; ?>" name="p_name" >
-							
-						</div>
-						<div class="clear"></div>
-					</div>
-					<div class="inputSet">
-						<div class="label"><span>Product SKU</span></div>
-						<div class="input"><input type="text"  value="<?=$prod->sku; ?>" name="p_sku" ></div>
-						<div class="clear"></div>
-					</div>
-					<div class="inputSet">
-						<div class="label"><span>Price</span></div>
-						<div class="input left"><input type="text"  value="<?=$prod->price; ?>" name="p_price" ></div>
-						<div class="clear"></div>
-					</div>
-					<div class="inputSet">
-						<div class="label"><span>Weight</span></div>
-						<div class="input left"><input type="text"  value="<?=$prod->weight; ?>" name="p_weight" ></div>
-						<div class="clear"></div>
-					</div>
-					<div class="inputSet">
-						<div class="label"><span>Stock</span></div>
-						<div class="input left"><input type="text" name="global_stock" value="<?=$prod->stock;?>" ></div>
-						<div class="clear"></div>
-					</div>
-					<div class="inputSet">
-						<div class="label"><span>Publish</span></div>
-						<?if ($prod->publish=='y') {
-							$check = 'checked';
-						} else {
-							$check = '';
-						}
-						?>
-						<div class="input left"><input type="checkbox" <?=$check;?> value="y" name="p_publish"></div>
-						<div class="clear"></div>
-					</div>
-					<div class="inputSet">
-						<div class="label"><span>Category</span></div>
-						<div class="input left">
-						<select name="p_cat_id">
-						<option value="">Choose one</option>
-						<?
-						$cats = modules::run('store/category/showAllCat');
-						foreach($cats as $cat){
-							if ($cat->id==$prod->cat_id) {
-								$select = 'selected';
-							} else {
-								$select = '';
-							}
-														
-							;?>	
-							
-							<option <?=$select; ?> value="<?=$cat->id?>"><?=$cat->name;?></option>
-						<?}?>
-						</select>
-						</div>
-						<div class="clear"></div>
-					</div>
-					
-					<div class="inputSet">
-						<div class="label"><span>Description</span></div>
-						<div class="input">	<?ck_editor('p_desc',false ,$prod->l_desc)?></div>
-					
-						<div class="clear"></div>
-					</div>
-					
+	<form id="addprod">
+		<div class="content main_info">
 			
-		</div>
-		</div>
-		
-		<div id="tab_2" class="item">
-			<script type="text/javascript" charset="utf-8">
-				$(document).ready(function(){
-					$('#attrib_prod .clone-Add').click(function(){
-						$('#attrib_prod .clone-Item:last-child').clone().appendTo('#attrib_prod');
-						$('#attrib_prod .clone-Item:last-child input').attr('value', '');
-						$('#attrib_prod .clone-Item:last-child').hide();
-						$('#attrib_prod .clone-Item:last-child').slideDown();
-					});
-					$('#attrib_prod .clone-Item .clone-Min').click(function(){
-						$(this).css('display','').parent().parent().slideUp().remove();
-					});
-				});
-			</script>
-		<div class="form-Ui attr_n_stock clone-Ui" id="attrib_prod">
-			<span class="button clone-Add right add-button-Ui">More</span>
-			<div class="clear"></div>
-			<?if($attrb){foreach ($attrb as $atr) {; ?>
-			<div class="fieldSet relative clone-Item">
-				
-				<div class="grid_200 left">
-				<label>Attribute</label>
-				<input type="text" value="<?= $atr->attribute; ?>" name="attribute[]" >
-				</div>
-				<div class="grid_200 left">
-				<label>Price Opt</label>
-				<input type="text" value="<?= $atr->price_opt; ?>" name="price_opt[]" >
-				</div>
-				<div class="grid_200 left">
-				<label>Stock</label>
-				<input type="text" value="<?=$atr->stock; ?>" name="stock[]">
-				</div>
-				<input type="hidden" value="<?=$atr->id; ?>" name="attr_id[]">
-				<!--div class="left">
-					<span class="button min-button-Ui clone-Min absolute"></span>
-				</div-->
-				<div class="clear"></div>
-			</div>
-			<?}}else{?>
+			<fieldset>
+				<legend>Product Detail</legend>
+				<div class="fieldset_wrapper">
 			
-			
-			<div class="fieldSet relative clone-Item">
-				
-				<div class="grid_200 left">
-				<label>Attribute</label>
-				<input type="text" name="attribute[]"  style="">
-				</div>
-				<div class="grid_200 left">
-				<label>Price Opt</label>
-				<input type="text" name="price_opt[]"  style="">
-				</div>
-				<div class="grid_200 left">
-				<label>Stock</label>
-				<input type="text" name="stock[]"  style="">
-				</div>
-				<input type="hidden" name="attr_id[]">
-				<!--div class="left">
-					<span class="button min-button-Ui clone-Min absolute"></span>
-				</div-->
-				<div class="clear"></div>
-			</div>
-				<?}?>
-		</div>
-		</div>
-	
-		<div id="tab_3" class="item">
-			<div class="form-Ui metaDesc">
-					<div class="inputSet">
-						<div class="label"><span>Meta Description</span></div>
-						<div class="input"><textarea name="p_meta_desc" style="height:70px;"><?= $prod->meta_desc; ?></textarea></div>
-						<div class="clear"></div>
-					</div>
-					<div class="inputSet">
-						<div class="label"><span>Meta Keyword</span></div>
-						<div class="input"><textarea name="p_meta_key" style="height:70px;"><?= $prod->meta_key; ?></textarea></div>
-						<div class="clear"></div>
-					</div>
-			</div>
-		</div>
-		<div id="tab_4" class="item">
-			<script type="text/javascript" charset="utf-8">
-$(document).ready(function(){
-	
-	$('#media_prod .clone-Add').click(function(){
-		var yourclass="#media_prod .clone-Item";  //The class you have used in your form
-		var clonecount = $(yourclass).length;	//how many clones do we already have?
-		var newid = Number(clonecount) + 1;		//Id of the new clone   
-		
-		$(yourclass+":first").fieldclone({		//Clone the original elelement
-			newid_: newid,						//Id of the new clone, (you can pass your own if you want)
-			target_: $("#media_prod"),			//where do we insert the clone? (target element)
-			insert_: "append",					//where do we insert the clone? (after/before/append/prepend...)
-			limit_: 4							//Maximum Number of Clones
-		});
-		return false;
-	});
-
-
-});		
-$(document).ready(function(){
-
-		$(function() {
-			$( ".list_media_order" ).sortable({
-			   update: function(event, ui) { saveOrder() }
-			});
-		
-			
-		});
-		function saveOrder(){
-				var array = $(".list_media_order" ).sortable('toArray')
-				var test = "";
-				$.each(array, function(i, val) {
-				    test += val+",";
-				});
-				test = test.substring(0,(test.length-1));	
-				$.ajax({
-							type: "POST",
-							dataType : "json",
-							data : {'sort_state' : test},	
-							url: "<?=site_url('ajax/post?exe=backend/store/b_product/reorder_media')?>",
-				});			
-				
-		}
-	
-});
-	
-			</script>
-		<div class="form-Ui attr_n_stock clone-Ui relative" id="media_prod">
-			<div class="result"></div>
-			<?if($media){?>
-				<div class="list_media_order">
-				<?foreach ($media as $med) {;?>
-					<div class="media_item left grid_150" id="<?=$med->id;?>">
-						<img src="<?=site_url()?>store/product/thumb/150-150-crop/dir/assets/modules/store/product_img/<?=$med->path;?>" ><br/>
-						<small><?=$med->name;?></small>
-						<div class="action right">
-						<a href="<?=site_url('backend/store/b_product/editmedia/'.$med->id);?>"<span class="right act edit"></span></a>
-						<a href="<?=site_url('backend/store/b_product/delete_media/'.$med->id);?>"><span class="act del"></span></a>
-						</div>
-						<div class="clear"></div>
-	
-					</div>
-				<?}?>
-			
-			</div>
-			<?}else{
-					echo 'this product have no media yet, could you upload one?';
-					}?>
-			<span class="button clone-Add right add-button-Ui">More</span>
-			<div class="clear"></div>
-			
-				<div class="fieldSet relative clone-Item">
-				<div class="grid_200 left">
-				<label>Name</label>
-				<input type="text" name="p_media_name[]"  style="">
-				</div>
-				
-				<input type="hidden" value="50" name="p_id_media[]">
-				<div class="grid_100 left">
-				<label>don't Publish</label><br>
-								<input type="checkbox" name="p_media_publish[]" value="n" >
-				</div>
-				<div class="grid_100 left">
-				<label>Set as Default</label><br>
-								
-				<input type="checkbox" name="p_media_default[]" value="1" >
-				</div>
-				<div class="grid_200 left">
-				<label>File</label>
-				<input type="file" name="p_media_file_1">
-				</div>
-				<!--div class="left">
-					<span class="button min-button-Ui clone-Min absolute"></span>
-				</div-->
-				<div class="clear"></div>
-			</div>
-			
-			
-				
-		</div>
-		</div>
-        <div id="tab_5" class="item">
-				<script type="text/javascript" charset="utf-8">
-					$(document).ready(function(){
-
-						var delayer = delayTimer(1000);
-						$('#product_rel').live('keyup',function(event){
-								delayer(function(){
-									var q = $('#product_rel').val();						
-									if(get_rel_array() != false){
-									var except = get_rel_array();
-									}else{
-									var except = null;	
-									}
-									$('.src_r').empty().hide('slide', {direction: 'up'});
-									$.ajax({
-											type: "POST",
-											dataType : "json",
-											data : {'rel_search' : q, 'except' : except},	
-											url: "<?=site_url('backend/store/b_product/ajax_prod_search_rel')?>",
-											success: function(data){					     
-												   	if(data.status != false){
-													$('.src_r').append(data.prods);
-													$('.src_r').show('slide', {direction: 'up'});
-													add_rel();
-												   	}else{
-												   	$('.src_r').append('nothing found');
-													$('.src_r').show('slide', {direction: 'up'});
-												   	}
-											   }
-										});
-								});
-
-						});
-						function delayTimer(delay){
-						     var timer;
-						     return function(fn){
-						          timer=clearTimeout(timer);
-						          if(fn)
-						               timer=setTimeout(function(){
-						               fn();
-						               },delay);
-						          return timer;
-						     }
-						}
-						function add_rel(){
-							$('.src_r .rel_item').click(function(){
-								var suspect = $(this);
-								var id = suspect.attr('id');
-
-
-								$.ajax({
-										type: "POST",
-										dataType : "json",
-										data : {'id_prod' : id},	
-										url: "<?=site_url('backend/store/b_product/ajax_get_prodrel')?>",
-										success: function(data){					     
-											   	if(data.status != false){
-												if($('.rel_items .msg').size() > 0){
-													$('.rel_items .msg').remove();
-												}
-												suspect.hide('drop', {direction: 'right'});
-												$('.rel_items').append(data.prod);
-
-											   	}
-										   }
-									});
-							});
-						}
-						function get_rel_array(){
-							var array_rel = '';
-
-							$('.rel_items .item').each(function(){
-								var suspect = $(this),
-								id = suspect.attr('id');
-								array_rel += id+',';
-							});
-							return 	array_rel.substr(0,array_rel.length - 1);
-
-						}
-						// put the rel to the input field
-						$('input[name="submit"]').click(function(){
-							if(get_rel_array() != false){
-							var rel_list = get_rel_array();
-							}else{
-							var rel_list = '';	
-							}
-							$('input[name="product_rel"]').val(rel_list);
-							
-						});
-
-				});
-				</script>        
-				<div id="product_assoc">
-					<div class="box2 grid_270 left">
-						<input type="text" name="product_rel" value="Type SKU or Name Product" id="product_rel" class="text-input grid_260">
-						<div class="clear"></div>
-						<div class="src_r mt10">
-
-						</div>
-						
-					</div>
-					<div class="rel_items left ml20 grid_300">
-						<?if($relations):
-						foreach($relations->result() as $rel):?>
-							<?
-							// initialize product by product_id
-							$param = array(
-								'id' => $rel->p_rel,
-								);	
-							$q = modules::run('store/product/detProd', $param);
-							$p = $q['prod'];
-							$img = modules::run('store/product/prodImg', $rel->p_rel);
-							?>
-							<div id="<?=$rel->p_rel;?>" class="item mb10">
-								<div class="img_prod left mr5"><img src="<?=site_url('store/product/thumb/70-30-crop/dir/assets/modules/store/product_img/'.$img->path)?>"/></div>
-								<div class="detail_prod left">
-								<?=$p->name;?>
-								</div>
-								<div class="right tool">
-									<a href="<?=site_url('backend/store/b_product/editprod/'.$rel->p_rel);?>"><span class="edit act"></span></a>
-									<a href="<?=site_url('store/prod/'.$rel->p_rel);?>"><span class="view act"></span></a>
-									<a href="#"><span class="delete_ajx act"></span></a>
-								</div>
-								<div class="clear"></div>
-								<div class="horline"></div>
-								<div class="clear"></div>
-							</div>
-						<?endforeach;else:?>
-						<div class="msg">This product have no Association</div>
-						<?endif;?>
-					</div>
+				<div class="inputSet">
+					<div class="label"><span>Name<span></div>
+					<div class="input"><input class="required" type="text" name="main_name" value="<?=$prod->name;?>" ></div>
 					<div class="clear"></div>
 				</div>
-        
-        </div>
-</div>
+				<div class="inputSet">
+					<div class="label"><span>SKU<span></div>
+					<div class="input"><input type="text" name="main_sku" value="<?=$prod->sku;?>"></div>
+					<div class="clear"></div>
+				</div>
+				<div class="inputSet">
+					<div class="label"><span>Price<span></div>
+					<div class="input"><input type="text" name="main_price" value="<?=$prod->price;?>"></div>
+					<div class="clear"></div>
+				</div>
+				<div class="inputSet">
+					<div class="label"><span>Category<span></div>
+					<div class="input"><?=form_dropdown('main_cat_id', modules::run('store/category/catselopt'), $prod->cat_id	);
+					?></div>
+					<div class="clear"></div>
+				</div>
+				<div class="inputSet">
+					<div class="label"><span>Global Stock<span></div>
+					<div class="input"><input type="text" name="main_stock" value="<?=$prod->stock;?>"></div>
+					<div class="clear"></div>
+				</div>
+				<div class="inputSet">
+						<div class="label"><span>Weight<span></div>
+						<div class="input"><input type="text" name="main_weight" value="<?=$prod->weight;?>"></div>
+						<div class="clear"></div>
+				</div>
+				<div class="inputSet">
+					<div class="label"><span>Publish<span></div>
+					<div class="input"><?=form_radios('main_publish', array('y' => 'yes', 'n' => 'no'), $prod->publish)?></div>
+					<div class="clear"></div>
+				</div>
+			
+				</div>
+				
+			</fieldset>
+			<fieldset>
+			<legend>Description</legend>
+				<div class="fieldset_wrapper">
+					<?=load_ck_editor()?>
+					<?=ck_editor('main_l_desc', 'main_desc', $prod->l_desc)?>
+				</div>
+			</fieldset>
+	
+			
+		</div>
+		<div class="content attr_prod_form">
+		
+				<fieldset>
+					
+				<div class="fieldset_wrapper">
+						
+					<h3>Product Attribute and Inventory<span class="button" id="clone_attr">Add More</span></h3>
+					<div class="cloneAble_area">
+						<?if($attributes != false) : $i = 0; foreach($attributes as $a):?>
+						<div class="inputColl_ver">
+							<div class="item">
+								<label for="attr_attribute">Attribute</label><input type="text" name="attr_attribute[<?=$i;?>]" value="<?=$a->attribute;?>">
+							</div>
+							<div class="item">
+								<label for="attr_stock">Stock</label><input type="text" name="attr_stock[<?=$i;?>]" value="<?=$a->stock;?>">
+							</div>
+							<div class="item">
+								<label for="attr_prod_opt">Price Option</label><input type="text" name="attr_prod_opt[<?=$i;?>]" value="<?=$a->price_opt;?>">
+							</div>	
+							<input type="hidden" name="attr_id[<?=$i;?>]" value="<?=$a->id;?>" id="attr_id">				
+						</div>
+						<?$i++ ; endforeach; else:?>
+						<div class="inputColl_ver">
+							<div class="item">
+								<label for="attr_attribute">Attribute</label><input type="text" name="attr_attribute[0]" value="">
+							</div>
+							<div class="item">
+								<label for="attr_stock">Stock</label><input type="text" name="attr_stock[0]" value="">
+							</div>
+							<div class="item">
+								<label for="attr_prod_opt">Price Option</label><input type="text" name="attr_prod_opt[0]" value="">
+							</div>						
+						</div>
+						<?endif;?>
+					</div>
+				</div>
+				</fieldset>
+				<script type="text/javascript" charset="utf-8">
+					$(document).ready(function(){
+						
+						var trigger = $('#clone_attr');
 
-</form>
+						$('#clone_attr').live('click', function(){
+							var index = $('.content.attr_prod_form .cloneAble_area .inputColl_ver').size();
+							
+							var clone_area = $('.cloneAble_area');
+							var tpl = ''+
+							'<div class="inputColl_ver">'+
+								'<div class="item">'+
+									'<label for="attr_attribute">Attribute</label><input type="text" name="attr_attribute['+index+']" value="">'+
+								'</div>'+
+								'<div class="item">'+
+									'<label for="attr_stock">Stock</label><input type="text" name="attr_stock['+index+']" value="">'+
+								'</div>'+
+								'<div class="item">'+
+									'<label for="attr_prod_opt">Price Option</label><input type="text" name="attr_prod_opt['+index+']" value="">'+
+								'</div>'+						
+							'</div>';
+							$(tpl).appendTo(clone_area).hide().show('fade',{direction: 'up'});
+						})
+						
+						
+					});
+				</script>
+		
+		</div>
+		<div class="content seo">
+			<div class="left box2 grid_430">
+				<h3>Meta Keyword</h3>
+				<textarea name="main_meta_key" class="grid_410" ><?=$prod->meta_key?></textarea>
+			</div>
+			<div class="right box2 grid_430">
+				<h3>Meta Description</h3>
+				<textarea name="main_meta_desc" class="grid_410" ><?=$prod->meta_desc?></textarea>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="content prod_media">	
+		<h3>Product Medias</h3>
+			<div class="form_engine ctr grid_300 left">
+				<p class="drop-instructions">drag and drop files here to start upload</p>
+				<div id="drop-area" class="ctr drop_area">
+					<p class="drop-over">Drop files here!</p>
+					<p class="drop-over_here hide">Release File Here to Upoad</p>
+					<div class="to_list">
+					
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			
+				<div class="" id="result-area">
+						
+				</div>
+			</div>
+			<div class="the_medias left grid_600">
+				<?if($medias != false): foreach($medias as $m):?>
+				<div class="item" id="<?=$m->id;?>">
+					<span class="button delete">X</span>
+					<img src="<?=site_url('store/product/thumb/200-200-crop/dir/assets/modules/store/product_img/'.$m->path);?>"/>
+					<div class="clear"></div>
+					<p class="name_media"><?=$m->name?></p>
+					<input class="input_name_media" name="media_name" value="<?=$m->name;?>" type="text"/>
+					
+				</div>
+				<?endforeach;endif;?>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			
+				<script type="text/javascript" charset="utf-8">
+
+						$(document).ready(function(){
+							$('.name_media').live('click', function(){
+								var suspect = $(this);
+								var id = suspect.parent().attr('id');
+								var input_el = suspect.parent().find('.input_name_media');
+								input_el.val(suspect.text());
+								suspect.hide();
+								input_el.show().focus().select();
+								
+								$(input_el).keyup(function(event) {
+								  if (event.keyCode == '13') {
+								    	
+										$.ajax({
+											url 		: '<?=site_url("backend/store/b_product/ajx_media?func=rename");?>',
+											data 		: {id : id, name : $(this).val() },
+											dataType 	: 'json',
+											type 		: 'post',
+											success		: function(res){
+												if(res.status == 'success'){
+													
+												}else{
+													
+												}
+											},
+										})
+										suspect.text($(this).val());
+										suspect.show();
+										input_el.hide();
+								   }
+								});
+								
+
+							});
+							$('.the_medias .item .delete').live('click', function(){
+								var object = $(this).parent();
+								object.hide(
+									'fade', 
+									{}, 
+									'slow', 
+									function(){ 
+										$(this).remove();
+										}
+									)
+								
+								$.ajax({
+									url			: "<?=site_url('backend/store/b_product/aj	x_media?func=delete');?>",
+									data		: {id : object.attr('id')},
+									dataType	: 'json',
+									type		: 'post',
+									success		: function(data){
+										if(data.status == 'success'){
+											
+											object.hide(
+												'fade', 
+												{}, 
+												'slow', 
+												function(){ 
+													$(this).remove();
+													}
+												)
+										}
+									}
+								})
+								
+							});
+						});
+					
+						function add_media_res(res){
+
+							$.each(res, function(index, item){
+								var new_el = '<div class="item" id="'+item.id+'">'+
+											 '<span class="button delete">X</span>'+
+											 '<img src="'+item.img_url+'"/>'+
+											 '<div class="clear"></div>'+
+											 '<p class="name_media" >'+item.name+'</p>'+
+											 '<input class="input_name_media" name="media_name" value="'+item.name+'" type="text">'+
+											 '</div>';
+								$(new_el).prependTo('.the_medias').hide().show('slide', {direction: 'left'});
+					
+							});
+						}
+						
+						function add_error_show(r){
+							
+							$.each(r, function(index, item){
+								var new_el = '<div class="error_item">'+
+											 '<span>'+index+'</span>'+
+											 '<ul>';
+											$.each(item, function(i, val){
+											new_el += '<li>'+val+'</li>';
+											});
+									new_el += '<ul></div>';
+									
+								$(new_el).prependTo('#result-area');
+							});
+						}
+						
+						var	dropArea = document.getElementById("drop-area");
+						var	result_area = $("#result-area");
+						var jq_dropArea = $('#drop-area');
+
+						dropArea.addEventListener("dragleave", function (evt) {
+							var target = evt.target;
+					
+							jq_dropArea.animate({
+							    	backgroundColor : '#F6F6F6',
+									height : 100,
+							  		}, 500 );
+						 	$('.drop-over').show();
+							$('.drop-over_here').hide();
+							evt.preventDefault();
+							evt.stopPropagation();
+						}, false);
+
+						dropArea.addEventListener("dragenter", function (evt) {
+						//	this.className = "over";
+						
+							jq_dropArea.animate({
+							    	backgroundColor : 'red',
+									height : 100,
+							  		}, 500 );
+						 	$('.drop-over').hide();
+							$('.drop-over_here').show();
+							evt.preventDefault();
+							evt.stopPropagation();
+						}, false);
+
+						dropArea.addEventListener("dragover", function (evt) {
+							evt.preventDefault();
+							evt.stopPropagation();
+						}, false);
+
+						dropArea.addEventListener("drop", function (evt) {
+							
+							result_area.empty();
+							dw_ajxUpload(
+								evt.dataTransfer.files, {
+									action_url : '<?=site_url("backend/store/b_product/ajx_media?func=upload");?>',
+									data_post :{p_id : <?=$prod->id;?>},
+									files_key : 'image',
+									oncomplete : function(res){
+										if(res.status == 'success'){
+											add_media_res(res.uploaded);
+											add_error_show(res.errors);
+										}
+									} }
+								);
+							
+							jq_dropArea.animate( {
+						    	backgroundColor : '#c3f595',
+								height : 50,
+					  		}, 500 ) 
+							.animate({
+								backgroundColor : '#F6F6F6',
+							}, 500)	;
+							$('.drop-over').show();
+							$('.drop-over_here').hide();
+							evt.preventDefault();
+							evt.stopPropagation();
+						}, false);
+
+
+				</script>
+			
+		</div>
+		
+		<div class="content relation">
+			<h3>Product Relations</h3>
+			<div class="form_engine left grid_280">
+				<div class="box2">
+				<small>Search The product by Name or SKU, to add relation with </small>
+				<input type="text" name="src_prod" value="" class="w_90">
+				</div>
+				<div class="result">
+					
+				
+				</div>
+			</div>
+			<div class="the_relations left">
+				<?if($relations != false) : foreach($relations as $rel) :?>
+					<div class="item" id="<?=$rel->id;?>">
+						<span class="button delete">X</span>
+						<img src="<?=prod_media($rel->p_rel, '200-200-crop');?>"/>
+						<p><?=$rel->p_own;?></p>
+						<span class="button delete">Del</span>
+					</div>
+				<?endforeach; endif;?>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<script type="text/javascript" charset="utf-8">
+				$(document).ready(function(){
+					//search prod
+					var delayer = delayTimer(1000);
+					var src_input = $('.content.relation .form_engine input[name="src_prod"]');
+					var add_trigger = $('.result .item .button.add');
+					var del_trigger = $('.the_relations .item .button.delete');
+					src_input.live('keyup', function(event){
+						
+						delayer(function(){
+							$.ajax({
+								data : {q : src_input.val()},
+								url : '<?=site_url("backend/store/b_product/ajx_relation?func=search");?>',
+								type: 'post',
+								dataType : 'json',
+								success :function(data){
+									if(data.status == 'success'){
+										src_res_tolist(data.prods);
+									}else{
+											$('.relation .form_engine .result').html('<p>no thing match</p>')
+										}
+								}
+							})
+					
+						});
+						
+					});
+				
+					add_trigger.live('click', function(){
+						var id = $(this).parent().attr('id');
+						var suspect = $(this).parent();
+						$.ajax({
+							data : {id : id, p_own : <?=$prod->id;?>},
+							dataType : 'json',
+							type : 'post',
+							url : '<?=site_url("backend/store/b_product/ajx_relation?func=add");?>',
+							success : function(data){
+								if(data.status == 'success'){
+									suspect.hide();
+									add_to_rel(data.rel);
+								}
+							}
+						})
+						
+					});
+					del_trigger.live('click', function(){
+						var id = $(this).parent().attr('id');
+						var suspect =$(this).parent();
+						$.ajax({
+							data : {id : id},
+							dataType : 'json',
+							type : 'post',
+							url : '<?=site_url("backend/store/b_product/ajx_relation?func=del");?>',
+							success : function(data){
+								if(data.status == 'success'){
+									suspect.hide('fade' ,{}, 'slow', function(){
+										suspect.remove();
+									})
+								}
+							}
+						})
+					});
+					function src_res_tolist(objects){
+						$('.relation .form_engine .result').empty();
+						$.each(objects, function(index, item){
+							var tpl = ''+
+							'<div class="item" id="'+item.id+'">'+
+								'<img src="<?=site_url();?>/store/product/thumb/120-50	-crop/dir/'+item.img+'"/>'+
+								'<p class="left">'+item.name+'</p>'+
+								'<span class="button add">add</span>'+
+								'<div class="clear"></div>'+
+							'</div>';
+							$(tpl).appendTo('.relation .form_engine .result').hide().show('fade');
+						});
+						
+					}
+					function add_to_rel(object){
+						var tpl = ''+
+						'<div class="item" id="'+object.id+'">'+
+							'<img src="<?=site_url("store/product/thumb/200-200-crop/dir");?>/'+object.img+'"/>'+
+							'<p>'+object.name+'</p>'+
+							'<span class="button delete">del</span>'+
+						'</div>';
+						$(tpl).prependTo('.the_relations').hide().show('fade');
+					}
+				});
+			</script>
+		</div>
+	</form>	
+	</div>
 </div>
+</div>
+<?=load_jq_validate()?>
+<script type="text/javascript" charset="utf-8">
+	$('#product_tab').dodolTab();
+	$(document).ready(function(){
+		
+		$('.submit_tool span#submitprod').click(function(){
+			var trigger = $(this);
+			var formData = 	$('#addprod').serializeJSON();
+			var medias ='';
+			$('.the_medias .item').each(function(index,value){ medias = medias+','+$(this).attr('id') });
+			var relations = '';
+			$('.the_relations .item').each(function(index,value){ relations = relations+','+$(this).attr('id') });
+			formData['medias'] = medias.substring(1, medias.length);
+			formData['relations'] = relations.substring(1, relations.length);
+			formData['main_l_desc'] = main_desc.getData();
+			formData['prodid'] = <?=$prod->id;?>;
+			$.ajax({
+				data : formData,
+				url : '<?=backend_url("store/b_product/ajx_editprod");?>',
+				dataType : 'json',
+				type : 'post',
+				success : function(res){
+					if(res.status == 'success'){
+						window.location = '<?=backend_url("store/b_product/listprod");?>';
+					}else{
+						addMsg('check again your input, we found some warning', 'warning');
+					}
+				}
+			})
+		});
+	});
+</script>

@@ -1,3 +1,4 @@
+<div id="addeditprod">
 <div class="tab-Ui" id="product_tab">
 	<div class="right submit_tool">
 		<span class="button" id="submitprod">Publish</span>
@@ -419,7 +420,7 @@
 					function add_to_rel(object){
 						var tpl = ''+
 						'<div class="item" id="'+object.id+'">'+
-							'<img src="http://localhost/culture-update.com/store/product/thumb/200-200-crop/dir/'+object.img+'"/>'+
+							'<img src="<?=site_url("store/product/thumb/200-200-crop/dir/");?>'+object.img+'"/>'+
 							'<p>'+object.name+'</p>'+
 							'<span class="button delete">del</span>'+
 						'</div>';
@@ -430,6 +431,7 @@
 		</div>
 	</form>	
 	</div>
+</div>
 </div>
 <?=load_jq_validate()?>
 <script type="text/javascript" charset="utf-8">

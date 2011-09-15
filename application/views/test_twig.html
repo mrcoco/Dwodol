@@ -1,0 +1,14 @@
+<h1>Twig test</h1>
+
+{{base_url()}}
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){
+		$.ajax({
+			data : {id : {{ mod_run('tester/kampret') }} };
+			url : {{base_url()}}
+		})
+	});
+</script>
+{% for item in array %}
+	<li>{{item.kampret}}</li>
+{% endfor %}

@@ -28,6 +28,8 @@ class EpiTwitter extends EpiOAuth
   protected $userAgent      = 'EpiTwitter (http://github.com/jmathai/twitter-async/tree/)';
   protected $apiVersion     = '1';
   protected $isAsynchronous = false;
+  protected $mediaUrl       = 'https://upload.twitter.com';
+
 
   /* OAuth methods */
   public function delete($endpoint, $params = null)
@@ -75,8 +77,8 @@ class EpiTwitter extends EpiOAuth
   {
 	$this->_ci =& get_instance();
 	$this->_ci->load->library('dodol/dodol');
-	$consumerKey 	= 'oCIWzdSpnNi7Q3rxUl5uNQ';
-	$consumerSecret = 'rqGV5lEELKYEYSEk7p12uazr9J6VCdnKX5MH29wW4U';
+	$consumerKey 	= $this->_ci->dodol->conf('twitter', 'consumer_key');
+	$consumerSecret = $this->_ci->dodol->conf('twitter', 'consumer_secret');
     parent::__construct($consumerKey, $consumerSecret, self::EPITWITTER_SIGNATURE_METHOD);
     $this->setToken($oauthToken, $oauthTokenSecret);
   }
@@ -111,12 +113,17 @@ class EpiTwitter extends EpiOAuth
 
   private function getApiUrl($endpoint)
   {
-    if(preg_match('@^/search[./]?(?=(json|daily|current|weekly))@', $endpoint))
-      return "{$this->searchUrl}{$endpoint}";
-    elseif(!empty($this->apiVersion))
-      return "{$this->apiVersionedUrl}/{$this->apiVersion}{$endpoint}";
-    else
-      return "{$this->apiUrl}{$endpoint}";
+	
+     if(strpos($endpoint,"with_media") > 0)
+	      return "{$this->mediaUrl}/{$this->apiVersion}{$endpoint}";
+	    elseif(preg_match('@^/(trends|search)[./]?(?=(json|daily|current|weekly))@', $endpoint))
+	      return "{$this->searchUrl}{$endpoint}";
+	    elseif(!empty($this->apiVersion))
+	      return "{$this->apiVersionedUrl}/{$this->apiVersion}{$endpoint}";
+	    else
+	      return "{$this->apiUrl}{$endpoint}";
+	
+	
   }
 
   private function request($method, $endpoint, $params = null)
@@ -128,7 +135,7 @@ class EpiTwitter extends EpiOAuth
 
     return $resp;
   }
-
+	
   private function request_basic($method, $endpoint, $params = null, $username = null, $password = null)
   {
     $url = $this->getApiUrl($endpoint);

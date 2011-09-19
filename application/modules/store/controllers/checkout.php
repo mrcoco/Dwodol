@@ -18,9 +18,8 @@ class Checkout extends MX_Controller {
 		$this->load->library('jne');
 		$this->step = $this->session->userdata('checkout_step');
 	
-		if($this->cart->total_items() == 0){
-			redirect('store/cart/viewcart');
-		}
+		$this->dodol_theme->set_layout('extend/store/checkout');
+		$this->dodol_asset->append_module('css', 'checkout.css');
 	}
 	
 	//php 4 constructor
@@ -28,24 +27,61 @@ class Checkout extends MX_Controller {
 	function Checkout() {
 		parent::__construct();
 	}
-	
+	function logout(){
+		$this->dodol_auth->do_logout();
+	}
 	function index() {
-		redirect('store/checkout/buyerinfo?tpl=checkout');
+		if($this->cart->total_items() == 0) redirect('store/cart/viewcart/');
+		if($this->dodol_auth->userdata()) redirect('store/checkout/buyerinfo?user=is_log');
+		$this->dodol_theme->render()->build('page/checkout/pre_check_v');
+	}
+	function do_login(){
+		$email = $this->input->post('email');
+		$pass = $this->input->post('password');
+		if($this->dodol_auth->do_login($email, $pass)){
+			$this->session->unset_userdata('shipto_data');
+			$this->session->unset_userdata('billing_data');
+			$return = array(
+				'status' => 'success');
+		}else{
+			$return = array('status' => 'fail');
+		}
+		echo json_encode($return);
+	}
+	function ajax(){
+		enable_get();
+		$act = ($this->input->get('act')) ? $this->input->get('act') : 'nope';
+		$return = array();
+		switch ($act) {
+			case 'buyer_info':
+					if($this->exe_buyer_info())
+					$return = array('status'=> 'success');
+				break;
+			case 'load_ship':
+					ob_start();
+					$this->cart->shipping_option();
+					$buffer = ob_get_clean();
+					$return = array('status' => 'success', 'all_shippers' => $buffer);
+				break;
+			default:
+				# code...
+				break;
+		}
+		echo json_encode($return);
 	}
 	function summary_cart(){
-	
-
-			$this->load->library('cart');
-			$data = array(
+		$this->load->library('cart');
+		$data = array(
 				'items' => $this->cart->contents(),
 				'shipping_info' => $this->session->userdata('shipping_info')
-				);
-			if(!$this->session->userdata('ship_to_info')){
-				$data['buyer_info'] = $this->session->userdata('customer_info');
-			}else{
-				$data['buyer_info'] = $this->session->userdata('ship_to_info');
-			}
-			$this->load->view('store/misc/checkout/summary_cart_v', $data);
+			);
+		
+		if(!$this->session->userdata('ship_to_info')){
+			$data['buyer_info'] = $this->session->userdata('customer_info');
+		}else{
+			$data['buyer_info'] = $this->session->userdata('ship_to_info');
+		}
+		$this->dodol_theme->view('store/misc/checkout/summary_cart_v', $data);
 		
 	}
 	/**
@@ -55,63 +91,31 @@ class Checkout extends MX_Controller {
 	 * @author Zidni Mubarock
 	 */		
 	function buyerinfo(){
-	
-		if($this->cart->total_items() != 0){
-			// this only get true if the cart is not empty
-			$q = $this->db->get('store_country');
-			$login_data = $this->session->userdata('login_data');
-			if($login_data && !$this->cart->customer_info){
-				$list_fields = 'first_name, id, last_name, email, address, country_id, province, city, zip, city_code, zip, mobile, phone';
-				$userdata = modules::run('store/customer/getByUser', $login_data['user_id'], $list_fields);
-				$customer_info = array('customer_info' => $userdata);
-				$this->cart->write_data($customer_info);
-			}
+		enable_get();
+		if(!$this->dodol_auth->userdata()){
+		if(!$this->input->get('do_reg')) redirect('store/checkout');
+		}
+		
+		// if total item in cart == 0, so trow out to cart view;
+		if($this->cart->total_items() == 0) redirect('store/cart/viewcart/');
+		
+	   	if(!$this->dodol_auth->userdata() && !$this->cart->billing_data):
+		$bill = array();
+		elseif($this->dodol_auth->userdata() && !$this->cart->billing_data ):
+		$bill = objectToArray($this->load->controller('user')->api_getbyid($this->dodol_auth->userdata(true)->user_id));
+		elseif(($this->dodol_auth->userdata() && $this->cart->billing_data ) || (!$this->dodol_auth->userdata() && $this->cart->billing_data)) :
+		$bill = $this->cart->billing_data;
+		endif;
 			$data = array(
-				'mainLayer' => 'store/page/checkout/buyerinfo_v',
 				'pT' => 'chekout - Customer Information' ,
 				'cart' => modules::run('store/checkout/summary_cart'),
-				'countries' => $q->result(),
-				'buyer_data' => $this->cart->customer_info,
-				'ship_data'  => $this->cart->shipto_info,
+				'bill_data' => $bill,
+				'ship_data'  => $this->cart->shipto_data,
 				//'loadSide' => false
 				);
 			$this->dodol_theme->render()->build('page/checkout/buyerinfo_v', $data);
 		
-			if($this->input->post('submit')){
-				
-				$this->load->library('form_validation');
-				// serialize customer information
-					$this->form_validation->set_rules('first_name', 'first name', 'required');
-					$this->form_validation->set_rules('email', 'email', 'required');
-					$this->form_validation->set_rules('country_id', 'Country', 'required');
-					$this->form_validation->set_rules('city', 'City', 'required');
-					$this->form_validation->set_rules('zip', 'Zip Code', 'required');
-					$this->form_validation->set_rules('address', 'Address', 'required');
-				if($this->input->post('register')){
-					$this->form_validation->set_rules('password', 'Password', 'required');	
-				}
-				if($this->input->post('different_address')){
-					$this->form_validation->set_rules('ship_first_name', 'first name', 'required');
-					$this->form_validation->set_rules('ship_country_id', 'Country', 'required');
-					$this->form_validation->set_rules('ship_city', 'City', 'required');
-					$this->form_validation->set_rules('ship_zip', 'Zip Code', 'required');
-					$this->form_validation->set_rules('ship_address', 'Address', 'required');
-				}
-				if($this->form_validation->run() == FALSE){
-					$this->messages->add( validation_errors('', ''), 'warning');
-					//redirect('store/checkout/buyerinfo');
-					return false;
-				}else{
-				
-					$this->exe_buyerinfo();
-				}
-				
-			}
-			
-		}else{
-				redirect('store/cart/viewcart/');
-		}
-		
+	
 		
 		
 	}
@@ -121,223 +125,49 @@ class Checkout extends MX_Controller {
 	 * @return void
 	 * @author Zidni Mubarock
 	 */
-	function exe_buyerinfo(){
-		$data = array(
-			'first_name' => $this->input->post('first_name'),
-			'last_name'  => $this->input->post('last_name'),
-			'email'      => $this->input->post('email'),
-			'address'    => $this->input->post('address'),
-			'country_id' => $this->input->post('country_id'),
-			'province'   => $this->input->post('province'),
-			'city'       => $this->input->post('city'),
-			'city_code'  => $this->input->post('city_code'),
-			'zip'        => $this->input->post('zip'),
-			'mobile'     => $this->input->post('mobile'),
-			'phone'      => $this->input->post('phone'),
-			);
-		//serialize shipping addres information
-		$ship_to_info = array(
-			'first_name' => $this->input->post('ship_first_name'),
-			'last_name'  => $this->input->post('ship_last_name'),
-			'address'    => $this->input->post('ship_address'),
-			'country_id' => $this->input->post('ship_country_id'),
-			'province'   => $this->input->post('ship_province'),
-			'city'       => $this->input->post('ship_city'),
-			'city_code'	 => $this->input->post('ship_city_code'),
-			'mobile'	 =>	$this->input->post('ship_mobile'),
-			'phone'      => $this->input->post('ship_phone'),
-			'zip'        => $this->input->post('ship_zip'),
-			);
-	
-		// case 1
-		// user is defenitely LOGIN
-		if($this->session->userdata('login_data') ){
+	function exe_buyer_info(){
+		$billing_data = post_filter('main_');
+		$shipping_data = post_filter('ship_');
+		$reg_data = post_filter('reg_');
+		$log_data = $this->dodol_auth->userdata(true);
+		$cart_user_data = $this->session->userdata('cart_user_data');
 		
-			// FLOW OPERATION : all input data from field personal info 
-			// will update the customer_store base on current logged_in user
-			
-			$login_data = $this->session->userdata('login_data');
-			$getId = modules::run('store/customer/getByUser', $login_data['user_id']);
-			$update = modules::run('store/customer/exe_updateById', $getId['id'], $data);
-			//if update store_customer succes, fect back it, and put to cusomer_info session
-			if($update == true){
-				$list_fields = 
-				'first_name, last_name, email, id, address, country_id, province, city, zip, city_code, zip, mobile, phone';
-				$customer_data = modules::run('store/customer/getById', $getId['id'], $list_fields);
-				$ins_data = array('customer_info' => $customer_data);
-				$this->cart->write_data($ins_data);
-				if($this->input->post('different_address') != 1 || !$this->input->post('different_address') || $this->input->post('different_address') == null ){
-					// Everything DONE !!
-					// So Go to the next step "SHIPPING METHOD"
-					//$this->cart->check_step['custumer_info'] = true;
-					$this->cart->check_step['custumer_info'] = true;
-					$this->cart->write_data();
-					redirect('store/checkout/shipping_method?tpl=checkout');
-				}else{
-					$ship_to_data = array('shipto_info' => $ship_to_info);
-					$this->cart->write_data($ship_to_data);
-					// Everything DONE !!
-					// So Go to the next step "SHIPPING METHOD"
-					$this->session->userdata['checkout_step']['custumer_info'] = true;
-					$this->session->sess_write();
-					redirect('store/checkout/shipping_method?tpl=checkout');
-				}
-				
-			}
-			// if unsuccess, it's caused by, already other registerd user or customer with email inputed
-			else{
-				$this->messages->add('you cannot use <strong>'.$data['email'].'</strong>, it\'s already registered ', 'warning');
-				// if register not success ussualy cause;
-				redirect('store/checkout/buyerinfo?tpl=checkout');
-			}
-			
-			
-			
-		}
-		// case 2
-		// user not login and choose to register
-		elseif(!$this->session->userdata('login_data') && $this->input->post('register') == 1){
-			// FLOW OPERATION 
-			// 1. User will Register with inputed data
-			// 2. create store_customer data for this new user
-			// 3. do login
-			$data['password'] = $this->input->post('password');
-			$data['gender']   = $this->input->post('gender');
-			$data['birthday'] = $this->input->post('birthday');
-			$reguser = modules::run('user/exe_register', $data);
-			// if register success
-			if($reguser){
-				// do login
-				$auth = $this->load->model('user/auth_m');
-				$auth->checkCombination($data['email'], $data['password']);
-				// unset unused data, kep clean the array $data;
-				unset($data['password']);
-				unset($data['gender']);
-				unset($data['birthday']);
-				$data['user_id'] = $reguser;
-				// create store_customer data for this user
-				$new_customer = modules::run('store/customer/exe_create',$data);
-				if($new_customer){
-					// fecth back the new_customer
-					$list_fields = 
-					'first_name, last_name, email, id, address, country_id, province, city, zip, city_code, zip, mobile, phone';
-					$customer_data = modules::run('store/customer/getById', $new_customer, $list_fields);
-					$ins_data = array('customer_info' => $customer_data);
-					$this->cart->write_data($ins_data);
-					if($this->input->post('different_address') != 1 || !$this->input->post('different_address') || $this->input->post('different_address') == null ){
-						// Everything DONE !!
-						// So Go to the next step "SHIPPING METHOD"
-						//$this->cart->check_step['custumer_info'] = true;
-						$this->cart->check_step['custumer_info'] = true;
-						$this->cart->write_data();
-						redirect('store/checkout/shipping_method?tpl=checkout');
-					}else{
-						$ship_to_data = array('shipto_info' => $ship_to_info);
-						$this->cart->write_data($ship_to_data);
-						// Everything DONE !!
-						// So Go to the next step "SHIPPING METHOD"
-						$this->session->userdata['checkout_step']['custumer_info'] = true;
-						$this->session->sess_write();
-						redirect('store/checkout/shipping_method?tpl=checkout');
-					}
-				}
-				
-			}
-			// if unsuccess, alredy email registerd
-			else{
-				$this->messages->add('you cannot use <strong>'.$data['email'].'</strong>, it\'s already registered ', 'warning');
-
-				redirect('store/checkout/buyerinfo?tpl=checkout');
-			}
-			
-			
-		}
-		//case 3
-		//user not login and not choose to register
-		elseif(!$this->session->userdata('login_data') && $this->input->post('register') != 1 ){
-		// FLOW OPERATION
-		// 1. check the email, is there on user table 
-		// 2. check the email, is there on store_customer table
+		if(!$this->input->post('different_ship')):
+			$this->session->unset_userdata('shipto_data');
+		 	$shipping_data = false;
+		endif;
 		
-		$u_m = $this->load->model('user/user_m');
-		$c_m = $this->load->model('store/customer_m');	
-		$is_user = $u_m->get_userdata_by_email($data['email']);
-		$is_customer = $c_m->getByEmail($data['email']);
-		// if email already registered
-		if($is_user){
-			$this->messages->add('email '.$data['email'].' is already registered, have you register here before ? why you don\'t try to sign in', 'warning');
-			redirect('store/checkout/buyerinfo?tpl=checkout');
-		}
-		// if the email is not registered
-		else{
-			// if the email is already taken by other customer
-			if($is_customer){
-					// update the customer data;
-					$upd_data = modules::run('store/customer/exe_updateById', $is_customer->id, $data);
-					$list_fields = 
-					'first_name, last_name, email, id, address, country_id, province, city, zip, city_code, zip, mobile, phone';
-					$customer_data = modules::run('store/customer/getById', $is_customer->id, $list_fields);
-					$ins_data = array('customer_info' => $customer_data);
-					$this->cart->write_data($ins_data);
-					
-					if($this->input->post('different_address') != 1 || !$this->input->post('different_address') || $this->input->post('different_address') == null ){
-						// Everything DONE !!
-						// So Go to the next step "SHIPPING METHOD"
-						//$this->cart->check_step['custumer_info'] = true;
-						$this->cart->check_step['custumer_info'] = true;
-						$this->cart->write_data();
-						redirect('store/checkout/shipping_method?tpl=checkout');
-					}else{
-						$ship_to_data = array('shipto_info' => $ship_to_info);
-						$this->cart->write_data($ship_to_data);
-						// Everything DONE !!
-						// So Go to the next step "SHIPPING METHOD"
-						$this->session->userdata['checkout_step']['custumer_info'] = true;
-						$this->session->sess_write();
-						redirect('store/checkout/shipping_method?tpl=checkout');
-					}
-				
-			}
-			// if the email not yet taken by other customer
-			else{
-				$new_customer = modules::run('store/customer/exe_create',$data);
-				if($new_customer){
-					// fecth back the new_customer
-					$list_fields = 
-					'first_name, last_name, email, id, address, country_id, province, city, zip, city_code, zip, mobile, phone';
-					$customer_data = modules::run('store/customer/getById', $new_customer, $list_fields);
-					$ins_data = array('customer_info' => $customer_data);
-					$this->cart->write_data($ins_data);
-					if($this->input->post('different_address') != 1 || !$this->input->post('different_address') || $this->input->post('different_address') == null ){
-						// Everything DONE !!
-						// So Go to the next step "SHIPPING METHOD"
-						//$this->cart->check_step['custumer_info'] = true;
-						$this->cart->check_step['custumer_info'] = true;
-						$this->cart->write_data();
-						redirect('store/checkout/shipping_method?tpl=checkout');
-					}else{
-						$ship_to_data = array('shipto_info' => $ship_to_info);
-						$this->cart->write_data($ship_to_data);
-						// Everything DONE !!
-						// So Go to the next step "SHIPPING METHOD"
-						$this->session->userdata['checkout_step']['custumer_info'] = true;
-						$this->session->sess_write();
-						redirect('store/checkout/shipping_method?tpl=checkout');
-					}
-				}
-			}
-		}
+		// apapun yang terjadi masukan billing_data ke billing_data
+		$this->cart->write_data('billing_data' , $billing_data);
 
+		if(!$cart_user_data && $log_data){
+			$this->session->set_userdata('cart_user_data', array('id' => $log_data->user_id) );
+			$cart_user_data =  $this->session->userdata('cart_user_data');
 		}
-		// case 4
-		// common error
-		else{
-			
+		
+		if(!$log_data && $cart_user_data) {
+			$this->load->controller('user')->api_update($cart_user_data['id'], $billing_data);
 		}
+		if($shipping_data != false) {
+			$this->cart->write_data('shipto_data' , $shipping_data);
+		}
+		
 		
 	
+		
+		// jika regdata valid;
+		if($reg_data  && !$cart_user_data){
+			$this->load->controller('user')->api_create(array_merge($billing_data, $reg_data));			
+		}elseif(!$reg_data && !$cart_user_data){
+			$new_customer = $billing_data;
+			$new_customer['role'] = 'customer';
+			$new = $this->load->controller('user')->api_create($new_customer);
+			$this->session->set_userdata('cart_user_data', array('id' => $new->id) );
+		}
+		
+		return true;
+		
 	}
-	
 	/**
 	 * shipping_method ;
 	 *
@@ -345,21 +175,19 @@ class Checkout extends MX_Controller {
 	 * @author Zidni Mubarock
 	 */
 	function shipping_method(){	
-		$buyer_info = ($this->cart->shipto_info) ? $this->cart->shipto_info : $this->cart->customer_info;
+//		if(!$this->cart->customer_info) redirect('store/checkout/buyerinfo/');
+		$buyer_info = ($this->cart->shipto_data) ? $this->cart->shipto_data : $this->cart->billing_data;
 		if(!$buyer_info) {
 			redirect('store/checkout/buyerinfo?tpl=checkout');
 		}
 		if($this->input->post('next')){
 			modules::run('store/checkout/exe_shipping_method');
 		}else{
-			
-		
-				$data['pT'] = 'Checkout - Shipping Method';
-				$data['buyer_info'] = $buyer_info;
-				$data['cart'] = modules::run('store/checkout/summary_cart');
-				$data['mainLayer'] = 'store/page/checkout/shipping_method_v';
-		
-				$this->dodol_theme->render()->build('page/checkout/shipping_method_v', $data);
+			$data['pT'] = 'Checkout - Shipping Method';
+			$data['buyer_info'] = $buyer_info;
+			$data['cart'] = modules::run('store/checkout/summary_cart');
+			$data['mainLayer'] = 'store/page/checkout/shipping_method_v';
+			$this->dodol_theme->render()->build('page/checkout/shipping_method_v', $data);
 		
 		}
 	}
@@ -370,10 +198,16 @@ class Checkout extends MX_Controller {
 	 * @author Zidni Mubarock
 	 */
 	function exe_shipping_method(){
-		$this->session->unset_userdata('shipping_info');
+		$this->session->unset_userdata('shipping_data');
 		$this->load->helper('store/store_carrier');
 		store_carrier_helper::registry('choose_rate');
 		redirect('store/checkout/payment?tpl=checkout');
+	}
+	function clean(){
+		$this->session->unset_userdata('login_data');
+		$this->session->unset_userdata('billing_data');
+				$this->session->unset_userdata('cart_user_data');
+				$this->cart->destroy();
 	}
 	/**
 	 * payment page
@@ -383,7 +217,7 @@ class Checkout extends MX_Controller {
 	 */	
 	function payment(){
 	//$this->session->unset_userdata('shipping_info');
-		if($this->cart->shipping_info){
+		if($this->cart->shipping_data){
 		
 				$data= array(
 					'mainLayer' => 'store/page/checkout/payment_v',
@@ -419,18 +253,20 @@ class Checkout extends MX_Controller {
 	 * @author Zidni Mubarock
 	 */
 	function summary(){
-		if(!$this->cart->payment_info) :
+		if(!$this->cart->payment_data) :
 			redirect('store/checkout/payment?tpl=checkout');
 		endif;
 		
 		$this->load->library('recaptcha');
-		if($this->cart->payment_info){
-				$this->bug->send(json_encode($this->cart->customer_info));
-				$this->bug->send(json_encode($this->cart->shipto_info));
+		if($this->cart->payment_data){
 			$rendered = array(	
 				'mainLayer' => 'store/page/checkout/summary_v',
 				'pT'        => 'Checkout - Order Summary',
 				'cart'      => modules::run('store/checkout/summary_cart'),
+				'ship_data' => ($this->cart->shipto_data) ? $this->cart->shipto_data : $this->cart->billing_data,
+				'bill_data' => $this->cart->billing_data,
+				'payment' 	=> $this->cart->payment_data,
+				'shipping' => $this->cart->shipping_data,
 				);
 			$this->dodol_theme->render($rendered)->build('page/checkout/summary_v', $rendered);
 			if($this->input->post('process') && $this->recaptcha->validate()){
@@ -449,84 +285,54 @@ class Checkout extends MX_Controller {
 	 * @author Zidni Mubarock
 	 */
 	function process(){
-		if(!$this->cart->payment_info){
-			redirect('store/checkout/summary?tpl=checkout');
-		}
-		if($this->session->userdata('currency')){
-			$currency = $this->session->userdata('currency');
-		}else{
-			$currency = $this->config->item('currency');
-		}
-		if(!$this->session->userdata('order_id')){
-			$order_id = modules::run('store/order/create_order');
-		}else{
-			$order_id= $this->session->userdata('order_id');
-		}
+		if(!$this->cart->payment_data) redirect('store/checkout/summary');
 		$order_data = array(
-			'c_date' => date('Y-m-d H:i:s'),
-			'customer_id' => $this->cart->customer_info['id'],
-			'payment_method' => $this->cart->payment_info['method'],
-			'total_amount' => $this->cart->total()+$this->cart->shipping_info['fee'],
-			'sub_amount' => $this->cart->total(),
-			'currency' => $this->cart->currency(),
-			'ship_carrier' => $this->cart->shipping_info['carrier'],
-			'ship_carrier_service' => $this->cart->shipping_info['service'],
-			'ship_fee' => $this->cart->shipping_info['fee'],
-			'customer_note' => $this->input->post('customer_note'),
-			'status' => 'pending',
-			'uniq_id' => md5(uniqid(mt_rand(), true)),
-			
+			'user_id' 				=> element('id', $this->session->userdata('cart_user_data')),
+			'payment_method' 		=> element('method', $this->cart->payment_data),
+			'total_amount' 			=> $this->cart->total()+element('fee', $this->cart->shipping_data),
+			'sub_amount'			=> $this->cart->total(),
+			'currency'				=> currency(),
+			'ship_carrier' 			=> element('carrier', $this->cart->shipping_data),
+			'ship_carrier_service' 	=> element('service', $this->cart->shipping_data),
+			'ship_fee'				=> element('fee', $this->cart->shipping_data),
+			'customer_note'			=> $this->input->post('customer_note'),
+			'status'				=> 'pending',
 		);
-		if($this->session->userdata('login_data')){
-			$order_data['user_id'] = $this->session->userdata['login_data']['user_id'];
-		}
-		// serialize for order_shipto_data
-		if(!$this->cart->shipto_info){
-			$shipto_data = $this->cart->customer_info;
-			$shipto_data['order_id'] = $order_id;
-			unset($shipto_data['email']);
-			unset($shipto_data['id']);
-		}else{
-			$shipto_data = $this->cart->shipto_info;
-			$shipto_data['order_id'] = $order_id;	
-		}
-		// serialize product_sold_data
-		$index = 0;
+		$billing_data = $this->cart->billing_data;
+		$shipto_data  = ($ship = $this->cart->shipto_data ) ? $ship : $this->cart->billing_data ;
+		$product_item = array();
 		foreach($this->cart->contents() as $item){
-			$product_sold_data[$index]['id_prod'] = $item['id'];
-			if(isset($item['id_attrb'])){
-			$product_sold_data[$index]['id_attrb_prod'] = $item['id_attrb'];
-			$product_sold_data[$index]['options'] = json_encode($item['options']);
-			}
-			$product_sold_data[$index]['qty'] = $item['qty'];
-			$product_sold_data[$index]['order_id'] = $order_id;
-			$product_sold_data[$index]['name'] = $item['name'];
-			$product_sold_data[$index]['price'] = $item['price'];
-			$index++;
+			$new = array(
+				'id_prod' 		=> element('id', $item),
+				'id_attr' 	=> element('id_attrb', $item),
+				'price'			=> element('price', $item),
+				'price_total'	=> element('subtotal', $item) ,
+				'qty'			=> element('qty', $item),
+			);
+			array_push($product_item, $new);
 		}
-		$param = array(
-			'order_data' => $order_data,
-			'shipto_data' => $shipto_data,
-			'product_sold_data' => $product_sold_data
-		);
-		if(!$this->session->userdata('order_id')){
-			$insert_order = modules::run('store/order/create_order', $param, $order_id);
-		}else{
-			$insert_order = true;	
-		}
-		if($insert_order){
-			$data = array('order_id' => $order_id);
-			$this->cart->write_data($data);
-			if($this->cart->payment_info['method'] != 'paypal'){
-				redirect('store/checkout/success');
-			}else{
-				$send = modules::run('store/order/send_order_data', $order_id);
-				redirect('store/payprocessing');
-			}
+		$new_order = $this->load->controller('store/order')->api_create(array(
+			'order_data'	=> $order_data,
+			'billing_data' 	=> $billing_data,
+			'shipto_data'  	=> $shipto_data,
+			'product_item' 	=> $product_item,
+		));
 		
-			
-		}
-	
+
+		$this->session->set_userdata('order_data', $new_order);
+		$this->cart->destroy_data('billing_data');
+		$this->cart->destroy_data('shipto_data');
+		$this->cart->destroy_data('shipping_data');
+		$this->cart->destroy();
+		redirect('store/checkout/payment_process');
+	}
+	function payment_process(){
+
+		if(!$this->session->userdata('order_data')) redirect('store/checkout/summary');
+		$data['bar'] = 'Payment Process';
+		$data['pT'] = 'Payment Process';
+		$data['order_data'] = $this->session->userdata('order_data');
+		$this->dodol_theme->render()->build('page/checkout/payment_process', $data);
 	}
 	/**
 	 * success page
@@ -535,24 +341,7 @@ class Checkout extends MX_Controller {
 	 * @author Zidni Mubarock
 	 */
 	function success(){
-		if($this->session->userdata('order_id')){
-			$order_id = $this->session->userdata('order_id');
-			$send = modules::run('store/order/send_order_data', $order_id);
-			if($send){
-				$data['status_email'] = 'send';
-			}else{
-				$data['status_email'] = 'not send';
-			}
-			$data['mainLayer'] = 'store/page/checkout/success_v';
-			$data['pT'] = 'Thank You';
-			$this->session->unset_userdata('order_id');
-			$this->cart->destroy_data();
-			$this->cart->destroy();
-			$this->dodol_theme->render()->build('page/checkout/success_v', $data);
-		
-		}else{
-			redirect('store/checkout/summary?tpl=checkout');
-		}
+		$this->dodol_theme->render()->build('page/checkout/success_v');
 	}
 	/**
 	 * checkout menu, show on checkout page only
@@ -560,8 +349,10 @@ class Checkout extends MX_Controller {
 	 * @return void
 	 * @author Zidni Mubarock
 	 */
-	function checkoutmenu(){
-		$this->load->view('store/widget/checkout/checkout_menu');
+	function checkoutbar(){
+		$data['active'] = 'class="active"';
+		$data['method'] = $this->router->method;
+		$this->dodol_theme->view('store/widget/checkout/checkout_bar', $data);
 		
 	}/**
 	 * This Function, to check that email which user input, allready on site database or not

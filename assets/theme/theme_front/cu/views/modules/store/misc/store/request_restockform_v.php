@@ -1,28 +1,55 @@
-<div class="request_stock_form form-ui grid_250">
+<div class="request_stock_form form-ui">
 	<form method="post" action="#">
-	<p>Please Insert Your email or Twitter, and we'ill notify you soon when product available</p>
+	<h4 class="out_stock">Out of Stock</h4>
+	<p class="confirm_msg">Dont you Mind, if we notify you when product is back in stock</p>
 	<input type="hidden" name="prod_id" value="<?=$id_prod;?>" >
-	<?if($id_attrb != false) echo '<input type="hidden" name="attrb_id" value="<?=$id_attrb;?>"> ';?> 
-	<?if($attrb_key != false)echo '<input type="hidden" name="attrb_key" value="<?=$attrb_key;?>">';?>
-	<p><input type="text" name="email_twitter" value="email or twitter" id="email_twitter" class="text-input grid_200"><span><input type="submit" name="submit_request" class="button ajax" value="Submit" id="submit_request"></span><p>
+	<input type="hidden" name="attrb_id" value="<?=$id_attrb;?>">
+	<input type="hidden" name="attrb_key" value="<?=$attrb_key;?>">
+	
+	<p><input type="text" name="email_twitter" value="email or twitter" id="email_twitter" class="text-input"><span class="yes_req">Yes, notify me</span></p>
 	</form>
-</div>
-<script type="text/javascript" charset="utf-8">
-	$(document).ready(function(){
-		$('.request_stock_form form').live('submit', function(){
-			var button 		= $(this).find('.button.ajax');
-			var data_post 	= $(this).serialize();
-			button.addClass('onload');
-			$.ajax({
-				type : 'post',
-				dataType : 'json',
-				data : data_post,
-				url : '<?=site_url("store/ajax_requestRestock");?>',
-				success : function(data){
-					
+	
+
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function(){
+			var no_req		= $('.no_req');
+			var addcart_fr 	= $('.cart_form');
+			var suspect		= $('.request_stock_form');
+			if(addcart_fr.size() > 0){
+				$('.yes_req').after('<spam class="no_req">No, Thanks</span>');
+			}
+			no_req.live('click', function(){
+				if(addcart_fr.is(':visible') == false){
+					$('.request_stock_form').hide(
+						'fade', 
+						{}, 
+						1000 , 
+						function(){ 
+							$('.request_stock_for').remove(); 
+							addcart_fr.show('fade', {}, 1000)
+							}
+						);
 				}
 			});
-			return false;
-		});
-	})
-</script>
+			$('.request_stock_form .yes_req').live('click', function(){
+				var parent		= $(this).parent().parent().parent();
+				var data_post 	= parent.find('form').serialize();	
+				$.ajax({
+					type : 'post',
+					dataType : 'json',
+					data : data_post,
+					url : '<?=site_url("store/ajax_requestRestock");?>',
+					success : function(data){
+						if(addcart_fr.size() > 0){
+						if(addcart_fr.is(':visible') == false){
+							
+							parent.hide('fade', {}, 1000 , function(){ suspect.remove(); addcart_fr.show('fade', {}, 1000)});
+						}
+						}
+					}
+				});
+				return false;
+			});
+		})
+	</script>
+</div>

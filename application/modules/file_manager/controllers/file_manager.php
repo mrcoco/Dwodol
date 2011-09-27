@@ -90,19 +90,19 @@ class File_manager extends MX_Controller {
 		$langCode = $_GET['langCode'] ;
 		$url = '' ;
 		$message = '';
-		$config['upload_path'] = './assets/media/images/';
+		$config['upload_path'] = './assets/media/images';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '10000';
 
-		$this->load->library('upload', $config);
+		$this->load->library('dw_upload', $config);
 		if(isset($_FILES['upload'])) :
-			if ( ! $this->upload->do_upload('upload'))
+			if ( ! $this->dw_upload->do_upload('upload') )
 			{
-				 $message = $this->upload->display_errors();
+				 $message = 'suh';
 			}
 			else
 			{
-				$data = $this->upload->data();
+				$data = $this->dw_upload->data();
 				$url = base_url().'/assets/media/images/'.$data['file_name'];
 			}
 		else:

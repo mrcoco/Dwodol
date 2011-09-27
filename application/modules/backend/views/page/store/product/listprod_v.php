@@ -8,6 +8,7 @@
 <table class="prodList">
  <thead>
   <tr>
+	<td class="grid_50">No</td>
   	<td class="grid_120"></td>
     <td class="grid_250">Product Name</td>
     <td>Invetory</td>
@@ -32,6 +33,7 @@ foreach($prods as $prod){
 	$stock = $p->stock;
 	?>
  <tr>
+	<td class="grid_50"><?=$number?></td>
  	<td><img src="<?=prod_media($p->id, '100-50-crop');?>"></td>
     <td class="vTop">
 		<div class="prodDet">
@@ -45,14 +47,13 @@ foreach($prods as $prod){
     	<div class="list_attr">
     		<?if($attrs):
 				foreach($attrs as $attr):
-				$stock =$stock+$attr->stock;
 				?>
 				<div class="item_attr"><?=prod_attr_to_word(prod_attr_to_array($attr->attribute));?></div>
 				<?endforeach;
 			endif?>
     	</div>
     </td>
-    <td class="text_center"><?=$stock?></td>
+    <td class="text_center"><?=prod_stock($p->id)?></td>
     <td class="action">
 		<a href="<?=site_url('store/prod/'.$p->id);?>"><span class="act view"></span></a>
 		<a href="<?=site_url('backend/store/b_product/editprod/'.$p->id);?>"><span class="act edit"></span></a>
@@ -60,7 +61,7 @@ foreach($prods as $prod){
 	</td>
 	</tr>
 
-  <?}?>
+  <? $number ++;}?>
 
  
 </tbody>

@@ -118,5 +118,16 @@ function gravatar_img($email, $size = null, $rating = null, $default = 'mm')
 {
     return '<img src="'.gravatar($email, $size, $rating, $default).'" alt="Gravatar" />';
 }
+function cat_array(){
+	$ci =& get_instance();
+	$q = $ci->db->get('blog_category');
+	$data = array();
+	if($q->num_rows() > 0 ){
+		foreach($q->result() as $item){
+			$data[$item->id] = $item->name;
+		}
+	}
+	return $data;
+}
 
 ?>

@@ -50,7 +50,7 @@
 	<?foreach($cats as $cat):?>
 	<tr>
 		<td><?=$cat->name?></td>
-		<td>100</td>
+		<td><?=$cat->post_count;?></td>
 	    <td>Action</td>
 	</tr>
 	<?endforeach;?>

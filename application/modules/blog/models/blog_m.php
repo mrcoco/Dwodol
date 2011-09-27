@@ -193,7 +193,7 @@ class Blog_m extends CI_Model {
 		if($src = element('src', $param)): 
 			$this->db->like('name', $src); 
 		endif;
-		
+		$this->db->select('*');
 		$q = $this->db->get('blog_category');
 		if($q->num_rows() > 0):
 			$return = array('num_rows' => $q->num_rows(), 'cats' => $q->result());

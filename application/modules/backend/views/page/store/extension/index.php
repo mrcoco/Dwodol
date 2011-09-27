@@ -1,0 +1,1 @@
+<h1>Extend your Core Store Dwodol app here</h1>

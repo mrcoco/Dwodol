@@ -419,21 +419,14 @@ class Product_m extends CI_Model {
 		if($select != false):
 			$this->db->select($select);
 		endif;
-		$this->db->select('prod.name as name , stock, cat.name as category_name, prod.id as id');
+		$this->db->select('prod.name as name , prod.stock as stock, cat.name as category_name, prod.id as id');
 		$this->db->where('prod.id', $id);
 		$this->db->join('store_category cat', 'cat.id=prod.cat_id');
 		$q = $this->db->get('store_product prod');
 		if($q->num_rows() == 1){
-			$stock = $q->row()->stock;
-			if($att = $this->getattributes($id)):
-				foreach($att as $a):
-				$stock = $stock+$a->stock;
-				endforeach;
-			endif;
-			$q->row()->stock = $stock;
-			
+			$qrow = $q->row();
 			if($alldata == true):
-					$data['product'] 		= $q->row();
+					$data['product'] 		= $qrow ;
 					$data['media'] 			= $this->getmedia($id);
 					$data['medias'] 		= $this->getmedias($id);
 					$data['attributes'] 	= $this->getattributes($id);
@@ -452,10 +445,10 @@ class Product_m extends CI_Model {
 					if(element('relations', $include)):
 						$data['relations'] 		= $this->getrelations($id);
 					endif;	
-					$data['product'] = $q->row();
+					$data['product'] = $qrow ;
 					return $data;
 			elseif($alldata == false):
-				return $q->row();
+				return $qrow ;
 			endif;
 			
 		}else{
@@ -489,7 +482,8 @@ class Product_m extends CI_Model {
 		endif;
 		
 		$able_order = array('prod.id', 'prod.name');
-		$role_order = (element('order_role', $param) && (element('order_role', $param) == 'ASC' || element('order_role', $param) == 'DESC')) ? element('order_role', $param) : 'DESC';
+		$role_order = (element('order_role', $param)) ? element('order_role', $param) : 'DESC';
+		
 		if(element('order_by', $param)) :
 			$this->db->order_by(element('order_by', $param), $role_order);
 		else:

@@ -7,7 +7,7 @@ class b_customer extends MX_Controller {
 	//php 5 constructor
 	function __construct() {
 		parent::__construct();
-		$this->mod = $this->load->model('store/customer_m');
+	
 	}
 	
 	//php 4 constructor
@@ -21,7 +21,7 @@ class b_customer extends MX_Controller {
 
 	function browse(){
 		$this->load->library('dodol/dodol_paging');
-		$limit = 2;
+		$limit = 20;
 		$param = $this->uri->uri_to_assoc();
 		if(!isset($param['page'])): $param['page'] = 0; endif;
 		if(!isset($param['q'])): $param['q'] = false; endif;

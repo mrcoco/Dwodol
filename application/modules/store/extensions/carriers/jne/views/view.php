@@ -30,8 +30,8 @@
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function(){
 		$('.jne_carrier .ui_choose .service').click(function(){
-			$('.jne_carrier .ui_choose .service').removeClass('button');
-			$(this).addClass('button');
+			$('.jne_carrier .ui_choose .service').removeClass('selected');
+			$(this).addClass('selected');
 			$(this).next().attr('checked', true )
 		});
 	});

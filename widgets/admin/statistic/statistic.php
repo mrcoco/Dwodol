@@ -30,9 +30,11 @@ class Statistic extends Widget_helper {
 	}
 	function request_report(){
 
+		
 		$param = $this->parameter;
 		$member_metric = array();
 		$ga_metric = $this->ga_data();
+	
 		if(element('statistic_member', $param)):
 		foreach(element('statistic_member', $param) as $member){
 				$array = array(

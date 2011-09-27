@@ -455,7 +455,9 @@
 				type : 'post',
 				success : function(res){
 					if(res.status == 'success'){
-						window.location('<?=backend_url("store/b_product/listprod");?>')
+						setTimeout(function() {
+						  window.location.href = '<?=backend_url("store/b_product/listprod");?>';
+						}, 2000);
 					}else{
 						addMsg('check again your input, we found some warning', 'warning');
 					}

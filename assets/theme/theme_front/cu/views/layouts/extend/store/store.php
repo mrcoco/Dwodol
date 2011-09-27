@@ -1,5 +1,5 @@
 <?=$this->dodol_theme->partial('head');?>
-<script type="text/javascript" charset="utf-8">
+<!--script type="text/javascript" charset="utf-8">
 		$(document).ready(function(){
 			var side = $('.sideBar').height();
 			var main = $('.main_layer').height();
@@ -7,7 +7,7 @@
 				$('.main_layer').css('min-height', side);
 			}
 		});
-</script>
+</script-->
 <div class="wrapper">
 	<div class="inner_wrap ctr grid_960">
 			<div class="header">

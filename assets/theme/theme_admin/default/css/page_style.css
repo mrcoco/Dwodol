@@ -200,5 +200,26 @@
 #b_modularizer_browse {}
 #b_modularizer_browse .available_widget .item{ padding-bottom:10px;padding-top:10px; border-bottom:1px solid #ccc; border-top:1px solid #fff}
 
-
+#b_order_shipping_label #component .left_grid {
+	padding-right: 20px;
+	margin-right: 20px;
+	border-right: 1px solid #ddd;
+}
+#b_order_shipping_label #component .right_grid {
+	width: 650px;
+}
+#b_order_shipping_label .shipping_label_form .itemInput {
+	margin-bottom: 10px;
+}
+#b_order_shipping_label .shipping_label_form .itemInput label {
+	display: block;
+}
+#b_order_shipping_label .shipping_label_form .itemInput input {
+	width: 210px;
+	padding: 5px;
+}
+#b_order_shipping_label #print_preview {
+	width: 650px;
+	height: 600px;
+}
 	

@@ -18,10 +18,22 @@ class Bank_transfer_payment extends Store_payment_helper {
 			$id = str_replace('bt_', '', $id);
 			$choosen  = $this->db->where('id', $id)->get('store_payment')->row();
 			$data = array(
-				'method' => $choosen->name .' NO '.$choosen->no_rek.', AN '.$choosen->nm_rek,
+				'method'	=> $choosen->name .' NO '.$choosen->no_rek.', AN '.$choosen->nm_rek,
+				'id'		=> $choosen->id,
+				'type' 		=> 'bank_tarnsfer',
 				 );
-			$this->session->set_userdata(array('payment_info' => $data));
+			$this->session->set_userdata(array('payment_data' => $data));
 		endif;
+	}
+	function payment_action(){
+		if(element('type', $this->cart->payment_data) != 'bank_tarnsfer') return false;
+		$id = element('id', $this->cart->payment_data ) ;
+		$data['payment'] = $this->db->where('id', $id)->get('store_payment')->row();
+		$data['order_data'] = $this->session->userdata('order_data');
+		$this->session->unset_userdata('payment_data');
+		$this->session->unset_userdata('order_data');
+		$this->render('process', $data);
+		
 	}
 
 }

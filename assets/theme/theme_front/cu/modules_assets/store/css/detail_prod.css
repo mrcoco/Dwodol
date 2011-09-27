@@ -1,0 +1,216 @@
+#product_view .product_name {
+	line-height: 32px;
+	margin: 0px 0px 10px;
+	padding-bottom: 10px;
+	background: url(../../../img/list_product_name.png) no-repeat center bottom;
+}
+#product_view .product_content .content {
+	margin-top: 0px;
+	height: 260px;
+	width: 390px;
+
+}
+#product_view .product_content .content .content_desc{
+	width: 100%;
+}
+#product_view .product_content .content .content_desc p{
+	margin-bottom: 5px;
+}
+
+.product_content .head_prod {
+	height: 100px;
+	margin-top: 30px;
+	
+}
+#product_view .product_content .head_prod h1.product_name{
+	font-size: 28px;
+	margin-bottom: 30px;
+	padding-bottom: 10px;
+}
+.product_content .head_prod .price{
+	text-align: center;
+	margin-bottom: 0px;
+	font-size: 15px;
+}
+
+.product_tool{
+	margin-top: 15px;
+}
+
+
+#product_view .product_media {
+	width: 320px;
+}
+#product_view .product_media .currentImg{
+	margin-bottom: 10px;
+	width: 320px;
+}
+#product_view .product_media .otherImg{
+	width: 320px;
+}
+#product_view .product_media .otherImg .item{
+	float: none;
+	display: inline-table;
+	margin-right: 3px;
+}
+#product_view .product_media .otherImg .item.last_in_line_item {
+	margin-right: 0px;
+}
+#product_view .request_stock_form{
+	text-align: center;
+}
+#product_view .request_stock_form span{
+ margin-right: 10px;
+}
+#product_view .request_stock_form .out_stock{
+	color: red;
+	margin-bottom: 0px;
+	font-size: 16px;
+	line-height: 13px;
+}
+#product_view .request_stock_form .confirm_msg{
+	font-size: 11px;
+	margin-bottom: 5px;
+}
+
+#product_view .request_stock_form p {
+	margin-bottom: 10px;
+	
+}
+#email_twitter {
+	padding: 4px 10px;
+	border: 1px solid #c6c6c6;
+	font-size: 12px;
+	line-height: 13px;
+	height: 17px;
+	border-right: none;
+	border-top-right-radius:0px;
+	border-bottom-right-radius:0px;
+	width: 140px;
+	}
+#product_view .request_stock_form .yes_req{
+	border-radius:3px;
+	cursor: pointer;
+	background: #ddd;
+	padding: 4px 10px;
+	border: 1px solid #c6c6c6;
+	text-shadow: 0 1px 0 #fff;
+	border-top-left-radius:0px;
+	border-bottom-left-radius : 0px;
+	
+}
+#product_view .request_stock_form .no_req{
+	border-radius:3px;
+	cursor: pointer;
+	background: #ddd;
+	padding: 4px 10px;
+	border: 1px solid #c6c6c6;
+	text-shadow: 0 1px 0 #fff;
+
+}
+
+#product_view .request_stock_form .yes_req:hover , 
+#product_view .request_stock_form .no_req:hover{
+	background: #f0f0f0;
+}
+.cart_form {
+	text-align: center;
+}
+.cart_form h4 {
+	margin-bottom: 5px;
+	font-size: 14px;
+	line-height: 13px;
+}
+.cart_form .attr_option {
+	display: table;
+	width: 240px;
+	margin: 0 auto;
+}
+.cart_form .attr_option .option_item {
+	float: left;
+	width: 120px;
+	height: 25px;
+}
+.cart_form .attr_option .option_item select{
+	width: 95%;
+}
+.cart_form .submit_qty {
+	width: 240px;
+	margin: 0 auto;
+}
+
+.cart_form .submit_qty input[name="qty"] {
+	width: 100px;
+	padding: 4px 5px;
+	border: 1px solid #c6c6c6;
+	font-size: 12px;
+	line-height: 12px;
+	height: 17px;
+	border-right: none;
+	border-top-right-radius:0px;
+	border-bottom-right-radius:0px;
+	margin-right: -5px;
+	
+}
+.cart_form .submit_qty .onload{
+	background-image: url(../../../img/ajax_button_onload.gif) ;
+	background-repeat: no-repeat ;
+	background-position: 4px center;
+}
+#addtocartform label.error{
+	display: none !important;
+}
+.error, .submit_qty .qty_wrap input.error{
+	border-color: red;
+}
+.submit_qty{
+	text-align: center;
+}
+.submit_qty  input[name="addcart"]{
+	border-radius:3px;
+	background-color: #e6e6e6;
+	padding: 5px 10px 4px 18px ;
+	line-height: 16px;
+	border: 1px solid #c6c6c6;
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+	cursor: pointer;
+	text-shadow: 0 1px 0 #fff;
+}
+
+
+#product_view .product_relation{
+	margin-top: 20px;
+}
+#product_view .product_relation h4 {
+	font-size: 20px;
+	border-bottom: 1px solid #ddd;
+}
+#product_view .product_relation .productSnap{
+	width: 190px;
+	height: 250px;
+}
+#product_view .product_relation .productSnap .productImg img {
+	width: 190px;
+	height: 250px;
+}
+#product_view .product_relation .productSnap .productImg .snap_tool{
+	width: 140px;
+	top: 140px;
+	left: 15px;
+}
+#product_view .view_product span.nav{
+	background: transparent;
+	background-image: none;
+	border: none;
+}
+#product_view .view_product span.nav a.next, #product_view .view_product span.nav a.prev{
+	padding: 0px;
+	background: none;
+}
+#product_view .view_product .prev_next {
+	height: 30px;
+}
+#product_view .view_product .prev_next a:hover{
+	color: #a5a5a5;
+}

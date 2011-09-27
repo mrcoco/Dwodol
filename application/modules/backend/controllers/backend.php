@@ -13,7 +13,7 @@ class Backend extends MX_Controller {
 	
 	function index() {
 		$url = $this->uri->segment(4);
-		$u = modules::run('user/profiledata', $this->dodol_auth->userdata('object')->user_id);
+		$u = modules::run('user/api_getbyid', $this->dodol_auth->userdata('object')->user_id);
 		$data['pT'] = 'Backend';
 		$data['mainLayer'] = 'backend/sample_view_admin';
 		$data['u_name'] = $u->first_name.' '.$u->last_name;

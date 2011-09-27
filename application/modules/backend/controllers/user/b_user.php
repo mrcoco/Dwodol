@@ -14,8 +14,9 @@ class B_user extends MX_Controller {
 	
 	}
 	function browse(){
-		
-		$data['users'] = element('users',modules::run('user/api_browse'));
+		$q = $this->db->get('user');
+		if($q->num_rows() < 1) return $this->dodol_theme->not_found();
+		$data['users'] = $q->result();
 		$data['pT'] = 'User';
 		$this->dodol_theme->render()->build('page/user/browse', $data);
 		

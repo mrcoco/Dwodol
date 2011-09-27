@@ -1,4 +1,5 @@
 <div class="cartView_v">
+	<h2>Cart</h2>
 	<?if($items){?>
 	<div class="table-Ui">
 	<script>
@@ -71,10 +72,11 @@
     	<div class="update_form left">
     	<input type="text" class="grid_50 input_qty" name="qty" value="<?=$item['qty'];?>"/>
     	<input type="hidden" name="rowid" class="input_rowid" value="<?=$item['rowid'];?>"/>
-    	<a href="" class="button update_button">update</a>
+    	<span class="button"><a href="" class="update_button">update</a></span>
     	</div>
-<div class="right padd5">
-		<a href="<?=site_url('store/cart/delete_cartitem/'.$item['rowid']);?>"><span class="act del"></span></a>
+		<div class="right">
+			
+	<span class="button" ><a title="delete item" href="<?=site_url('store/cart/delete_cartitem/'.$item['rowid']);?>">X</a></span>
 		</div>
 		<div class="clear"></div>
  	</td>
@@ -94,6 +96,7 @@
 
 <div class="cartTool">
 	<a href="<?=site_url('store/cart/destroy_cart');?>"><span class="button">Remove Cart</span></a>
+	<a href="<?=site_url('store/checkout');?>"><span class="button">Checkout</span></a>
 	
 </div>
  <div class="clear"></div>

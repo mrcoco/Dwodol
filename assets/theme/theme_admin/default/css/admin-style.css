@@ -61,10 +61,10 @@ background-image: -webkit-gradient(linear, 0 top, 0 bottom, from( #059a9f ), to(
 	width: 790px;
 }
 .navigation  .inner .left_grid {
-	width: 500px;
+	width: 630px;
 }
 .navigation  .inner .right_grid {
-	width: 250px;
+	width: 150px;
 	position: relative;
 }
 

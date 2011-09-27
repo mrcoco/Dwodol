@@ -1,0 +1,35 @@
+.label_wrap {
+	width: 250px;
+	border: 1px solid #ddd;
+	margin-bottom: 15px;
+	margin-right: 15px;
+	padding: 10px 15px;
+	text-align: center;
+	float: left;
+	
+}
+.name {
+	font-size: 14px;
+	font-weight: bold;
+}
+.address {
+	font-size: 11px;
+}
+.label_wrap p {
+	margin-bottom: 5px;
+}
+.label_wrap .barcode {
+	height: 20px;
+	display: table;
+	width: 100%;
+	border-top: 1px solid #000;
+	padding-top: 5px;
+}
+.label_wrap .barcode .img img {
+	height: 20px;
+	width: 147px;
+}
+.label_wrap .barcode .order_num{
+	color: #000;
+	font: 8px "Andale Mono";
+}

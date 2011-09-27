@@ -9,17 +9,34 @@ $(document).ready(function(){
 <? $defimg = element('media', $prod); $m = element('medias', $prod);?>
 <div class="view_product">
 	<div class="product_content left">
-		<h1 class="product_name text_center"><?=element('product', $prod)->name?></h1>
-		<p><?=prod_price(element('product', $prod)->id)?></p>
-		<span>stock : <?=element('product', $prod)->stock;?></span>
-		<div class="content"><?=element('product', $prod)->l_desc?></div>
-		<br class="clear"/>
-		<span class="right"><?=prod_next_link(element('product', $prod)->id)?></span>
-		<span class="left"><?=prod_prev_link(element('product', $prod)->id)?></span>
-		<br class="clear"/>
-		
-	</div>	
+		<div class="head_prod">
+		<h1 class="product_name text_center timeless"><?=element('product', $prod)->name?></h1>
+		<p class="price"><?=prod_price(element('product', $prod)->id)?></p>
+		</div>
+		<div class="content">
+		<div class="content_desc v_ctr"><?=element('product', $prod)->l_desc?>
+			<div class="clear"></div>
+			
+		</div>
 	
+		</div>
+		<div class="prev_next">
+			<div class="right"><?=prod_next_link(element('product', $prod)->id)?></div>
+			<div class="left"><?=prod_prev_link(element('product', $prod)->id)?></div>
+			<div class="clear"></div>
+		</div>
+			
+		<div class="list_decor_right"></div>
+		<div class="product_tool">
+
+			<div class="form_area">
+				<?=modules::run('store/store_cart/addToCartForm', element('attributes', $prod), element('product', $prod));?>
+			</div>
+
+
+		</div>
+	</div>	
+
 
 	<div class="product_media right">
 		<div class="currentImg grid_320">
@@ -50,25 +67,24 @@ $(document).ready(function(){
 				<?}?>
 			<div class="clear"></div>	
 		</div>
-		
+		<script type="text/javascript" charset="utf-8">
+			$('.otherImg .item').each(function(index, value){
+				index = index+1;
+				if(index%4 == 0){
+					$(this).addClass('last_in_line_item');
+				}
+			});
+		</script>
 	</div>
 	<div class="clear"></div>
-	<div class="product_tool">
-	
-		<div class="form_area">
-			<?=modules::run('store/store_cart/addToCartForm', element('attributes', $prod), element('product', $prod));?>
-		</div>
+	<div class="product_relation">
+	<?if(element('relations', $prod)):?>
+	<h4>Relations</h4>
+	<?foreach(element('relations', $prod) as $rel) : $rel?>
+		<?=prod_snap($rel->p_rel)?>
+	<?endforeach;endif;?>
+	</div>
 
 	
-	</div>	
-	<div class="clear"></div>
-	
-	<div class="decor hide">
-		
-		<img class="right" src="<?=site_url('store/product/thumb/1000-300-crop/dir/assets/modules/store/product_img/'.$defimg->path);?>"
-			alt='<?=element('product', $prod)->name?>' 
-			title="<?=$defimg->name;?>" />
-		<div class="right cover"></div>
-		<div class="clear"></div>
-	</div>
+
 </div>

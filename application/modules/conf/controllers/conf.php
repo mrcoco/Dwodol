@@ -36,4 +36,22 @@ class Conf extends MX_Controller {
 	function getbyname($name){
 		return $this->mdl->getbyname($name);
 	}
+	function append_conf($id, $key, $value){
+		if(is_numeric($id)){
+			$data = $this->getbyid($id);
+		}else{
+			$data = $this->getbyname($id);
+		}
+		if(!$data)return false;
+		$new_data = json_decode($data->config_object, true);
+		$new_data[$key] = $value;
+		$upd_data = array('config_object' => json_encode($new_data));
+		if($update = $this->exe_update($data->id, $upd_data)){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	
 }?>

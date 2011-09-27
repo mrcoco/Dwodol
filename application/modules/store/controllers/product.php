@@ -9,6 +9,7 @@ class Product extends MX_Controller {
 		parent::__construct();
 		$this->mdl = $this->load->model('store/product_m');
 		//$this->load->helper('store/product');
+
 		
 	}
 	
@@ -41,6 +42,8 @@ class Product extends MX_Controller {
 	}
 	function view(){
 	//	$this->load->helper('store/product');
+		$this->dodol_theme->set_layout('extend/store/store');
+		$this->dodol_asset->append_module('css', 'detail_prod.css');
 		$param['id'] 	= $this->uri->segment(3);
 		$param['attr'] 	= true;
 		$param['media'] = true;
@@ -49,7 +52,7 @@ class Product extends MX_Controller {
 		if($data['prod'] == false)return $this->dodol_theme->not_found();
 		$data['loadSide'] 	= false;
 		$data['pT']        	= $data['prod']['product']->name;
-		$this->dodol_theme->set_layout('extend/store/store');
+
 		$this->dodol_theme->render()->build('page/product/detailProd', $data);
 		// execution buy product
 		modules::run('store/store_cart/buyProd');
@@ -80,14 +83,17 @@ class Product extends MX_Controller {
 			// IF THERE IS NO DISCOUNT
 			$disc_value = 0;
 		endif;
+		// TODO : CHANGE CURRENCY WHEN SEttup
 		// IF PRODUCT CURRENCY != CURRENT CURRENCY
+		/*
 		if($prod->currency != $currency):
 			$rate = currency_conv($prod->currency, $currency);
 		else:
 		// IF PRODUCT CURRENCY SAME WITH CURRENT CURRENCY
 			$rate = 1;
 		endif;
-
+		*/
+		$rate = 1;
 		// GRAB ALL TOGETHER 
 		$data = new stdClass;
 		$data->final_value 	= ($prod->price*$rate) - ($disc_value*$rate);
@@ -300,7 +306,13 @@ class Product extends MX_Controller {
 	
 	// PRODUCT
 	function api_update($id, $data){
-		return $this->mdl->update($id, $data);
+		
+		$q = $this->mdl->update($id, $data);
+		if($q){
+			$this->load->controller('store/store_misc')->update_product_action_listener($q);
+		}
+		return $q;
+		
 	}
 	function api_create($data){
 		return $this->mdl->create($data);

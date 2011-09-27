@@ -45,38 +45,49 @@ class Store_cart extends MX_Controller {
 	}
 	function ajax_buyProd(){
 	    if($this->input->post('have_attrb')){
+		
+			$id = $this->input->post('id_prod');
+			$qty = $this->input->post('qty');
+			$attrb = ( $this->input->post('have_attrb') == 'y')  ? prod_attr_to_key(post_filter('attr_')) : false ;
+
     		$param['id_prod'] = $this->input->post('id_prod');
     		$param['qty'] = $this->input->post('qty');
     		if($this->input->post('have_attrb') == 'y') $param['attrb_key'] = prod_attr_to_key(post_filter('attr_'));
-   
-    		$addToCart = $this->addToCart($param);
+
+			$conf = array(
+				'product_id' 	=> $id,
+				'qty'			=> $qty,
+				'attribute_key' => $attrb
+			);
+    		$addToCart = $this->cart->put_to_cart($conf);
     		
 			if(element('status', $addToCart) == 'on'){
-    			$data['status'] = 'on';
+    		
+				$data['status'] = 'on';
     			$data['new_cart'] = modules::run('store/store_widget/cart');
 				$this->messages->add('success add to cart', 'success');
-    			echo  json_encode($data);
+    			
+				echo  json_encode($data);
     		}elseif(element('status', $addToCart) == 'min'){
 				$this->messages->add('Please insert lower Quantity', 'warning');
     			$data['status'] = 'min';
     			echo  json_encode($data);
     		}elseif(element('status', $addToCart) == 'off'){
-				
-    			$request_param['id_prod'] = $this->input->post('id_prod');
-    			if($this->input->post('have_attrb') == 'y' && !isset($addToCart['id_attrb'])){
-    			$request_param['attrb_key'] = $param['attrb_key'];
-    			}elseif($this->input->post('have_attrb') == 'y' && isset($addToCart['id_attrb'])){
-    			  $request_param['id_attrb'] = $addToCart['id_attrb'];
-    			}
-    			$data['status']  = 'off';
-    			$data['msg'] 	 = '<div class="confirmation_msg hide">product ';
-				if($this->input->post('have_attrb') == 'y')$data['msg'] .= 'with '.prod_attr_to_word(post_filter('attr_'));
- 				$data['msg'] 	.='is out off stock <br/> Woul you like to request update stock ? <br/><small>* we will infrom you when stock available </small><div class="confirm mt20"> <span class="button yes">Yes</span> | <span class="button no">No</span></div></div>';
-    			$data['request_form'] = modules::run('store/request_restock', $request_param);
-				$warning_msg = 'product ';
-				if($this->input->post('have_attrb') == 'y')$warning_msg .= 'with '.prod_attr_to_word(post_filter('attr_'));
-				$warning_msg .= 'is out off stock';
-				$this->messages->add($warning_msg, 'warning');
+
+				$msg = 'product ';
+				$msg .= 'with '.($a_key = element('attribute_key', $addToCart)) ? prod_attr_to_word(prod_attr_to_array($a_key)).' ' : ' '; 
+				$msg .= 'is Out of stock';
+				$this->messages->add($msg, 'warning');
+				$req_restock_form = modules::run(
+										'store/request_restock',
+										element('product_id',$addToCart ),
+										element('attribute_id', $addToCart),
+										element('attribute_key', $addToCart)
+										);
+				$data = array(
+					'status' => 'off',
+					'request_form' => $req_restock_form,
+					);
     			echo  json_encode($data);
     		}
     	}
@@ -140,7 +151,8 @@ class Store_cart extends MX_Controller {
 		}
 	}
 	function addToCartForm($attribute, $product){
-		if($product->stock == 0) return modules::run('store/request_restock', $product->id);
+	
+		if(prod_stock($product->id) == 0) return modules::run('store/request_restock', $product->id);
 		$data = array(
 			'a' => $attribute,
 			'p' => $product
@@ -182,12 +194,7 @@ class Store_cart extends MX_Controller {
 		}
 		if(isset($this->session->userdata['shipping_info']['fee']) && $buyer_info != false){
 		    $this->cart->destroy_data('shipping_info');
-		    /*
-			$id_rate = $this->session->userdata['shipping_info']['rate_id'];
-			$newfee = $this->jne->choosenRate($buyer_info['city_code'], $this->getAllWeight(), $id_rate);
-			$this->session->userdata['shipping_info']['fee'] = $newfee['rate'] ;
-			$this->session->sess_write();	
-			*/
+	
 		}else{
 			return false;
 		}
@@ -357,6 +364,7 @@ class Store_cart extends MX_Controller {
 	function viewcart(){	
 		$data = array(
 			'items' => $this->cart->contents(),
+			'pT'	=> 'Cart'
 			);
 		$this->dodol_theme->set_layout('extend/store/store');
 		$this->dodol_theme->render()->build('page/cart/cartView_v', $data);

@@ -6,6 +6,9 @@
     font-style: normal;
 
 }
+.timeLess{
+	font-family: TimelessRegular;
+}
 /* @end */
 
 /* @group MAIN BLOCKING */
@@ -31,7 +34,7 @@
 .component {
 		background: url(../img/bottom_border_shadow.png) no-repeat center bottom;
 		min-height: 300px;
-		padding-bottom: 30px;
+		padding-bottom: 100px;
 }
 .component .topBar {
 	height: 30px;
@@ -47,7 +50,7 @@
 
 /* @group TYPO */
 body {
-	font-family: TimelessRegular;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 	color: #484848;
 	font-size: 13px;
 	letter-spacing: -0.5px;
@@ -114,6 +117,14 @@ span.nav a.prev {
 .list_decor_left {
 	background: url(../img/list_decor.png) no-repeat left bottom;
 	height: 9px;
+}
+.ui_choose{
+	cursor: pointer;
+}
+.ui_choose .selected {
+	background: url(../img/icon/arrowright_blue.png) no-repeat left center;
+	padding-left: 25px;
+	color:#0c849e;
 }
 /* @group Pagination */
 
@@ -198,6 +209,7 @@ ul.horizontal li {
 .productSnap { width:260px; height:320px; float:left; margin:0 10px 10px 3px; margin-bottom:20px; display: table;}
 .productSnap a {text-decoration: none; color:#fff}
 .productSnap .productImg img { width:260px; height:320px}
+
 .productSnap .productDetail { border-top:1px solid #ccc;  border-bottom:1px solid #ccc; padding: 5px 0px; margin-top:5px;}
 .productSnap .productPrice {float: right;}
 .productSnap .productImg {position: relative;}
@@ -216,6 +228,55 @@ color:#fff; font-size:10px; padding:0px 5px;}
 
 
 /* @end */
+
+
+
+/* @end */
+
+/* @group modules */
+
+/* Laest Blog */
+
+.latest_blog_wid .item{
+	width: 600px;
+	height: 200px;
+	position: relative;
+}
+.latest_blog_wid .item .title {
+	text-align: right;
+	font-size: 22px;
+}
+.latest_blog_wid .item .img-prev img{
+	width: 450px;
+
+}
+.latest_blog_wid .item .img-prev,  .latest_blog_wid .item .img-decor{
+	position: absolute;
+	left: 0px;
+	width: 450px;
+	height: 150px;
+}
+.latest_blog .widget_title{
+	font-size: 24px;
+	margin-bottom: 5px;
+
+}
+.latest_blog_wid .item .img-prev {
+	z-index: 1;
+}
+.latest_blog_wid .item .img-decor{
+	z-index: 2;
+}
+.latest_blog_wid .item .img-decor{
+	background: url(../img/latest-blog_cover_decor.png) no-repeat right bottom;
+}
+.latest_blog_wid .item .item_cont {
+	width: 400px;
+	height: 200px;
+	position: absolute;
+	right: 0px;
+	z-index: 3;
+}
 
 
 

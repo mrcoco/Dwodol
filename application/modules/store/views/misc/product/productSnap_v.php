@@ -3,7 +3,9 @@
 <div class="productSnap">
 	<div class="productImg">
 		<? if($media){ ?>
+			<a href="<?=site_url('store/prod/'.$prod->id.'/'.nice_strlink($prod->name));?>">
 		<img src="<?=site_url('store/product/thumb/240-320-crop/dir/assets/modules/store/product_img/'.$media->path);?>" alt="<?=$media->name?>">
+			</a>
 		<?}?>
 		<div class="w_50 ctr snap_tool">
 		  <div class="triangle ctr"></div>

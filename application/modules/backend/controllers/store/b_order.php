@@ -23,6 +23,7 @@ class B_order extends MX_Controller {
 	function browse(){
 		$this->load->library('dodol/dodol_paging');
 		$limit = 20;
+		
 		$param = $this->uri->uri_to_assoc();
 		if(!isset($param['page'])){
 			$param['page'] = 0;
@@ -48,40 +49,90 @@ class B_order extends MX_Controller {
 			);
 		
 		//$prods = $this->product_m->getListProd($conf);
-		$query = $this->order_m->browse_order($conf);
+		$query = $this->load->controller('store/order')->api_browse($conf);
 		if($query){
 		$target_url = str_replace('/page/'.$param['page'] , '', current_url());
 		$confpage = array(
 			'target_page' 	=> $target_url,
-			'num_records' 	=> $query['number_rec'],
+			'num_records' 	=> element('num_records', $query),
 			'num_link'	  	=> 5,
 			'per_page'   	=> $limit,
-			'cur_page'   	=> $param['page']
+			'cur_page'   	=> element('page', $param)
 			);
 			
 		$this->dodol_paging->initialize($confpage);
 		}
-		$data['orders']    	= $query['orders'];
-		$data['pT']     	= $query['number_rec'];
+		$menuSource = array(
+			array('anchor' => 'Open Order', 'link' => '#'),
+			array('anchor' => 'Shipping Label', 'link' => site_url('backend/store/b_order/shipping_label')),
+		);
+		$data['pageMenu']  = menu_rend($menuSource);
+		$data['orders']    	= element('result', $query);
+		$data['pT']			= 'Browse Order';
 		$data['mainLayer'] 	='backend/page/store/order/browse_order_v';
-		$data['asuh'] 		= $query['number_rec'];
 		$this->dodol_theme->render()->build('page/store/order/browse_order_v', $data);
 		
 	}
 	function view(){
 		$id = $this->uri->segment(5);
-		$data = modules::run('backend/store/b_order/getorder_byid', $id);
+		$data = $this->load->controller('store/order')->api_getbyid($id, array(
+			'billing' => true, 'shipto' => true, 'product_item' => true, 'customer' => true, 'history'=> true));
+
 		if(!$data) return $this->dodol_theme->not_found();
-		$order  = $data['order_data'];
-		$render['data_personal'] = $data['personal_data'];
-		$render['data_order'] = $order;
-		$render['data_prodsold'] = $data['prodsold_data'];
-		$render['data_shipto'] = $data['shipto_data'];
-		$render['order_history'] = $this->order_m->get_history_by($id);
-		$render['pageTool'] = modules::run('backend/store/b_order/updater_form', $order->id, $order->status);
-		$render['pH'] = 'Order No. '.$order->id;
+
+		
+		$render['order'] = $data;
+		$render['pH'] = 'Order No. '.$data->id;
 		$render['mainLayer'] 	='backend/page/store/order/view_v';
 		$this->dodol_theme->render()->build('page/store/order/view_v', $render);
+	}
+	function shipping_label(){
+		enable_get();
+		
+		$this->dodol_asset->append_global('js', 'global_js/jq_printPage/jquery.printPage.js');
+		$render['pT'] = 'Shipping Label Wizard';
+		$statuses = array();
+
+		foreach(array_merge(array('all'), $this->load->model('store/order_m')->status_type) as $stt){
+			$statuses[$stt] = $stt;
+		
+		}
+		$menuSource = array(
+			array('anchor' => 'Browse Order', 'link' => site_url('backend/store/b_order/browse')),
+		);
+		$render['pageMenu']  = menu_rend($menuSource);
+		$render['statuses'] = $statuses;
+		$this->dodol_theme->render()->build('page/store/order/shipping_label', $render);
+	}
+	function print_ship_lab(){
+		enable_get();
+		$this->dodol_theme->set_layout('print');
+		$this->dodol_asset->append_module('css', 'order_shipping_label_print.css');
+		$prev = ($this->input->get('preview')) ? true : false;
+		
+		$start = $this->input->get('s_date');
+		$end = $this->input->get('e_date');
+		$oid = $this->input->get('oid');
+		$status = $this->input->get('status');
+	
+		if(!$end && $start){
+			$end = $start;
+		}
+		if($end && !$start){
+			$start = $end;
+		}
+		if($oid) 	$this->db->where('a.order_id', $oid);
+		if($start) 	$this->db->where('DATE(b.c_date) >=', $start);
+		if($end)	$this->db->where('DATE(b.c_date) <=', $end);
+		if($status && $status != 'all')	$this->db->where('b.status', $status);
+	
+		$this->db->join('store_order b', 'b.id=a.order_id');
+		$q = $this->db->get('store_order_shipto_data a');
+
+		if($q->num_rows() < 1) return false; 
+		$data = array('labels' => $q->result(), 'prev' => $prev);
+		
+		$this->dodol_theme->render()->build('page/store/order/print_ship_lab', $data);
 	}
 	function updater_form($id_order, $current){
 		$render['id'] = $id_order;
@@ -105,7 +156,7 @@ class B_order extends MX_Controller {
 		
 	}
 	function getorder_byid($id){
-		$order = $this->order_m->getall_orderdata($id);
+		$order = $this->load->controller('store/order')->api_getbyid($id, true);
 		if($order){
 			return $order;
 		}else{

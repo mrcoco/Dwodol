@@ -9,7 +9,7 @@ class B_extension extends MX_Controller {
 		$this->dodol_auth->userRoleCheck('owner');
 	}
 	function index(){
-		
+		$this->dodol_theme->render()->build('page/store/extension/index');
 	}
 	// PAYMENT
 	function create_payment(){
@@ -38,11 +38,30 @@ class B_extension extends MX_Controller {
 		$this->dodol_theme->render()->build('page/store/extension/payment/create_v', $data);
 	}
 	function edit_payment(){
+		$id = $this->uri->segment(5);
+		if(!$payment = $this->db->where('id', $id)->get('store_payment')->row()) return $this->dodol_theme->not_found();
 			$data = array(
-				'pt'        => 'Edit Payment',
-				'ht'		=> 'Edit Payment',
+				'pT'        => 'Edit Payment',
+				'hT'		=> 'Edit Payment',
 				);
-			$this->dodol_theme->render()->build('page/store/extension/payment/edit_v', $data);
+		$data['payment'] = $payment;
+		$this->dodol_theme->render()->build('page/store/extension/payment/edit_v', $data);
+		if($this->input->post('submit')){
+			$data = array(
+				'name' => $this->input->post('name'),
+				'nm_rek' => $this->input->post('an_rek'),
+				'no_rek' => $this->input->post('no_rek'),
+				'description' => $this->input->post('desc'),
+				);
+			$this->db->where('id', $id);
+			if($q = $this->db->update('store_payment', $data)):
+			$this->messages->add('Success update Payment wit name'.$payment->name, 'success');
+			redirect('backend/store/b_extension/list_payment');
+			else:
+			$this->messages->add('There is Something Wrong, try again latter', 'warning');
+			redirect('backend/store/b_extension/list_payment');
+			endif;
+		}
 	}
 	function delete_payment(){
 		

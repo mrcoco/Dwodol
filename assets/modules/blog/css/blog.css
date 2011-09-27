@@ -1,0 +1,24 @@
+.blog_content {
+	margin-top: 20px;
+}
+.blog_content .img_caption {
+	padding: 10px;
+	padding-bottom: 5px;
+	background-color: #f6f6f6;
+	border: 1px solid #f0eff0;
+}
+.blog_content .img_caption.left{
+	float: left;
+	margin-right: 10px;
+	border-color: #f0f0f0;
+}
+.blog_content .img_caption.right{
+	float: right;
+	margin-left: 10px;
+}
+.blog_content .img_caption p {
+	font-size: 11px;
+	text-align: center;
+	margin-bottom: 0px;
+	font-style: italic;
+}

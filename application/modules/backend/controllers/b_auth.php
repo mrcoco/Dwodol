@@ -22,7 +22,7 @@ class B_auth extends MX_Controller {
 		$render = array(
 			'pT' => 'Login',
 		);
-		$this->dodol_asset->append_module('css', array('login_page.css'));
+		$this->dodol_asset->append_module('css', 'login_page.css');
 		$this->dodol_theme->set_layout('login');
 		$this->dodol_theme->render()->build('page/login_page', $render);
 	}

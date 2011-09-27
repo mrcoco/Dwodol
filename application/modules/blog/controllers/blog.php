@@ -11,6 +11,10 @@ class Blog extends MX_Controller {
 		$this->mdl = $this->load->model('blog/blog_m');
 		$this->dodol_theme->set_layout('extend/blog/blog');
 		$this->load->helper('blog/blog');
+	
+		$this->dodol_asset->append_module('js', 'blog.js');
+		$this->dodol_asset->append_module('css', 'blog.css');
+	
 	}
 	//PAGE
 	function index(){
@@ -73,6 +77,7 @@ class Blog extends MX_Controller {
 	function search(){
 	}
 	function single(){
+	
 		$id = $this->uri->segment(3);
 		$q = modules::run('blog/api_post_getbyslug', $id);
 		if(!$q){
@@ -242,7 +247,7 @@ class Blog extends MX_Controller {
 			$data['status'] = 'publish';
 		endif;
 		unset($data['cat_src']);
-		$data['author'] = element('user_id', $this->session->userdata('login_data'));
+		$data['author'] = element('user_id', $this->dodol_auth->userdata());
 		return $this->mdl->post_create($data);
 	}
 	function api_post_update($id, $data){

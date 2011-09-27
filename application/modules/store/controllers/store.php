@@ -16,7 +16,7 @@ class Store extends MX_Controller {
 	}
 	
 	function index() {
-	 	echo 'asuh';
+	 	redirect('/');
 	}
 	function testing_route(){
 		echo 'its work';
@@ -103,32 +103,46 @@ class Store extends MX_Controller {
 		return store_carrier_helper::load($state);
 	}
 	function new_arrival(){
+		$this->dodol_theme->set_layout('extend/store/store');
 		$this->load->library('dodol/dodol_paging');
 		$uri = $this->uri->uri_to_assoc();
-		$param['start'] = (!element('page', $uri)) ? 0 : element('page', $uri);
-		$param['limit'] = 10;
+		$param['start'] = 0;
+		$param['limit'] = 9;
 		$param['order_role'] = 'ASC';
 		$param['order_by'] = 'prod.c_date';
 		$q = modules::run('store/product/api_browse', $param);
 		if(!$q):
 			return $this->dodol_theme->not_found();
 		endif;
-		$target_url = str_replace('/page/'.element('page', $uri) , '', current_url());
-				// configuration for pagination
-		$confpage = array(
-					'target_page' => $target_url,
-					'num_records' => element('num_rows', $q),
-					'num_link'	  => 5,
-					'per_page'   => $param['limit'],
-					'cur_page'   => element('page', $uri),
-					);
-				// execute the pagination conf
-		$this->dodol_paging->initialize($confpage);
 		$render['prods'] = element('prods', $q);
 		$render['pT'] 	 = 'New Arrival';
 		$this->dodol_theme->render()->build('store/page/store/new_arrival', $render);
 		
 		
 	}
-
+	function new_arrival_mod($limit = 3){
+		$param['start'] = 0;
+		$param['limit'] = $limit;
+	//	$param['order_role'] = 'DESC';
+	//	$param['order_by'] = 'prod.c_date';
+		$q = modules::run('store/product/api_browse', $param);
+		if(!$q):
+			return $this->dodol_theme->not_found();
+		endif;
+		$render['prods'] = element('prods', $q);
+		$this->dodol_theme->view('store/page/store/new_arrival', $render);
+		
+		
+	}
+	function get_dropdown_country(){
+		$list = array();
+		$list['0'] = 'none';
+		$q = $this->db->get('store_country');
+		if($q->num_rows() > 0 ){
+			foreach($q->result() as $item){
+				$list[$item->country_id] = $item->country_name;
+			}
+		}
+		return $list;
+	}
 }?>

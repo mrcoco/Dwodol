@@ -247,7 +247,7 @@ class B_product extends MX_Controller {
 			$this->messages->add('Success create product with name '.$main_q->name, 'success');
 			$return =  array('prod' => $main_q, 'status' => 'success');
 			// end ajax, redirect to list prod
-			redirect('backend/store/b_product/listprod');
+			
 		else:
 
 			$return = array('status' => 'fail');
@@ -302,8 +302,6 @@ class B_product extends MX_Controller {
 			// add messages success
 			$this->messages->add('Success update product with name '.$main_q->name, 'success');
 			$return =  array('prod' => $main_q, 'status' => 'success');
-			// end ajax, redirect to list prod
-			return redirect('backend/store/b_product/listprod');
 		else:
 
 			$return = array('status' => 'fail');
@@ -351,13 +349,13 @@ class B_product extends MX_Controller {
 	}
 	function listprod(){
 		$this->load->library('dodol/dodol_paging');
-		$limit = 20;
+		$limit = 10;
 		$param = $this->uri->uri_to_assoc();
 		if(!isset($param['cat'])){
 			$param['cat'] = false;
 		}
 		if(!isset($param['page'])){
-			$param['page'] = 0;
+			$param['page'] = 1;
 		}
 		if(!isset($param['pub'])){
 			$param['pub'] = false;
@@ -392,8 +390,12 @@ class B_product extends MX_Controller {
 		$menuSource = array(
 			array(
 				'anchor' => 'Add Product', 'link' => site_url('backend/store/b_product/addProd')),
+				array(
+					'anchor' => 'category', 'link' => site_url('backend/store/b_category/browse')),
 		);
 		$menu = menu_rend($menuSource);
+		$offset = (element('page', $param) && element('page', $param) != 1 ) ?  ($limit*(element('page', $param)-1))+1 : 1;
+	
 		$data = array(
 			'mainLayer' => 'backend/page/store/product/listprod_v',
 			'pT'        => 'List Product',
@@ -402,7 +404,8 @@ class B_product extends MX_Controller {
 			'pageMenu'  => 'test',
 			'pageMenu'  => $menu,
 			'prods'     => $prods['prods'],
-			'num_rec'	=> $prods['num_rec']
+			'num_rec'	=> $prods['num_rec'],
+			'number'	=> $offset,
 			);
 		// filterize 
 		if($this->input->post('submitfilter')){

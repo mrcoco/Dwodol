@@ -58,40 +58,30 @@ class category extends MX_Controller {
 	// page 
 	function view(){
 		$this->load->library('dodol/dodol_paging');
+		$def_limit = 9;
 		$cat_id = $this->uri->segment(3);
-		$param = $this->uri->uri_to_assoc(5);
-		if(!isset($param['limit'])){
-			$param['limit'] = 12;
-		}
-		if(!isset($param['page'])){
-			$param['page'] = 0;
-		}
-		$search = (!isset($param['q'])) ? false : $param['q'];
-		
-		if($param['page']){
-			$start = ($param['page'] - 1)* $param['limit'];
-		}else{
-			$start = 0;
-		}
-		$limit = $param['limit'];
+		$param 	= $this->uri->uri_to_assoc(5);
+		$limit 	= (!element('limit', $param)) ? $def_limit : element('limit', $param);
+		$page 	= (!element('page', $param)) ? false : element('page', $param);
+		$start  = (!$page) ? 0 : (($page - 1) * $limit) ;
+
 		// configuration before query to database
 		$conf = array(
 			'cat_id'   => $cat_id,
 			'publish'  => 'y',
 			'limit'    => $limit,
 			'start'    => $start,
-			'search'   =>  $search
 			);
 		$prods = $this->product_m->getListProd($conf);
 		// get the base url for pagination,
-		$target_url = str_replace('/page/'.$param['page'] , '', current_url());
+		$target_url = str_replace('/page/'.$page, '', current_url());
 		// configuration for pagination
 		$confpage = array(
 			'target_page' => $target_url,
 			'num_records' => $prods['num_rec'],
 			'num_link'	  => 5,
 			'per_page'   => $limit,
-			'cur_page'   => $param['page']
+			'cur_page'   => $page
 			);
 		// execute the pagination conf
 		$this->dodol_paging->initialize($confpage);

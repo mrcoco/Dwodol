@@ -109,7 +109,8 @@ if(!$data){
 			return false;
 		}
 	}
-	function notify($id){
+	function notify(){
+		$id = $this->uri->segment(4);
 			$order = $this->order_m->getall_orderdata($id);
 			$person = $order['personal_data'];
 			$data  = $order['order_data'];
@@ -122,9 +123,17 @@ if(!$data){
 			$this->mailer->send();
 	}
 	function confirm_payment(){
+		enable_get();
+		if($oid = $this->input->get('oid')){
+			if($order = $this->api_getbyid($oid)){
+				$render['order'] = $order;
+			}
+		}
+		
 		$render['pH'] = 'Confirmation Order Payment';
 		$render['mainLayer'] = 'store/page/order/confirm_payment_v';
-		$this->dodol_theme->render($render)->build('page/order/confirm_payment_v', $data);
+		$this->dodol_theme->render($render)->build('page/order/confirm_payment_v', $render);
+		/*
 		if($this->input->post('submit')):
 			$information = '
 			Order <span class="bold">#'.$this->input->post('order_number').'</span><br/>
@@ -155,7 +164,10 @@ if(!$data){
 			$this->mailer->body = $body;
 			$this->mailer->send();
 		endif;
+		*/
 	}
+
+
 	// statistic request 
 	function data_report(){
 	//	echo date("Y-m-d");
@@ -190,10 +202,10 @@ if(!$data){
 			return $this->dodol_theme->not_found();
 		}else{
 		
-		$bc_text = 'CU-'.element('order', $q)->id;
+		$bc_text = strtoupper($this->dodol->conf('store','barcode_prefix').'-'.$q->id);
 		
 		
-		$this->load->library('zend');
+		$this->load->library('dependency/zend');
 		$this->zend->load('Zend/Barcode');
 		$options = array('text' => $bc_text, 'drawText' => false, 'barHeight' => 30, 'barThickWidth' => 3);
 
@@ -208,8 +220,31 @@ if(!$data){
 	function mark_read_history($id){
 		return $this->order_m->mark_read_history($id);
 	}
-	
-	function api_getbyid($id, $depend = false){
+	function api_browse($conf = array()){
+		return $this->order_m->browse($conf);
+	}
+	function api_create($conf = array()){
+		$order = $this->order_m->create(element('order_data', $conf));
+		$conf['billing_data']['order_id'] 	= $order->id;
+		$conf['shipto_data']['order_id'] 	= $order->id;
+
+		if(isset($conf['shipto_data']['email'])) unset($conf['shipto_data']['email']);
+
+		$bill = $this->order_m->bill_create(element('billing_data', $conf));
+		$shipto = $this->order_m->shipto_create(element('shipto_data', $conf));
+		$product_item = array();
+		foreach(element('product_item', $conf) as $item){
+			$item['order_id'] = $order->id;
+			if($new = $this->order_m->prd_item_create($item)) array_push($product_item, $new);
+		}
+		$order->billing_data 	= $bill;
+		$order->shipto_data 	= $shipto;
+		$order->product_item 	= $product_item;
+		return $order;
+		//do some order listener
+		
+	}
+	function api_getbyid($id, $depend = array()){
 		return $this->order_m->getbyid($id, $depend);
 	}
 	

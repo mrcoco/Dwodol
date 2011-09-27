@@ -8,80 +8,17 @@ class User extends MX_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('user/user_m');
-		$this->role_list = array('owner', 'member', 'manager', 'customer');
+		$this->role_list = array('non_user','customer', 'member', 'manager', 'owner');
 	}
 	
 	//php 4 constructor
 	function User() {
 		parent::__construct();
-	
 	}
 	
 	function index() {
 		
 	}
-	function profiledata($id=false){
-		$this->db->where('id', $id);
-		$q = $this->db->get('user');
-		return $q->row();
-		
-	}
-	function userdata($id , $select=false){
-		$q = $this->user_m->get_userdata($id, $select);
-		if($q){
-			return $q['user'];
-		}else{
-			return false;;
-		}
-	}
-	function frontend_login(){
-		$data = array(
-			'mainLayer'=>'user/page/frontend/frontend_login_v',
-			'mod_login' => modules::run('user/user_widget/login_mod_front'),
-			'pT' => 'Login'
-			);
-		$this->dodol_theme->render($data);
-	}
-	function register(){
-		$q = $this->db->get('store_country');
-		$data = array(
-			'mainLayer' => 'user/page/frontend/register_v',
-			'pT' => 'Register',
-			'countries' => $q->result(),
-			);
-		$this->dodol_theme->render()->build('user/page/frontend/register_v', $data);
-		if($this->input->post('register')){
-			$this->exe_register();
-		}
-	}
-	function exe_register($passdata){
-	
-		// encrypt, password inputed
-		$password = md5($passdata['password']);
-		// unset password from passdata.
-		unset($passdata['password']);
-		// serialize $passdata to $data;
-		$data = $passdata;
-		// set password to $data, with encrypted one;
-		$data['password']  	= $password;
-		// assign current datetime
-		$data['c_date'] 	= date('Y-m-d H:i:s');
-		// passing the $data to model
-		$ins = $this->user_m->register($data);
-		return $ins;
-
-	}
-	function exe_edit($passdata, $id){
-		$passdata['m_date'] = date('Y-m-d H:i:s');
-		$q = $this->user_m->do_update($passdata, $id);
-		return $q;
-	}
-	function getCity(){
-		if($this->input->post('city')){
-		$json = $this->user_m->getCity($this->input->post('city'), 4);
-		echo $json;}
-	}
-	
 	// API //
 	function api_roles(){
 		return $this->role_list;
@@ -92,10 +29,13 @@ class User extends MX_Controller {
 	function api_getbyid($id){
 		return $this->user_m->getbyid($id);
 	}
-	function api_update($id, $data){
-		return $this->user_m->update($id, $data);
+	function api_create($data, $ext_data = false){
+		return $this->user_m->create($data, $ext_data);
 	}
-	function delete($id){
+	function api_update($id, $data, $ext_data = false){
+		return $this->user_m->update($id, $data, $ext_data);
+	}
+	function api_delete($id){
 		return $this->user_m->delete($id);
 	}
 

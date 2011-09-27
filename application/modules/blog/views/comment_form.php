@@ -22,7 +22,8 @@
 		
 
 			$(document).ready(function(){
-				$('#comment_post_<?=$post->id;?> .trigger').click(function(){
+				$('#comment_post_<?=$post->id;?>').live('submit',function(){
+						$('#comment_post_<?=$post->id;?>').validate();
 						var post_data = $('#comment_post_<?=$post->id;?>').serialize();
 						$.ajax({
 							type : "POST",

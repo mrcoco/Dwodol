@@ -54,8 +54,14 @@ class Checkout extends MX_Controller {
 		$return = array();
 		switch ($act) {
 			case 'buyer_info':
-					if($this->exe_buyer_info())
-					$return = array('status'=> 'success');
+					$exe = $this->exe_buyer_info()	;
+					if(element('status', $exe) == 'fail'){
+						$this->messages->add(element('msg', $exe),'warning');
+						$return = array('status'=> 'fail');
+					}else{
+						$return = array('status'=> 'success');
+					}
+
 				break;
 			case 'load_ship':
 					ob_start();
@@ -126,11 +132,13 @@ class Checkout extends MX_Controller {
 	 * @author Zidni Mubarock
 	 */
 	function exe_buyer_info(){
-		$billing_data = post_filter('main_');
-		$shipping_data = post_filter('ship_');
-		$reg_data = post_filter('reg_');
-		$log_data = $this->dodol_auth->userdata(true);
-		$cart_user_data = $this->session->userdata('cart_user_data');
+		$billing_data 		= post_filter('main_');
+		$shipping_data 		= post_filter('ship_');
+		$reg_data 			= post_filter('reg_');
+		$log_data 			= $this->dodol_auth->userdata(true);
+		$cart_user_data 	= $this->session->userdata('cart_user_data');
+		$return['status'] 	= 'success';
+		
 		
 		if(!$this->input->post('different_ship')):
 			$this->session->unset_userdata('shipto_data');
@@ -151,21 +159,33 @@ class Checkout extends MX_Controller {
 		if($shipping_data != false) {
 			$this->cart->write_data('shipto_data' , $shipping_data);
 		}
-		
-		
 	
-		
 		// jika regdata valid;
 		if($reg_data  && !$cart_user_data){
-			$this->load->controller('user')->api_create(array_merge($billing_data, $reg_data));			
+			$new_member = array_merge($billing_data, $reg_data);
+			$new_member['role'] = 'user';
+			$new = $this->load->controller('user')->api_create($new_member);	
+			if($new == false){
+				$return['status'] 	= 'fail';
+				$return['msg']  	= 'email have registered';
+			}else{
+				$this->session->set_userdata('cart_user_data', array('id' => $new->id) );
+			}
+					
 		}elseif(!$reg_data && !$cart_user_data){
 			$new_customer = $billing_data;
 			$new_customer['role'] = 'customer';
 			$new = $this->load->controller('user')->api_create($new_customer);
-			$this->session->set_userdata('cart_user_data', array('id' => $new->id) );
+			if($new == false){
+				$return['status'] 	= 'fail';
+				$return['msg']  	= 'email have registered';
+			}else{
+				$this->session->set_userdata('cart_user_data', array('id' => $new->id) );
+			}
+		
 		}
 		
-		return true;
+		return $return;
 		
 	}
 	/**
@@ -259,6 +279,11 @@ class Checkout extends MX_Controller {
 		
 		$this->load->library('recaptcha');
 		if($this->cart->payment_data){
+			if(element('nope', $this->cart->shipping_data) == true){
+				$ship_carrier = 'Will Confirm Latter after order placed';
+			}else{
+				$ship_carrier = element('carrier', $this->cart->shipping_data).' - '.element('service', $this->cart->shipping_data);
+			}
 			$rendered = array(	
 				'mainLayer' => 'store/page/checkout/summary_v',
 				'pT'        => 'Checkout - Order Summary',
@@ -266,10 +291,10 @@ class Checkout extends MX_Controller {
 				'ship_data' => ($this->cart->shipto_data) ? $this->cart->shipto_data : $this->cart->billing_data,
 				'bill_data' => $this->cart->billing_data,
 				'payment' 	=> $this->cart->payment_data,
-				'shipping' => $this->cart->shipping_data,
+				'shipping' => $ship_carrier,
 				);
 			$this->dodol_theme->render($rendered)->build('page/checkout/summary_v', $rendered);
-			if($this->input->post('process') && $this->recaptcha->validate()){
+			if($this->input->post('process') /* && $this->recaptcha->validate() */){
 			  $this->process();
 			}
 		}else{

@@ -218,7 +218,7 @@ input.button.ajax {
 input.button.ajax.onload{
 	
 	background-image: url(../theme/theme_front/cu/img/ajax_button_onload.gif)  ;
-	background-position: 8px center;
+	background-position: 5px center;
 	background-repeat: no-repeat ;
 }
 /* print autolist */
@@ -246,4 +246,29 @@ input.button.ajax.onload{
 .ajx_autolist li:hover {
 	background: #10a3b2;
 	color: #fff;
+}
+/* Recaptha */
+
+.ui-captcha{
+	width: 300px;
+	padding: 5px;
+}
+#recaptcha_image{
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+
+}
+#recaptcha_reload_btn{
+	padding-left: 20px;
+	text-decoration: none;
+	background: url(../global_img/icon/exchange32_16px.png) no-repeat left center;
+}
+.recaptcha_only_if_image {
+	display: block;
+}
+#recaptcha_response_field{
+	width: 93%;
+	font-size: 13px;
+	padding: 5px 10px;
 }

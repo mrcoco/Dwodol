@@ -121,7 +121,7 @@ class Newsletter_m extends CI_Model {
 		}
 	}
 	function tpl_create($data){
-		if($this->db->inert('newsletter_tpl', $data)):
+		if($this->db->insert('newsletter_tpl', $data)):
 			return $this->tpl_getbyid($this->db->insert_id());
 		else:
 			return false;
@@ -141,12 +141,31 @@ class Newsletter_m extends CI_Model {
 		if(!$q = $this->tpl_getbyid($id)) return false;
 		$this->db->where('id', $id);
 		if($this->db->delete('newsletter_tpl')){
-			return $q
+			return $q;
 		}else{
 			return false;
 		}
 	}
+	function tpl_browse($conf = array(), $random = false){
+		
+		$this->db->select('*');
+		$this->db->select('a.id as id, b.id as grp_id, a.name as name, b.name as grp_name');
+		if($grp_id = element('grp_id', $conf))
+		$this->db->where('a.group_id', $grp_id);
 	
+		if($grp_name = element('grp_name', $conf))
+		$this->db->where('b.name', $grp_name);
+		if($random != false)
+		$this->db->order_by('a.id', 'RANDOM');
+		$this->db->join('newsletter_tpl_group b', 'a.group_id=b.id');
+		$q = $this->db->get('newsletter_tpl a', element('limit', $conf), element('start', $conf));
+		if($q->num_rows() > 0){
+			if($random != false) return $q->row();
+			return $q->result();
+		}else{
+			return false;
+		}
+	}
 	function tpl_group_getbyid($id){
 		$this->db->where('id', $id);
 		$q = $this->db->get('newsletter_tpl_group');
@@ -157,7 +176,7 @@ class Newsletter_m extends CI_Model {
 		}
 	}
 	function tpl_group_create($data){
-		if($this->db->inert('newsletter_tpl_group', $data)):
+		if($this->db->insert('newsletter_tpl_group', $data)):
 			return $this->tpl_group_getbyid($this->db->insert_id());
 		else:
 			return false;
@@ -175,11 +194,18 @@ class Newsletter_m extends CI_Model {
 	function tpl_group_delete($id){
 		if(!$q = $this->tpl_group_getbyid($id)) return false;
 		$this->db->where('id', $id);
-		if($this->db->delete('newsletter_tpl')){
-			return $q
+		if($this->db->delete('newsletter_tpl_group')){
+			return $q;
 		}else{
 			return false;
 		}	
 	}
-
+	function tpl_group_browse($conf = array()){
+		$q = $this->db->get('newsletter_tpl_group', element('limit', $conf), element('start', $conf));
+		if($q->num_rows() > 0){
+			return $q->result();
+		}else{
+			return false;
+		}
+	}
 }?>

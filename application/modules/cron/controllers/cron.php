@@ -15,11 +15,8 @@ class Cron extends MX_Controller {
 	function run(){
 		if(	$all_task = $this->cron_m->call_all_task()):
 			foreach($all_task as $task){
-				$args = array();
-				foreach(jsonToArray($task->parameter) as $prm){
-					array_push($args, $prm);
-				}
-				$run = $this->exec($task->action, $args);
+				
+				$run = $this->exec($task->action, json_decode($task->parameter, true));
 				if($run){
 					$this->cron_m->set_done($task->id);
 					echo 'success';
@@ -30,24 +27,11 @@ class Cron extends MX_Controller {
 		endif;
 	}
 	private function exec($module, $args){
-			$method = 'index';
-			if(($pos = strrpos($module, '/')) != FALSE) {
-				$method = substr($module, $pos + 1);		
-				$module = substr($module, 0, $pos);
-			}
-			if($class = modules::load($module)) {
-				if (method_exists($class, $method))	{
-					ob_start();
-					$output = call_user_func_array(array($class, $method), $args);
-					$buffer = ob_get_clean();
-					return ($output !== NULL) ? $output : $buffer;
-				}
-			}
-			log_message('error', "Module controller failed to run: {$module}/{$method}");
+			return modules::run($module, $args);
 	}
-	function add($action, $parameter=false,$time){
+	function add($action, $parameter=false,$time = '+1 minutes'){
 		$data['action'] = $action;
-		$data['do_time'] = $time;
+		$data['do_time'] = date("Y-m-d H:i:s", strtotime($time));
 		if($parameter){
 			$data['parameter'] = arrayToJson($parameter);
 		}

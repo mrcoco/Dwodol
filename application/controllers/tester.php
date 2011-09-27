@@ -14,9 +14,16 @@ class Tester extends MX_Controller {
 		parent::__construct();
 	}
 	function index(){
-		echo 'just tester';
+	echo 'tester';
+	}
+	function jancok(){
+		$data = array('suh' => 'jncok');
+		$this->load->view('tester', $data);
 	}
 	
+	function test_md5(){
+		echo md5('password321');
+	}
 	function testUpload() {
 		$this->load->helper('form');
 		echo form_open_multipart(current_url());
@@ -293,7 +300,7 @@ class Tester extends MX_Controller {
 	}
 	function test34(){
 		$message = 'http://127.0.0.1/culture-update.com/store/product/thumb/240-320-crop/dir/assets/modules/store/product_img/p_299_m_121_Detail.jpg voila..!! finally.. http://127.0.0.1/culture-update.com/store/ nice result in the early morning :)';
-		echo tinyurl($message); 
+		echo prepare($message); 
 	}
 	function user_create(){
 		$this->load->model('user/user_m');
@@ -324,7 +331,7 @@ class Tester extends MX_Controller {
 		
 	}
 	function barcode(){
-		$this->load->library('zend');
+		$this->load->library('dependency/zend');
 		$this->zend->load('Zend/Barcode');
 	  	Zend_Barcode::render('code39', 'image', array('text' => 'CU0987-081188'), array());
 	}
@@ -364,8 +371,17 @@ class Tester extends MX_Controller {
 	}
 	function send_tw(){
 		$this->load->helper('dodol_twitter');
-		tw_update('from function');
+		tw_update('http://localhost/dwodol/store/product/thumb/500-500-crop/dir/assets/modules/store/product_img/p_299_m_121_Detail.jpg Sudah merupakan fakta bahwa seorang pembaca akan terpengaruh oleh isi tulisan dari sebuah halaman saat ia melihat tata letaknya http://127.0.0.1/culture-update.com/store/ Maksud penggunaan Lorem Ipsum adalah karena ia kurang lebih memiliki penyebaran huruf yang normal', 'http://127.0.0.1/dwodol/store/product/thumb/240-320-crop/dir/assets/modules/store/product_img/karlapink1l.jpg');
 	}
+	function shorturl(){
+	print_r($this->load->library('dependency/google_url_api')->shorten('http://localhost/dwodol/store/product/thumb/500-500-crop/dir/assets/modules/store/product_img/p_299_m_121_Detail.jpg')->id);
+	}
+	function test67(){
+		$this->load->helper('dodol_twitter');
+		$text = 'Sudah merupakan fakta bahwa seorang pembaca akan terpengaruh oleh isi tulisan dari sebuah halaman saat ia melihat tata letaknya. Maksud penggunaan Lorem Ipsum adalah karena ia kurang lebih memiliki penyebaran huruf yang normal, ketimbang menggunakan kalimat seperti "Bagian isi disini, bagian isi disini';
+		echo longTweet($text);
+	}
+	
 
 
 }

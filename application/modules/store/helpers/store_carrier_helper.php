@@ -4,23 +4,13 @@ class Store_carrier_helper
 {
 
 
-	
+	var $_ci_obj ;
 	function __construct(){
-		$this->source_data 	= ($ship = $this->session->userdata('shipto_info')) ? $ship : $this->session->userdata('customer_info');
-		if($this->source_data && $shipping = $this->cart->shipping_info()) :
-			if(	element('country_id', $this->source_data) != element('country_id', $shipping) ||
-				element('zip', $this->source_data) != element('zip', $shipping) ||
-				element('city', $this->source_data) != element('city', $shipping) ) :
-			endif;
-			
-		endif;
-		log_message('debug', 'Store_carrier_helper Initialized');
-			
+	$this->_ci_obj =& get_instance();
+	$this->source_data 	= ($ship = $this->_ci_obj->session->userdata('shipto_data')) ? $ship : $this->_ci_obj->session->userdata('billing_data');
 	}
 	
 	function load($file){
-		
-		
 		
 		if(strpos($file, '/') !== false){
 			$post = explode('/', $file);
@@ -62,19 +52,32 @@ class Store_carrier_helper
     }
 
 	function registry($func = null){
+		$_ci_obj =& get_instance();
 		$func = ($func != null) ? $func : 'get_rate';
 		$all_shipper    = scandir(APPPATH.'modules/store/extensions/carriers/');
-		$output = '';
+		$loaded = array();
 		if(count($all_shipper) > 0):
+			
 			foreach($all_shipper as $item){
-				if($item != '.' && $item != '..'  && $item != '.DS_Store'){
+				if($item != '.' && $item != '..'  && $item != '.DS_Store' && $item != 'basic' ){
+					array_push($loaded, $item);
 					store_carrier_helper::load($item.'/'.$func);	
 				}
 			}
+			if(!$_ci_obj->session->userdata('store_carrier')):
+			store_carrier_helper::load('basic/'.$func);
+			endif;
+			
+			//store_carrier_helper::load('basic/'.$func);
 		else:
 			return false;
 		endif;
 		
+	}
+	function unset_carrier($name){
+			$all_carrier = $this->_ci_obj->session->userdata('store_carrier');
+			unset($all_carrier[$name]);
+			$this->_ci_obj->session->set_userdata('store_carrier', $all_carrier);
 	}
 	
 	// LOAD CI GET_INSTANCE

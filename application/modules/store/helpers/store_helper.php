@@ -29,7 +29,7 @@
     $rate = $allData[1];
     return $rate;
 	}
-	function show_price($value, $currency){
+	function show_price($number, $curr =false){
 	if($curr == false):		
 	$formated = currency().' '.number_format($number, 2, ',', '.');		
 	else:

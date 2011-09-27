@@ -29,8 +29,8 @@ class Dodol_asset
 		$this->_ci =& get_instance();
 		$this->theme_path = $this->_ci->dodol_theme->theme_path();
 		
-		$module_css  = $this->scan($this->theme_path.'css/modules/'.$this->_ci->router->fetch_module().'/', '.css');
-		$module_js	 = $this->scan($this->theme_path.'js/modules/'.$this->_ci->router->fetch_module().'/', '.js');
+		$module_css  = $this->scan($this->theme_path.'modules_assets/'.$this->_ci->router->fetch_module().'/', '.css');
+		$module_js	 = $this->scan($this->theme_path.'modules_assets/'.$this->_ci->router->fetch_module().'/', '.js');
 
 		$this->global_css 	= array_merge(	$this->global_css, $this->scan('./assets/global_css/', '.css'));
 
@@ -77,52 +77,39 @@ class Dodol_asset
 		
 	}
 	function append_module($type, $assets){
+		$mod = $this->_ci->router->fetch_module();
+		$base_path_dir = array(
+			$this->theme_path.'/modules_assets/'.$mod.'/',
+			'./assets/modules/'.$mod.'/'
+			);
 		$storage = array();
-		$module = $this->_ci->router->fetch_module();
-		if(is_array($assets)):
-			foreach($assets as $asset):
-			
-				if(is_file('./assets/'.str_replace('./assets/', '', $this->theme_path.'css/modules/'.$module.'/'.$asset))):
-					$asset = str_replace('./assets/', '', $this->theme_path.'css/modules/'.$module.'/'.$asset) ;
-					$asset_exsist = true;
-					array_push($storage, array($asset));
-				endif;
 
-				if(!isset($asset_exsist)):
-					if(is_file('./assets/modules/'.$module.'/css/'.$asset)):
-					$asset = 'modules/'.$module.'/css/'.$asset;	
-					array_push($storage, array($asset));
-					endif;
-				else:
-					unset($asset_exsist);
-				endif;
-				
-				
-			endforeach;
-		else:
-		
-			if(is_file('./assets/'.str_replace('./assets/', '', $this->theme_path.'css/modules/'.$module.'/'.$assets))):
-				$assets = str_replace('./assets/', '', $this->theme_path.'css/modules/'.$module.'/'.$assets) ;
-				$asset_exsist = true;
-				array_push($storage, array($assets));
-			endif;
+		foreach($base_path_dir as $bs_path){
 			
-			if(!isset($asset_exsist)):
-				if(is_file('./assets/modules/'.$module.'/css/'.$assets)):
-				$assets = 'modules/'.$module.'/css/'.$assets ;	
-				array_push($storage, array($assets));
-				endif;
+			if(is_file($bs_path.$type.'/'.$assets)){
+				$path = str_replace('./assets/', '', $bs_path.$type.'/'.$assets );
+				if($this->_asset_exist('module_'.$type, $path) == false){
+					array_push($storage, array($path));
+				}
+				break;
+			}
+		}
+		if($type == 'js'){
+			$this->module_js = array_merge($this->module_js, $storage);
+		}elseif($type == 'css'){
+			$this->module_css = array_merge($this->module_css, $storage);
+		}
+	
+		
+	}
+	function _asset_exist($group, $asset_loc){
+		foreach($this->$group as $item){
+			if(element('0', $item) == $asset_loc):
+				return true;
 			else:
-				unset($asset_exsist);
+				return false;
 			endif;
-		
-		endif;
-		
-		if($type == 'js'):
-		$this->module_js = array_merge($this->global_js, $storage);
-		elseif($type == 'css'):
-		$this->module_css = array_merge($this->global_css, $storage);
-		endif;
+		}
 	}
 	function scan($path, $type){
 		$storage = array();

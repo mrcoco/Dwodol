@@ -14,95 +14,52 @@ class Customer_m extends CI_Model {
 		parent::__construct();
 	}
 	
-	
-	function browse($param){
-		$this->db->select('id');
-		
-		if($param['query']){
-			$term = array(
-				'email' => $param['query'],
-				'first_name' => $param['query'],
-				'last_name'  => $param['query']
-			);
-			$this->db->or_like($term);
-		}
-		if($param['reg'] == 'y'){
-			$this->db->where('user_id >', 0);
-		}elseif($param['reg'] == 'n'){
-			$this->db->where('user_id', 0);
-		}
-		
-		$q = $this->db->get('store_customer', $param['end'], $param['start']);
-		$this->db->select('id');
-		if(isset($param['query'])){
-			$term = array(
-				'email' => $param['query'],
-				'first_name' => $param['query'],
-				'last_name'  => $param['query']
-			);
-			$this->db->or_like($term);
-		}
-		$q2 = $this->db->get('store_customer');
-		
-		if($q->num_rows() > 0){
-			$data['result'] = $q->result();
-			$data['num_rec'] = $q2->num_rows();
-			return $data;
-			
-		}else{
-			return false;
-		}
-	}
-	function getByUser($id , $select =false){
-		if($select){
-			$this->db->select($select);
-		}
-		$this->db->where('user_id', $id);
+	function create($data){
+		$this->db->where('email', element('email', $data));
 		$q = $this->db->get('store_customer');
-		if($q->num_rows() == 1){
-			return $q->row_array();;
+		if($q->num_rows() > 0) return false;
+		
+		if($this->db->insert('store_customer', $data)){
+			return $this->getbyid($this->db->insert_id());
 		}else{
 			return false;
 		}
 		
 	}
-	function getById($id , $select =false){
-		if($select){
-			$this->db->select($select);
-		}
+	function getbyid($id){
 		$this->db->where('id', $id);
 		$q = $this->db->get('store_customer');
-		if($q->num_rows() == 1){
+		if($q->num_rows() > 0) {
+			return $q->row();
+		}else{
+			return false;
+		}
+	}
+	function update($id, $data){
+		$this->db->where('email', element('email', $data));
+		$this->db->where('id !=', $id);
+		$q = $this->db->get('store_customer');
+		if($q->num_rows() > 0)return false;
 		
-				return $q->row_array();;
-		
+		$this->db->where('id', $id);
+		if($this->db->update('store_customer', $data)){
+			return $this->getbyid($id);
 		}else{
 			return false;
 		}
 		
 	}
-	function create($data){
-		$this->db->where('email', $data['email']);
-		$pre = $this->db->get('store_customer');
-		if(isset($data['user_id'])){
-			$numrows = 0;
-		}else{
-			$numrows = $pre->num_rows();
-		}
+	function browse($conf){
 		
-		
-		if($numrows == 0 ){
-		$q = $this->db->insert('store_customer', $data);
-			if($q){
-				return $this->db->insert_id();
-			}else{
-				return false;
-			}
+		$q = $this->db->get('store_customer', element('limit', $conf), element('start', $conf));
+		if($q->num-rows() > 0){
+			return $q->result();
 		}else{
 			return false;
 		}
-		
+
 	}
+
 	function updateById($id, $passdata){
 		$current_data = $this->getById($id);
 		

@@ -3,7 +3,7 @@
 <div class="meta left"><span class="date"><?=blog_date($post->c_date)?></span>, <span class="cat"><?=$post->cat_name;?></span></div>
 <div class="author right"><span>by : <?=$post->first_name.' '.$post->last_name?></span></div>
 <div class="clear"></div>
-<div class="content">
+<div class="blog_content">
 	<?=$post->content?>
 	<div class="clear"></div>
 </div>

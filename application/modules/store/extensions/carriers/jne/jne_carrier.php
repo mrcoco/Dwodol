@@ -7,28 +7,33 @@ class Jne_carrier extends Store_carrier_helper {
 	
 	
 	function __construct(){
+		parent::__construct();
 	
-		$this->source_data 	= ($ship = $this->session->userdata('shipto_info')) ? $ship : $this->session->userdata('customer_info');
+		$jne_meta =  element('meta', element('jne', $this->session->userdata('store_carrier')));
+		if( 
+			element('country_id', $this->source_data ) != 100  || 
+			($jne_meta &&
+			( 
+			  element('country_id', $this->source_data ) != element('country_id', $jne_meta) &&  
+			  element('city_code', $this->source_data )  != element('city_code', $jne_meta)
+			))
+			){
+				$this->unset_carrier('jne');
+			}
+
 	}
 	
 	// OVERIDING FUNCTION
 	function get_rate(){
-	
-		if($this->source_data) :
-				$this->country_ID 	= $this->db->where('country_id', element('country_id', $this->source_data))								   ->get('store_country')->row()->country_2_code;
-
-				if(	$this->country_ID != 'ID'  && element('jne', $this->session->userdata('store_carrier'))) :
-					unset($this->session->userdata['store_carrier']['jne']);
-				endif;
-			endif;
-		if($this->country_ID != 'ID'){
+		
+		if(element('country_id', $this->source_data ) != 100){
 				return false;				
 		}
 		if($jne_table = element('jne',$this->session->userdata('store_carrier'))){	
 				return 	$this->render('view', $jne_table);
-		}
+		}else{
 		
-		$source_data = ($ship = $this->session->userdata('shipto_info')) ? $ship : $this->session->userdata('customer_info');
+		$source_data = $this->source_data;
 		$destination_code = element('city_code', $source_data);
 		$weight = $this->cart->weight();
 		$param = array(
@@ -81,7 +86,8 @@ class Jne_carrier extends Store_carrier_helper {
 						'country_id' 	=> element('country_id', $this->source_data),
 						'zip'			=> element('zip', $this->source_data),
 						'city'			=>element('city', $this->source_data),
-						'province'		=> element('province', $this->source_data)
+						'province'		=> element('province', $this->source_data),
+						'city_code'		=> element('city_code', $this->source_data),
 						);
 					$return['data'] = $data;
 					$this->session->userdata['store_carrier']['jne'] = $return;
@@ -92,13 +98,14 @@ class Jne_carrier extends Store_carrier_helper {
 				}
 			
 		}
+		}
 	}
 
 	function choose_rate(){	
 		// GRAB THE LISTENER
 		$id_rate = $this->input->post('rate_id');
 		// check that JNE choosen
-		if($id_rate || $id_rate != '' && strpos($id_rate,'jne_') !== false): 
+		if(strpos($id_rate,'jne_') !== false): 
 				foreach($this->session->userdata['store_carrier']['jne']['data'] as $item):
 					if($item['jne_rate_id'] == $id_rate) :
 							$rate_detail = array(
@@ -112,8 +119,7 @@ class Jne_carrier extends Store_carrier_helper {
 														
 					endif;
 				endforeach;
-				ksort($rate_detail);
-				$this->session->set_userdata('shipping_info', $rate_detail );
+				$this->session->set_userdata('shipping_data', $rate_detail );
 		endif;
 
 
@@ -164,7 +170,6 @@ class Jne_carrier extends Store_carrier_helper {
 	 	
 		
 	}
-
 	function service($code){
 		if($code == 'SS'){
 			$type = 'SS (Special Service)';

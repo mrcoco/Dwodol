@@ -21,11 +21,11 @@ class MY_Cart extends CI_Cart {
 		
 		$this->_ci =& get_instance();		
 		$this->_ci->load->library('session');
-		$this->customer_info = $this->get_sess('customer_info');
-		$this->shipping_info = $this->get_sess('shipping_info');
-		$this->shipto_info  = $this->get_sess('shipto_info');	
-		$this->payment_info = $this->get_sess('payment_info');	
-		$this->check_step   = $this->get_sess('checkout_step');
+		$this->billing_data 	= $this->get_sess('billing_data');
+		$this->shipto_data 		= $this->get_sess('shipto_data');
+		$this->payment_data 	= $this->get_sess('payment_data');
+		$this->shipping_data   	= $this->get_sess('shipping_data');
+
 	}		
 	
 	/**
@@ -49,9 +49,9 @@ class MY_Cart extends CI_Cart {
 	 * @return void
 	 * @author Zidni Mubarock
 	 */
-	function write_data($name=false){
+	function write_data($name, $value){
 		if($name){
-			$this->_ci->session->set_userdata($name);
+			$this->_ci->session->set_userdata($name, $value);
 		}else{
 			$this->_ci->session->sess_write();
 		}
@@ -66,11 +66,12 @@ class MY_Cart extends CI_Cart {
 	function destroy_data($specify=false)
 	{
 		if($specify == false){
-			$this->_ci->session->unset_userdata('customer_info');
-			$this->_ci->session->unset_userdata('shipto_info');
-			$this->_ci->session->unset_userdata('shipping_info');
-			$this->_ci->session->unset_userdata('payment_info');
-			$this->_ci->session->unset_userdata('checkout_step');
+			$this->destroy();
+			$this->_ci->session->unset_userdata('billing_data');
+			$this->_ci->session->unset_userdata('shipto_data');
+			$this->_ci->session->unset_userdata('shipping_data');
+			$this->_ci->session->unset_userdata('payment_data');
+			$this->_ci->session->unset_userdata('cart_user_data');
 		}else{
 			$this->_ci->session->unset_userdata($specify);
 		}
@@ -247,8 +248,134 @@ class MY_Cart extends CI_Cart {
 		$this->_ci->load->helper('store/store_carrier');
 		store_carrier_helper::registry('choose_rate', $rate_id);
 	}
+	function payment_action(){
+		$this->_ci->load->helper('store/store_payment');
+		store_payment_helper::registry('payment_action');
+	}
 	function payment_option(){
 		$this->_ci->load->helper('store/store_payment');
 		store_payment_helper::registry('get_option');
+	}
+	function validate_product($conf = array()){
+		$id 			= element('product_id', $conf);
+		$id_attribute 	= false;
+		$attr_key		= ($key_a = element('attribute_key', $conf)) ? $key_a : false;
+		$stock 			= 0;
+		$qty 			= element('qty', $conf);
+		$cart_qty 		= 0;
+		$in_cart		= true;
+		$no_attribute	= false;
+		$rowid 			= false;
+		
+		// if attribute key was set, so search the id of that attribute n get the stock;
+		if($attr_key != false){
+			$this->_ci->db->where('prod_id', $id);
+			$this->_ci->db->where('attribute', $attr_key);
+			$q = $this->_ci->db->get('store_product_attrb');
+			if($q->num_rows() == 1){
+				$id_attribute = $q->row()->id;
+				$stock = $q->row()->stock;
+			}elseif($q->num_rows() == 0){
+				$id_attribute = false;
+				$stock = 0;
+				$no_attribute = true;
+			}
+		}else{
+			$this->_ci->db->where('id', $id);
+			$q = $this->_ci->db->get('store_product');
+			if($q->num_rows() == 1){
+				$stock = $q->row()->stock;
+			}
+		}
+
+		if($rowid = $this->is_in_cart($id, $id_attribute)){
+			$cart_qty  = element('qty', $this->cart_item($rowid));
+		}
+	
+		$request_stock = $qty + $cart_qty;
+	
+		switch (true) {
+			case ($no_attribute == true):
+				$return['status'] = 'off';
+				break;
+			case($stock == 0):
+				$return['status'] = 'off';
+				break;
+			case ($no_attribute == false && $request_stock > $stock):
+				$return['status'] = 'min';
+				break;
+			case ($no_attribute == false && $request_stock <= $stock):
+				$return['status'] = 'on';
+				break;
+		}
+		
+	$return['in_cart'] 			= $in_cart;
+	$return['rowid'] 			= $rowid;
+	$return['qty']				= $request_stock;
+	$return['attribute_id'] 	= $id_attribute;
+	$return['product_id']	 	= $id;
+	$return['attribute_key'] 	= $attr_key;
+	return $return;	
+	
+	}
+	function put_to_cart($conf = array()){
+		$this->_ci->load->helper('store/product');
+		$check = $this->validate_product($conf);
+		$product = modules::run('store/product/api_getbyid', element('product_id',$conf) , false , 'prod.weight', false);
+		if(element('status', $check) == 'on'){
+			if($rowid = element('rowid', $check)){
+			
+				$this->update(array(
+							'rowid' => $rowid,
+				       		'qty'   => element('qty', $check)
+				       			));
+				
+			}else{
+				$data = array(
+					'id'		=> $product->id,
+					'weight'	=> $product->weight,
+					'name'		=> $product->name,
+					'qty'		=> element('qty', $conf)
+					);
+				
+				if(is_numeric(element('attribute_id', $check))){
+					$data['id_attrb'] 	= element('attribute_id', $check);
+					$data['options']  	= prod_attr_to_array(element('attribute_key', $conf));
+					$data['price'] 		= prod_price(element('product_id', $conf), element('attribute_id', $check), true)->final_value;
+				}else{
+					$data['price'] 		= prod_price(element('product_id', $conf), false, true)->final_value;
+				}
+			
+				$this->insert($data);
+				
+			}
+		}
+		return $check;
+	}
+	function is_in_cart($id_prod, $id_attrb=false){
+		$row_id = false;
+		// checking the product is on cart or nope
+		foreach($this->contents() as $key => $value){
+			if($id_attrb != false){
+					if(element('id_attrb', $value) == $id_attrb && element('id', $value) == $id_prod){
+						$row_id = $key;
+						break;
+					}
+					
+			}else{
+					if( element('id', $value) == $id_prod){
+						$row_id = $key;
+						break;
+					}
+			}
+		}
+		return $row_id;
+	}
+	function cart_item($rowid){
+		foreach($this->contents() as $key => $value){
+			if($rowid == $key) {
+				return $value;
+			}
+		}
 	}
 }		

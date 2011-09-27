@@ -126,22 +126,104 @@ $(document).ready(function () {
     $('.msg-Ui .msg-item').delay(4000).slideUp();
 
 })
-
-jQuery(document).ready(function () {
-    jQuery('.text-input').each(function () {
+$(document).ready(function(){
+	$('.text-input').each(function () {
         var default_value = this.value;
-        jQuery(this).keypress(function () {
+        $(this).keypress(function () {
             if (this.value == default_value) {
                 this.value = '';
             }
         });
-        jQuery(this).blur(function () {
+        $(this).blur(function () {
             if (this.value == '') {
                 this.value = default_value;
             }
         });
     });
+	$('.v_ctr').each(function(){
+		var curr = $(this);
+		var parent = $(this).parent();
+		parent.css('display', 'table');
+		curr.css('display', 'table-cell');
+		curr.css('vertical-align', 'middle');
+	});
 });
+
+    
+
+(function ($) {
+    $.fn.vAlign = function(container) {
+        return this.each(function(i){
+	   if(container == null) {
+	      container = 'div';
+	   }
+	   var paddingPx = 10; //change this value as you need (It is the extra height for the parent element)
+	   $(this).html("<" + container + ">" + $(this).html() + "</" + container + ">");
+	   var el = $(this).children(container + ":first");
+	   var elh = $(el).height(); //new element height
+	   var ph = $(this).height(); //parent height
+	   if(elh > ph) { //if new element height is larger apply this to parent
+	       $(this).height(elh + paddingPx);
+	       ph = elh + paddingPx;
+	   }
+	   var nh = (ph - elh) / 2; //new margin to apply
+	   $(el).css('margin-top', nh);
+        });
+     };
+})(jQuery);
+
+(function($){ $.fn.valign = function(options){
+
+        var defaults = {
+    		wraps:false,
+    		wrapper: "",
+    		halign: false
+    	};
+    	
+    	var T = this;
+      
+        options = $.extend(defaults, options);
+
+        if(options.wrapper.length>0) {
+            //custom wrapper is specified
+                T.wrapAll(options.wrapper);
+        } else if( (options.wraps==true) || T.parent().is("body")) {
+            //no wrapper defined, use default
+                T.wrapAll("<div></div>");  
+                console.log(options.wraps==true);              
+        }
+        //shift focus of this to wrapper
+            T=this.parent();
+            
+        TP = T.parent();
+            
+        if(TP.is("body")) {         
+            //if the parent is the BODY then make the body & HTML 100% height
+                TP.css("height","100%");
+                $("html").attr("style","height:100%");
+        }
+        
+        if(TP.css("position")!="absolute") TP.css("position","relative");
+        T.css({
+            "position":"absolute",
+            "height":T.height(),
+            "top":"50%",
+            "left":"0px",
+            "margin-top": 0-(T.height()/2)
+        })
+        if(options.halign) {
+            T.css({
+                "width":T.width(),
+                "left":"50%",
+                "margin-left": 0-(T.width()/2)
+            })   
+        }
+
+
+
+  
+}})(jQuery); 
+
 
 
 //The jQuery Setup
@@ -335,6 +417,8 @@ $.fn.center = function (options) {
 $(document).ready(function () {
     $('.productSnap .productImg').hover(function () {
         var tool = $(this).find('.snap_tool');
+		var img = $(this).find('img');
+		img.animate({opacity : '0.5'},500);
         tool.show('drop', {
             direction: "down"
         }, 500);
@@ -342,7 +426,10 @@ $(document).ready(function () {
     }, function () {
 
         var tool = $(this).find('.snap_tool');
+		var img = $(this).find('img');
+		img.animate({opacity : '1'},500);
         tool.hide('fade', 500);
+
 
 
     });

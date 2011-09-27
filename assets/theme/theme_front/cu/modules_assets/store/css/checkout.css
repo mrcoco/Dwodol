@@ -1,0 +1,242 @@
+#extend_store_checkout_layout {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+#extend_store_checkout_layout .summary_cart{
+	margin-bottom: 25px;
+}
+#extend_store_checkout_layout .header{
+	height: 50px;
+	position: relative;
+}
+#extend_store_checkout_layout h1.site_name {
+	font-size: 24px;
+	float: right;
+	margin-bottom: 0px;
+	position: absolute;
+	bottom: 5px;
+	right: 0px;
+	border-bottom: 0px;
+}
+#extend_store_checkout_layout #checkout_index .chekout_bar_step, #extend_store_checkout_layout #checkout_payment_process .chekout_bar_step{
+	display: none;
+}
+#extend_store_checkout_layout .chekout_bar_step {
+	margin-bottom: -10px;
+}
+#extend_store_checkout_layout .chekout_bar_step span{
+	display: inline-table;
+	padding: 5px 15px 10px;
+}
+#extend_store_checkout_layout .chekout_bar_step span.active{
+	background: #c6c6c6;
+}
+#extend_store_checkout_layout .chekout_bar_step span a {
+	text-decoration: none;
+}
+#extend_store_checkout_layout .chekout_bar_step span.active a{
+	color: #fffeff;
+}
+#extend_store_checkout_layout .checkout_bar {
+	position: absolute;
+	bottom: 10px;
+}
+#extend_store_checkout_layout .summary_cart .itemlist {
+	width: 550px;
+	border-right: 1px solid #ddd;
+}
+#extend_store_checkout_layout .summary_cart .itemlist .item {
+	width: 250px;
+	margin-bottom: 10px;
+}
+#extend_store_checkout_layout .summary_cart .itemlist .item .img_item{
+	width: 80px;
+	margin-right: 10px;
+}
+#extend_store_checkout_layout .summary_cart .itemlist .item .img_item img{
+	width: 80px;
+}
+#extend_store_checkout_layout .summary_cart .itemlist .item .item_detail{
+	width: 160px;
+}
+#extend_store_checkout_layout .summary_cart .itemlist .item .item_detail .name {
+	border-bottom: 1px solid #ddd;
+
+}
+#extend_store_checkout_layout .summary_cart .itemlist .item .item_detail .name h6{
+	font-size: 18px;
+	margin-bottom: 0px;
+	line-height: 19px;
+}
+#extend_store_checkout_layout .summary_cart .itemlist .item .item_detail p{
+	margin-bottom: 0px;
+	font-size: 12px;
+}
+#extend_store_checkout_layout .summary_cart .total_amout h1{
+	font-size: 24px ;
+	text-align: center;
+}
+#extend_store_checkout_layout .summary_cart .total_amout p {
+	margin-bottom: 0px;
+}
+#extend_store_checkout_layout .summary_cart .shipping_data .right_grid , #extend_store_checkout_layout .summary_cart .final_amount .right_grid {
+	width: 230px;
+	border-top: 1px solid #DDDDDD;
+	height: 25px;
+}
+#extend_store_checkout_layout .summary_cart .shipping_data .left_grid , #extend_store_checkout_layout .summary_cart .final_amount .left_grid {
+	width: 510px;
+	border-top: 1px solid #DDDDDD;
+	border-right: 1px solid #DDDDDD;
+	padding: 0px 20px;
+
+}
+#extend_store_checkout_layout .summary_cart .shipping_data .left_grid h4 , #extend_store_checkout_layout .summary_cart .final_amount .left_grid h4{
+	font-size: 14px;
+	text-align: right;
+	line-height: 25px;
+
+	margin-bottom: 0px;
+	padding: 5px 0px;
+}
+#extend_store_checkout_layout .summary_cart .shipping_data .right_grid h1, #extend_store_checkout_layout .summary_cart .final_amount .right_grid h1
+{
+font-size: 18px;
+text-align: center;
+margin-bottom: 0px;
+line-height: 25px;
+padding: 5px 0px;
+}
+#extend_store_checkout_layout .summary_cart .final_amount  .left_grid h4 {
+	font-weight: bold;
+}
+#extend_store_checkout_layout .summary_cart .final_amount .right_grid h1{
+	font-size: 24px;
+	
+}
+#checkout_index a {
+	text-decoration: none;
+}
+#checkout_index h1 {
+	margin-bottom: 5px;
+	text-align: center;
+	border-bottom: 1px solid #ddd;
+}
+
+#checkout_index .login_form {
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ddd;
+}
+#checkout_index p.confirm {
+	text-align: center;
+}
+#checkout_index .login_form .inputSet {
+	margin-bottom: 10px;
+}
+#checkout_index .login_form .inputSet .label {
+	width: 100px;
+	float: left;
+}
+#checkout_index .login_form .inputSet .input {
+	width: 300px;
+	float: left;
+}
+#checkout_index .login_form .inputSet .input input{
+	width: 291px;
+}
+.buyer_info h4 {
+	font-size: 20px;
+	margin-bottom: 5px;
+}
+.buyer_info .contact_detail {
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ddd;
+}
+.buyer_info .main_info {
+	padding-top: 10px;
+
+}
+.buyer_info .bill_info, .buyer_info .ship_info , .contact_detail .user_contact, .contact_detail .register_form {
+	width: 385px ;
+}
+.buyer_info .bill_info, .contact_detail .user_contact {
+	margin-right: 20px;
+}
+.buyer_info .inputSet {
+	margin-bottom: 10px;
+}
+.buyer_info .inputSet .label {
+	width: 120px;
+	float: left;
+}
+.buyer_info .inputSet .input {
+	width: 260px;
+	float: left;
+	
+}
+.buyer_info .inputSet .input input[type="text"], .buyer_info .inputSet textarea {
+	width: 256px;
+}
+.buyer_info .inputSet select{
+	width: 265px;
+}
+.buyer_info .inputSet textarea{
+	height: 100px;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+}
+#checkout_payment_process .confirm {
+	text-align: center;
+}
+#checkout_payment_process .description{
+	min-height: 100px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+#checkout_payment_process .confirm a {
+	text-decoration: none;
+}
+#checkout_payment_process .order_detail {
+	border-bottom: 1px solid #ddd;
+
+}
+#checkout_payment_process .order_detail .barcode{
+	width: 200px;
+	border-right: 1px solid #ddd;
+}
+#checkout_payment_process .order_detail .barcode img {
+	height: 70px;
+	width: 180px;
+}
+#checkout_payment_process .order_detail .barcode p{
+	padding-left: 10px;
+	font-size: 11px;
+	margin-bottom: 0px;
+}
+#checkout_payment_process .order_detail .eglible {
+	margin-left: 15px;
+	width: 350px;
+	padding-left: 20px;
+	float: right;
+	padding-bottom: 20px;
+	text-align: right;
+}
+#checkout_payment_process .order_detail .eglible p {
+	margin-bottom: 0px;
+}
+#checkout_payment_process .order_detail .eglible h1 {
+	margin-bottom: 0px;
+}
+#checkout_payment_process .order_detail .eglible .include{
+	font-size: 12px;
+}
+#checkout_summary h4 {
+	font-size: 20px;
+	margin-bottom: 5px;
+}
+#checkout_summary .shipping_and_payment {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.ui_choose .selected {
+
+}

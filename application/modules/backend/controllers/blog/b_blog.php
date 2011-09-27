@@ -8,6 +8,7 @@ class B_blog extends MX_Controller {
 	function __construct() {
 		parent::__construct();
 			$this->dodol_auth->userRoleCheck('owner');
+			$this->load->helper('blog/blog');
 	}
 	function index() {
 		
@@ -20,7 +21,7 @@ class B_blog extends MX_Controller {
 				redirect('backend/blog/b_blog/post_browse');
 			else:
 				$this->messages->add('somthing wrong, please try again', 'warning');
-				return false;
+				redirect(current_url());
 			endif;
 		endif;
 		$data['pT'] = 'Create Post';

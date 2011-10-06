@@ -15,6 +15,7 @@ class Cart_widget extends Widget_helper
 	}
 	function run(){
 		$this->load->library('cart');
+		$this->load->helper('store/store');
 		$data = array(
 			'total_price' => $this->cart->total(),
 			'total_item' => $this->cart->total_items()

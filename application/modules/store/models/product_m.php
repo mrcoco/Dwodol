@@ -381,6 +381,7 @@ class Product_m extends CI_Model {
 	
 
 	function create($data){
+		$data['c_date'] = date('Y-m-d H:i:s');
 		$this->db->where('sku', element('sku', $data));
 		$pre = $this->db->get('store_product');
 		if($pre->num_rows() == 0){
@@ -392,6 +393,7 @@ class Product_m extends CI_Model {
 		}
 	}
 	function update($id, $data){
+		$data['m_date'] = date('Y-m-d H:i:s');
 		if($this->getbyid($id, false, false)){
 			$this->db->where('id', $id);
 			if($this->db->update('store_product', $data)){
@@ -709,6 +711,49 @@ class Product_m extends CI_Model {
 		}else{
 			return false;
 		}
+	}
+	
+	// LABEL XREF
+	function label_create($id, $id_tag){
+		$this->db->where('p_id' , $id);
+		$this->db->where('tag_id', $id_tag);
+		if($this->db->get('store_product_label_xref')->num_rows() == 1)return false;
+		
+		$this->db->select_max('order');
+		$this->db->where('p_id', $id);
+		$check = $this->db->get('store_product_label_xref');
+		$order = ($check->num_rows() > 0) ? $check->row()->order + 1 : 1;
+		
+		
+		$data = array(
+			'p_id' 		=> $id,
+			'tag_id' 	=> $id_tag,
+			'order'		=> $order
+		);
+		$this->db->insert('store_product_label_xref', $data);
+		return $this->label_getbyid($this->db->insert_id());
+		
+	}
+	function label_delete($id){
+		if(!$del = $this->label_getbyid($id))return false;
+		$this->db->where('id', $id);
+		if($this->db->delete('store_product_label_xref')){
+			return $del;
+		}else{
+			return false;
+		}
+	}
+	function label_update($id, $data){
+		$this->db->where('id', $id);
+		if(!$this->db->update('store_product_label_xref', $data)) return false;
+		return $this->label_getbyid($id);
+		
+	}
+	function label_getbyid($id){
+		$this->db->where('id', $id);
+		$q = $this->db->get('store_product_label_xref');
+		if($q->num_rows != 1)return false;
+		return $q->row();
 	}
 	
 	

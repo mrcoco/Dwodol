@@ -76,7 +76,7 @@
     	</div>
     	<div class="clear"></div>
 	</td>
-    <td class="text_center"><?=$this->addon_store->show_price($item['price'])?></td>
+    <td class="text_center"><?=show_price($item['price'])?></td>
     <td class="qty grid_120">
     	
     	<div class="update_form ctr">
@@ -85,7 +85,7 @@
     	<a href="" class="button update_button">update</a>
     	</div>
  	</td>
-    <td class="text_right subtotal"><?=$this->addon_store->show_price($item['subtotal'])?></td>
+    <td class="text_right subtotal"><?=show_price($item['subtotal'])?></td>
 
 	</tr>
 
@@ -93,7 +93,7 @@
  <? } ?>
 <tr class="dark">
 	<td colspan="4" align="right">Subtotal :</td>
-	<td class="text_right totalcartvalue"> <?=$this->addon_store->show_price($this->cart->total());?></td>
+	<td class="text_right totalcartvalue"> <?=show_price($this->cart->total());?></td>
 </tr>
 <?if(isset($this->cart->shipping_info['fee'])){?>
 <tr>
@@ -103,7 +103,7 @@
 	
 	</td>
 	
-	<td class="text_right shipping_fee"><?=$this->addon_store->show_price($this->cart->shipping_info['fee']);?> </td>
+	<td class="text_right shipping_fee"><?=show_price($this->cart->shipping_info['fee']);?> </td>
 </tr> 
 <?}?>
 <tr class="dark">
@@ -116,7 +116,7 @@
 		$final_total = $this->cart->total() + $this->session->userdata['shipping_info']['fee'];
 		}	
 		?>
-		 <?=$this->addon_store->show_price($final_total);?>
+		 <?=show_price($final_total);?>
 	</td>
 </tr>
 </tbody>

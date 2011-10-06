@@ -107,26 +107,26 @@ class Store_cart extends MX_Controller {
 			$cart = $this->getCartItem($rowid);
 			$data['status']         = 'on';
 			$data['new_qty']        = $cart['qty'];
-			$data['new_subtotal']   = $this->addon_store->show_price($cart['subtotal']);
+			$data['new_subtotal']   = show_price($cart['subtotal']);
 			$data['new_total_item'] = $this->cart->total_items();
-			$data['new_total'] = $this->addon_store->show_price($this->cart->total());
+			$data['new_total'] = show_price($this->cart->total());
 			if($this->session->userdata('shipping_info') && isset($this->session->userdata['shipping_info']['fee'])){
-		    	$data['new_ship_fee']    = $this->addon_store->show_price($this->session->userdata['shipping_info']['fee']);
-    			$data['new_final_total'] = $this->addon_store->show_price($this->cart->total()+$this->session->userdata['shipping_info']['fee']);
+		    	$data['new_ship_fee']    = show_price($this->session->userdata['shipping_info']['fee']);
+    			$data['new_final_total'] = show_price($this->cart->total()+$this->session->userdata['shipping_info']['fee']);
 			}else{
-			    $data['new_final_total'] = $this->addon_store->show_price($this->cart->total());
+			    $data['new_final_total'] = show_price($this->cart->total());
 			}
 			echo  json_encode($data);
 		}elseif($update['status'] == 'on' && $qty == 0){
 			$data['status']         = 'on';
 			$data['new_qty']        = $qty;
 			$data['new_total_item'] = $this->cart->total_items();
-			$data['new_total']      = $this->addon_store->show_price($this->cart->total());
+			$data['new_total']      = show_price($this->cart->total());
 			if($this->session->userdata('shipping_info') && isset($this->session->userdata['shipping_info']['fee'])){
-		    	$data['new_ship_fee']       = $this->addon_store->show_price($this->session->userdata['shipping_info']['fee']);
-    			$data['new_final_total']    = $this->addon_store->show_price($this->cart->total()+$this->session->userdata['shipping_info']['fee']);
+		    	$data['new_ship_fee']       = show_price($this->session->userdata['shipping_info']['fee']);
+    			$data['new_final_total']    = show_price($this->cart->total()+$this->session->userdata['shipping_info']['fee']);
 			}else{
-			    $data['new_final_total']    = $this->addon_store->show_price($this->cart->total());
+			    $data['new_final_total']    = show_price($this->cart->total());
 			}
 			echo  json_encode($data);
 	    	}else{
@@ -298,7 +298,7 @@ class Store_cart extends MX_Controller {
 			$attrb = $this->product_m->getAttrbByKey(element('id_prod', $param), element('attrb_key', $param));
 			if($attrb){
 				// if attribute match
-				$options = $this->addon_store->hackAttrib($attrb->attribute);
+				$options = hackAttrib($attrb->attribute);
 				$price = modules::run('store/product/prod_price', $param['id_prod'], $attrb->id);
 				$rowid = $this->is_in_cart($param['id_prod'], $attrb->id);
 				

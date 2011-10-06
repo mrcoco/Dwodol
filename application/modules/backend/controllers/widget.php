@@ -7,6 +7,7 @@ class Widget extends MX_Controller {
 	//php 5 constructor
 	function __construct() {
 		parent::__construct();
+		$this->load->helper('store/store');
 	}
 	
 	//php 4 constructor
@@ -101,11 +102,11 @@ class Widget extends MX_Controller {
 		$data['num_order'] = $num_order;
 		$data['test'] = date("Y-m-d", strtotime("-1 months"));
 		$data['omzet'] = array(
-			'lastmonth' => $this->cart->show_price($lastmonth),
-			'lastweek' => $this->cart->show_price($lastweek),
-			'yesterday' => $this->cart->show_price($yesterday),
-			'today' => $this->cart->show_price($today),
-			'total' => $this->cart->show_price($total),
+			'lastmonth' => show_price($lastmonth),
+			'lastweek' => show_price($lastweek),
+			'yesterday' => show_price($yesterday),
+			'today' => show_price($today),
+			'total' => show_price($total),
 		);
 		
 		$this->load->view('backend/widget/main_statistic_v', $data);

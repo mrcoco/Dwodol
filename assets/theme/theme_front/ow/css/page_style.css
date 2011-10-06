@@ -172,7 +172,7 @@ input[name="addcart"]{
 ----------------------------------------------------------------------------------------------------*/
 .productSnap { width:260px; height:320px; float:left; margin:0 10px 10px 3px; margin-bottom:20px; display: table;}
 .productSnap a {text-decoration: none; color:#fff}
-.productSnap .productImg img { width:260px; height:320px}
+.productSnap .productImg img.prod { width:260px; height:320px}
 .productSnap .productDetail { border-top:1px solid #ccc;  border-bottom:1px solid #ccc; padding: 5px 0px; margin-top:5px;}
 .productSnap .productPrice {float: right;}
 .productSnap .productImg {position: relative;}

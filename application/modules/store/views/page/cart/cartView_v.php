@@ -66,7 +66,7 @@
     	</div>
     	<div class="clear"></div>
 	</td>
-    <td class="text_center"><?=$this->addon_store->show_price($item['price'])?></td>
+    <td class="text_center"><?=show_price($item['price'])?></td>
     <td class="qty grid_150">
     	
     	<div class="update_form left">
@@ -80,7 +80,7 @@
 		</div>
 		<div class="clear"></div>
  	</td>
-    <td class="text_right subtotal grid_150"><?=$this->addon_store->show_price($item['subtotal'])?></td>
+    <td class="text_right subtotal grid_150"><?=show_price($item['subtotal'])?></td>
 
 	</tr>
 
@@ -88,7 +88,7 @@
  <? } ?>
 <tr>
 	<td colspan="3"><strong>Total</strong></td>
-	<td class="text_right totalcartvalue"> <?=$this->addon_store->show_price($this->cart->total());?></td>
+	<td class="text_right totalcartvalue"> <?=show_price($this->cart->total());?></td>
 </tr> 
 </tbody>
 </table>

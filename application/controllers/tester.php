@@ -14,7 +14,34 @@ class Tester extends MX_Controller {
 		parent::__construct();
 	}
 	function index(){
-	echo 'tester';
+		$this->load->library('curl');
+		$this->curl->create('http://service.ecocoma.com/shipping/dhl.asmx');
+		$this->curl->option(CURLOPT_BUFFERSIZE, 10);
+		$xml = '<?xml version="1.0" encoding="utf-8"?>
+		<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+		  <soap:Body>
+		    <GetDHLRate xmlns="http://service.ecocoma.com/shipping/dhl">
+		      <KeyID>SHP-T36470756O</KeyID>
+		      <DomainID></DomainID>
+		      <SenderAddress>Jl Anggrek XI Blok l 4 No 55</SenderAddress>
+		      <SenderCity>Tangerang</SenderCity>
+		      <SenderState>NV</SenderState>
+		      <SenderPostalCode>45566</SenderPostalCode>
+		      <SenderCountry>US</SenderCountry>
+		      <ReceiverCity>New York</ReceiverCity>
+		      <ReceiverState>NV</ReceiverState>
+		      <ReceiverPostalCode>78999</ReceiverPostalCode>
+		      <ReceiverCountry>ID</ReceiverCountry>
+		      <Weight>2</Weight>
+		      <ProtectionValue>true</ProtectionValue>
+		    </GetDHLRate>
+		  </soap:Body>
+		</soap:Envelope>';
+		
+		$this->curl->post($xml);
+		$this->curl->http_header('Content-Type: text/xml; charset=utf-8,Content-Length: length,	SOAPAction: "http://service.ecocoma.com/shipping/dhl/GetDHLRate"');
+		echo $this->curl->execute();
+		$this->curl->debug();
 	}
 	function jancok(){
 		$data = array('suh' => 'jncok');
@@ -244,7 +271,7 @@ class Tester extends MX_Controller {
 						$money = array('basic_charge', 'option_charge', 'total_charge');
 						$pre = array();
 						if(in_array($key, $money)){
-							$new[$key] = $this->cart->show_price($value*$rate);
+							$new[$key] = show_price($value*$rate);
 						}else{
 							$new[$key] = $value;
 						}

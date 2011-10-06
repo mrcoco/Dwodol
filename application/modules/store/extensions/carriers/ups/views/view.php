@@ -19,9 +19,9 @@
 						<input type="radio" class="hide" name="rate_id" value="<?=element('ups_rate_id', $item);?>">				</div>
 					</td>
 						
-					<td><?=$this->cart->show_price(element('basic_charge', $item));?></td>
-					<td><?=$this->cart->show_price(element('option_charge', $item));?></td>
-					<td><?=$this->cart->show_price(element('total_charge', $item));?></td>
+					<td><?=show_price(element('basic_charge', $item));?></td>
+					<td><?=show_price(element('option_charge', $item));?></td>
+					<td><?=show_price(element('total_charge', $item));?></td>
 					<td><?=element('days', $item);?></td>
 					<td><?=element('times', $item);?></td>
 			</tr>

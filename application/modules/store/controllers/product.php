@@ -42,7 +42,7 @@ class Product extends MX_Controller {
 	}
 	function view(){
 	//	$this->load->helper('store/product');
-		$this->dodol_theme->set_layout('extend/store/store');
+	//	$this->dodol_theme->set_layout('extend/store/store');
 		$this->dodol_asset->append_module('css', 'detail_prod.css');
 		$param['id'] 	= $this->uri->segment(3);
 		$param['attr'] 	= true;
@@ -65,6 +65,7 @@ class Product extends MX_Controller {
 		// MY_TODO : buat untuk dapet price role dari attribute, jika attribute di set;
 		
 		// IF HAVE DISCOUNT
+		
 		if($prod->disc):
 			$disc = explode(':', $prod->disc);
 			// IF DISCOUNT TYPE "n"
@@ -98,7 +99,7 @@ class Product extends MX_Controller {
 		$data = new stdClass;
 		$data->final_value 	= ($prod->price*$rate) - ($disc_value*$rate);
 		$data->origin	   	= $prod->price*$rate;
-		$data->formated 	= $currency.' '.number_format($data->final_value, 2, ',', '.');
+		$data->formated 	= $currency.' '.number_format($data->final_value, 0, ',', '.');
 		$data->disc_type 	= $disc_type;
 		$data->disc_value  	= $disc_value;
 		$data->disc_percent = $disc_percent;
@@ -108,10 +109,10 @@ class Product extends MX_Controller {
 	}
 	function prod_price($id, $id_attrb=false){
 		$param = array('select'=> 'price, disc, currency', 'id'=> $id);
-		$currency = $this->addon_store->currency();
+		$currency = currency();
 		$qp = $this->detProd($param);
 		$p = $qp['prod'];
-		$rate = $this->addon_store->rate();
+		$rate = rate();
 		if($p->disc){
 			$disc = explode(':', $p->disc);	
 			if($disc[0] == 'n'){		
@@ -155,13 +156,13 @@ class Product extends MX_Controller {
 		//*/
 		$data['final'] = $final_value;
 		$data['origin'] = $origin_value;
-		$data['formated'] = $currency.' '.number_format($final_value, 2, ',', '.');
+		$data['formated'] = $currency.' '.number_format($final_value, 0, ',', '.');
 		if(!$p->disc){
 		$data['formated_detail'] = '<div class="priceProduct_formated"><span class="finalPrice"> '.$currency.' '.number_format($final_value, 2, ',', '.').'</span></div>';
 		}else{
 			
 		$data['formated_detail'] = '<div class="priceProduct_formated"><span class="finalPrice"><span class="finalPrice"> '.$currency.' '.number_format($origin_value, 2, ',', '.').'</span><br/>
-		<span class="originPrice">'.$currency.' '.number_format($origin_value, 2, ',', '.').'</span><br/>
+		<span class="originPrice">'.$currency.' '.number_format($origin_value, 0, ',', '.').'</span><br/>
 		'.$rate.'
 		
 		</div>

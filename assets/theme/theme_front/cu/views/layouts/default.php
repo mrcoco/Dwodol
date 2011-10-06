@@ -16,6 +16,32 @@
 					</div>
 					<div class="clear"></div>
 				</div>
+				<script type="text/javascript" charset="utf-8">
+					keepBar();
+					function keepBar(){
+						
+						
+							var me = $('.topBar');
+						  	var position = me.position();
+							var h =  me.outerHeight();
+							var w = me.outerWidth()
+							var yPos ;
+						
+						
+						
+						
+						$(window).scroll(function () {
+					            yPos = $(window).scrollTop();
+					    	 	if (yPos >= position.top) {
+					         		
+					       			me.addClass('onMove');
+					            } else {
+					                me.removeClass('onMove');
+					            }
+					        });
+					 
+					}
+				</script>
 				<div class="comp_content">
 				
 					<?=$template['body'];?>

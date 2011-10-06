@@ -37,7 +37,7 @@ foreach($lists as $cus):?>
 <tr>
 	<td><?echo $customer->first_name.', '.$customer->last_name?></td>
     <td><?echo $customer->city.', '.modules::run('store/getCountry', $customer->country_id);?></td>
-    <td><?echo $this->cart->show_price($orders['mount']); ?></td>
+    <td><?echo show_price($orders['mount']); ?></td>
 	<td><?echo $orders['count'];?></td>
     <td>Last Order</td>
 </tr>

@@ -1,7 +1,7 @@
 <div class="request_stock_form form-ui">
 	<form method="post" action="#">
-	<h4 class="out_stock">Out of Stock</h4>
-	<p class="confirm_msg">Dont you Mind, if we notify you when product is back in stock</p>
+	<h4 class="out_stock">Sorry, This Product is Sold Out	</h4>
+	<p class="confirm_msg">Please submit your email or twiter bellow, <br/>so we can notiy you once it is restock or canceled by other customer</p>
 	<input type="hidden" name="prod_id" value="<?=$id_prod;?>" >
 	<input type="hidden" name="attrb_id" value="<?=$id_attrb;?>">
 	<input type="hidden" name="attrb_key" value="<?=$attrb_key;?>">

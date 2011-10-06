@@ -1,11 +1,23 @@
 /* @group 	  FONT FACE	 */
 @font-face {
-    font-family: 'TimelessRegular';
-    src: url('font/timeless-webfont.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Lato Bold'), local('Lato-Bold'), url('http://themes.googleusercontent.com/static/fonts/lato/v1/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff') format('woff');
 }
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Lato Italic'), local('Lato-Italic'), url('http://themes.googleusercontent.com/static/fonts/lato/v1/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff') format('woff');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url('http://themes.googleusercontent.com/static/fonts/lato/v1/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff') format('woff');
+}
+
 .timeLess{
 	font-family: TimelessRegular;
 }
@@ -14,6 +26,9 @@
 /* @group MAIN BLOCKING */
 .wrapper {
 
+}
+.inner_wrap {
+	width: 900px;
 }
 .header {
 	background-position: center bottom;
@@ -40,7 +55,22 @@
 	height: 30px;
 	position: relative;
 	margin-bottom: 15px;
+	padding-right: 5px;
+	width: 895px;
+	height: 30px;
 }
+.component .topBar.onMove {
+	position: fixed;
+	top: 0;
+	z-index: 10000;
+	color: #434343;
+	opacity: 1;
+	background-color: rgba(255, 255, 255, 0.88);
+}
+.component .topBar.onMove a {
+	color: #434343;
+}
+
 .component .topBar .barRight {
 	height: 30px;
 }
@@ -50,7 +80,7 @@
 
 /* @group TYPO */
 body {
-	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-family: 'Lato', sans-serif;
 	color: #484848;
 	font-size: 13px;
 	letter-spacing: -0.5px;
@@ -208,19 +238,27 @@ ul.horizontal li {
 ----------------------------------------------------------------------------------------------------*/
 .productSnap { width:260px; height:320px; float:left; margin:0 10px 10px 3px; margin-bottom:20px; display: table;}
 .productSnap a {text-decoration: none; color:#fff}
-.productSnap .productImg img { width:260px; height:320px}
-
+.productSnap .productImg img.prod { width:260px; height:320px}
+.productSnap .productImg .label {position: absolute; z-index: 100;}
+.productSnap .productImg .label img {height: 75px}
 .productSnap .productDetail { border-top:1px solid #ccc;  border-bottom:1px solid #ccc; padding: 5px 0px; margin-top:5px;}
 .productSnap .productPrice {float: right;}
 .productSnap .productImg {position: relative;}
-.productSnap .productImg .snap_tool {width:150px; left: 30px;position:absolute; top:200px; ; background:url(../img/store/opacity_black.png);padding:15px 10px 0px; display:none;}
+.productSnap .productImg .snap_tool {width:150px; left: 30px;position:absolute; top:200px; ; padding:15px 10px 0px; display:none;
+	background-color: rgba(1, 1, 1, 0.72);
+	border-radius: 3px;
+}
 .productSnap .productImg .snap_tool p { line-height:30px; margin:0px; text-align:center; font-size: 80%;}
 .productSnap .productImg .snap_tool p span {-webkit-border-radius: 3px;
    -moz-border-radius: 3px;
         border-radius: 3px;padding: 3px 5px; background:#ccc; color:#000; margin-right:5px;}
 .productSnap .productImg .snap_tool h3.prod_name {text-transform: capitalize; margin-bottom:10px; padding:0px; line-height:15px; text-align:center; font-size:14px; color:#fff; font-family:Myriad; font-style: italic;}
-.productSnap .productImg .snap_tool .product_detail { height:20px; margin:0px -10px 0px; background: url('../img/store/bg_detail_product_snap.png') repeat-x;
-color:#fff; font-size:10px; padding:0px 5px;}
+.productSnap .productImg .snap_tool .product_detail { height:20px; margin:0px -10px 0px;
+	color:#fff; font-size: 10px; padding:0px 5px;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#6d6c6c), to(black));
+	background-image: -moz-linear-gradient(270deg, #6d6c6c 0%, black 100%);
+	
+}
 .productSnap .productImg .snap_tool .triangle  { margin-top:-20px; margin-bottom:10px;
 	background: url('../img/opacity_black_triangle.png') no-repeat scroll top center;
 	height: 5px;

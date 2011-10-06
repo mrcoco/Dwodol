@@ -71,8 +71,8 @@ class Jne_carrier extends Store_carrier_helper {
 						ksort($str);
 						}
 
-						$rate = $this->addon_store->rate();
-						$site_currency = $this->addon_store->currency();
+						$rate = rate();
+						$site_currency = currency();
 						$index = 0;
 						$this->load->helper('string');
 						foreach($result as $r){

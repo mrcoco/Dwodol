@@ -63,11 +63,11 @@ if(!$data){
 	
 	function orderprice($id, $num){
 		$order = $this->order_m->getOrder($id);
-		if($order->currency != $this->addon_store->currency()){
-			$rate = $this->yh_conv->conv($order->currency, $this->addon_store->currency());
-			$new_num = $this->addon_store->show_price($num*$rate, $order->currency);
+		if($order->currency != currency()){
+			$rate = $this->yh_conv->conv($order->currency, currency());
+			$new_num = show_price($num*$rate, $order->currency);
 		}else{
-			$new_num = $this->addon_store->show_price($num);
+			$new_num = show_price($num);
 		}
 		return $new_num;
 	}

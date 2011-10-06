@@ -68,22 +68,22 @@
 					<tr>
 						<td><?=$this->load->model('store/product_m')->getbyid($item->id_prod, false, 'sku', false)->sku;?></td>
 						<td><?=$this->load->model('store/product_m')->getbyid($item->id_prod, false, 'prod.name', false)->name;?></td>
-						<td><?=$this->cart->show_price($item->price)?></td>
+						<td><?=show_price($item->price)?></td>
 						<td><?=$item->qty?></td>
-						<td class="text_right"><?=$this->cart->show_price($item->price*$item->qty);?></td>
+						<td class="text_right"><?=show_price($item->price*$item->qty);?></td>
 					</tr>
 			<?endforeach;?>
 					<tr>
 						<td colspan="4" class="text_right">Subtotal</td>
-						<td class="text_right"><?=$this->cart->show_price($order->sub_amount)?></td>
+						<td class="text_right"><?=show_price($order->sub_amount)?></td>
 					</tr>
 					<tr>
 						<td colspan="4" class="text_right">Shipping</td>
-						<td class="text_right"><?=$this->cart->show_price($order->ship_fee)?></td>
+						<td class="text_right"><?=show_price($order->ship_fee)?></td>
 					</tr>
 					<tr class="final_total">
 						<td colspan="4" class="text_right"><span class="bold">Total</span></td>
-						<td class="text_right"><?=$this->cart->show_price($order->total_amount)?></td>
+						<td class="text_right"><?=show_price($order->total_amount)?></td>
 					</tr>
 			</tbody>
 			</table>

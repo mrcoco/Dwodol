@@ -15,6 +15,7 @@
 	}
 	function prod_price($id, $id_attrb = false, $raw = false){
 		$data = modules::run('store/product/_prod_price', $id, $id_attrb);
+	
 		if($raw == false){
 		return $data->formated;
 		}else{
@@ -181,5 +182,24 @@
 		if($q->num_rows() != 1 ) return false;
 		$data = $q->row();
 		$data->media = prod_media($id, $img_size);
+	}
+	function prod_label($id, $height='80'){
+		$ci =& get_instance();
+		$path = base_url().'/assets/modules/store/label_img/';
+		// detect sold out
+		if(prod_stock($id) == 0)  return  '<img height="'.$height.'" src="'.$path.'sold_out.png"  alt="Sold out">';
+		
+		// check have discount
+		$ci->db->select('disc');
+		$ci->db->where('id', $id);
+		$disc = $ci->db->get('store_product');
+		if($disc->row()->disc != '') return  '<img height="'.$height.'" src="'.$path.'sale.png"  alt="sale">';
+		
+		// detect new arrival
+		$ci->db->select('DATE(c_date) as date');
+		$ci->db->where('id', $id);
+		$q = $ci->db->get('store_product');
+		if($q->row()->date >= date("Y-m-d", strtotime("-1 weeks")) ) return '<img height="'.$height.'"  src="'.$path.'new_arrival.png"  alt="New Arrival">';
+		
 	}
 ;?>

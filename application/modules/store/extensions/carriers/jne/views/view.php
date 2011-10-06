@@ -18,7 +18,7 @@
 						<input type="radio" class="hide" name="rate_id" value="<?=element('jne_rate_id', $item);?>">				</div>
 					</td>
 						
-					<td><?=$this->cart->show_price(element('rate', $item));?></td>
+					<td><?=show_price(element('rate', $item));?></td>
 			</tr>
 			<?endforeach?>
 		</tbody>

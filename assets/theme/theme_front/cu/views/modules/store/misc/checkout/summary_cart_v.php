@@ -11,8 +11,8 @@
 				<div class="name"><h6><?=element('name', $item)?></h6>
 				<small><?=($opt = element('options', $item))  ? prod_attr_to_word($opt) : '';?>	</small>
 				</div>
-				<p><? echo element('qty', $item).' x '.$this->cart->show_price(element('price', $item)) ?></p>
-				<p class="bold"><?=$this->cart->show_price(element('subtotal', $item));?></p>
+				<p><? echo element('qty', $item).' x '.show_price(element('price', $item)) ?></p>
+				<p class="bold"><?=show_price(element('subtotal', $item));?></p>
 				
 			</div>
 			<div class="clear"></div>

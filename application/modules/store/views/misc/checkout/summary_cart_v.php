@@ -10,9 +10,9 @@
 			</div>
 			<div class="item_detail left">
 				<h6 class="font_myriad"><?=element('name', $item)?><small class="right"><?=element('id', $item)?></small></h6>
-				<small class=""><? echo element('qty', $item).' x '.$this->cart->show_price(element('price', $item)) ?></small>
+				<small class=""><? echo element('qty', $item).' x '.show_price(element('price', $item)) ?></small>
 				<br class=""/>
-				<small class="bold"><?=$this->cart->show_price(element('subtotal', $item));?></small>
+				<small class="bold"><?=show_price(element('subtotal', $item));?></small>
 				
 			</div>
 			<div class="clear"></div>
@@ -23,7 +23,7 @@
 		<?=print_arrayRecrusive($shipping_info)?>
 	</div>
 	<div class="total_amout right grid_230">
-		<h1 class="font_myriad"><?=$this->cart->show_price($this->cart->total())?></h1>
+		<h1 class="font_myriad"><?=show_price($this->cart->total())?></h1>
 	</div>
 	
 	<div class="clear"></div>

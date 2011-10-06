@@ -96,7 +96,7 @@ class category extends MX_Controller {
 		}
 		$data['pT'] = $cat->name;
 		$data['cat'] = $cat;
-		$this->dodol_theme->set_layout('extend/store/store');
+	//	$this->dodol_theme->set_layout('extend/store/store');
 		$this->dodol_theme->render()
 			 			  ->build('page/category/view', $data);
 	}

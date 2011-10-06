@@ -6,7 +6,7 @@
 	width: 237px;
 	height: 314px;
 }
-#page_landingpage .mod_main .productSnap .productImg img {
+#page_landingpage .mod_main .productSnap .productImg img.prod {
 	width: 237px;
 	height: 314px;
 }
@@ -120,10 +120,24 @@ img[style*="float: right"] {
 	height: 295px;
 	margin-left: 2px;
 }
-#store_new_arrival .browseProduct  .productSnap .productImg img,
-#product_browse .browseProduct  .productSnap .productImg img, #category_view .browseProduct  .productSnap .productImg img{
-	width: 240px;
-	height: 295px;
+#store_new_arrival .browseProduct  .productSnap,
+#product_browse .browseProduct  .productSnap,
+#category_view .browseProduct  .productSnap
+{
+	width: 223px;
+	height: 270px;
+}
+#store_new_arrival .browseProduct  .productSnap .productImg,
+#product_browse .browseProduct  .productSnap .productImg,
+#category_view .browseProduct  .productSnap .productImg{
+	width: 223px;
+	height: 270px;
+}
+#store_new_arrival .browseProduct  .productSnap .productImg img.prod,
+#product_browse .browseProduct  .productSnap .productImg img.prod,
+#category_view .browseProduct  .productSnap .productImg img.prod{
+	width: 223px;
+	height: 270px;
 }
 
 #extend_blog_blog_layout .sideBar  {

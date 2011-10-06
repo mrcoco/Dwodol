@@ -13,28 +13,39 @@
 	}
 	
 	function currency_conv($currencyfrom,$currencyto){
-	$rate = 1;
-   	$from   = $currencyfrom;
-	$to     = $currencyto;
-    $url = 'http://finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s='. $from . $to .'=X';
-    $handle = @fopen($url, 'r');
+		$rate = 1;
+	   	$from   = $currencyfrom;
+		$to     = $currencyto;
+	    $url = 'http://finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s='. $from . $to .'=X';
+	    $handle = @fopen($url, 'r');
     
-	if ($handle) {
-            $result = fgets($handle, 4096);
-            fclose($handle);
-    }else{
+		if ($handle) {
+	            $result = fgets($handle, 4096);
+	            fclose($handle);
+	    }else{
+			return $rate;
+		}
+	    $allData = explode(',', $result); /* Get all the contents to an array */
+	    $rate = $allData[1];
+	    return $rate;
+		}
+	function show_price($number, $curr =false){
+		if($curr == false):		
+		$formated = currency().' '.number_format($number, 0, ',', '.');		
+		else:
+		// TODO : Change when currency session change	
+		$formated = $curr.' '.number_format($number, 0, ',', '.');		
+		endif;	
+		return $formated;
+	
+	}
+	function rate(){
+		$_ci =& get_instance();
+		$rate = $_ci->session->userdata('rate');
+		if($rate){
+			$rate = $rate;
+		}else{
+			$rate = 1;
+		}
 		return $rate;
 	}
-    $allData = explode(',', $result); /* Get all the contents to an array */
-    $rate = $allData[1];
-    return $rate;
-	}
-	function show_price($number, $curr =false){
-	if($curr == false):		
-	$formated = currency().' '.number_format($number, 2, ',', '.');		
-	else:
-	// TODO : Change when currency session change	
-	$formated = $curr.' '.number_format($number, 2, ',', '.');		
-	endif;	
-	return $formated;
-}

@@ -8,7 +8,7 @@ class Collection extends MX_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->mod = $this->load->model('store/collection_m');
-		$this->dodol_theme->set_layout('extend/store/store');
+	
 	}
 	
 	//php 4 constructor

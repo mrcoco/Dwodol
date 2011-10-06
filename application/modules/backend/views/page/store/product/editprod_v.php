@@ -183,7 +183,34 @@
 			<div class="clear"></div>
 			
 				<script type="text/javascript" charset="utf-8">
+				$(document).ready(function(){
 
+						$(function() {
+							$( ".the_medias" ).sortable({
+							   update: function(event, ui) { saveOrder() }
+							});
+
+
+						});
+						function saveOrder(){
+								var array = $(".the_medias" ).sortable('toArray')
+								var order = "";
+								$.each(array, function(i, val) {
+								    order += val+",";
+								});
+								order = order.substring(0,(order.length-2));	
+								$.ajax({
+											type: "POST",
+											dataType : "json",
+											data : {'sort_state' : order},	
+											url: "<?=site_url('backend/store/b_product/reorder_media')?>",
+								});			
+
+						}
+
+				});
+
+					
 						$(document).ready(function(){
 							$('.name_media').live('click', function(){
 								var suspect = $(this);

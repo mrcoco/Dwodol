@@ -103,7 +103,7 @@ class Store extends MX_Controller {
 		return store_carrier_helper::load($state);
 	}
 	function new_arrival(){
-		$this->dodol_theme->set_layout('extend/store/store');
+	//	$this->dodol_theme->set_layout('extend/store/store');
 		$this->load->library('dodol/dodol_paging');
 		$uri = $this->uri->uri_to_assoc();
 		$param['start'] = 0;

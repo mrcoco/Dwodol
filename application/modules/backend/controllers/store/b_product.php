@@ -67,12 +67,14 @@ class B_product extends MX_Controller {
 				$this->load->library('dw_upload');
 				if( $this->dw_upload->is_multiple('image') ):
 					for($i = 0 ; $i<count($_FILES['image']['tmp_name']) ; $i++){
+						$config['file_name'] = random_string('alnum', 16).'.jpg';
 						$this->dw_upload->initialize($config);
 						if ($this->dw_upload->do_upload('image', $i)):
 							array_push($uploaded, $this->dw_upload->data());
 						endif;
 					}
 				else:
+					$config['file_name'] = random_string('alnum', 16).'.jpg';
 					$this->dw_upload->initialize($config);
 					if ($this->dw_upload->do_upload('image')):
 						array_push($uploaded, $this->dw_upload->data());
@@ -390,8 +392,10 @@ class B_product extends MX_Controller {
 		$menuSource = array(
 			array(
 				'anchor' => 'Add Product', 'link' => site_url('backend/store/b_product/addProd')),
-				array(
-					'anchor' => 'category', 'link' => site_url('backend/store/b_category/browse')),
+			array(
+				'anchor' => 'category', 'link' => site_url('backend/store/b_category/browse')),
+			array(
+				'anchor' => 'Tag', 'link' => site_url('backend/store/b_product/label_list')),
 		);
 		$menu = menu_rend($menuSource);
 		$offset = (element('page', $param) && element('page', $param) != 1 ) ?  ($limit*(element('page', $param)-1))+1 : 1;
@@ -427,54 +431,14 @@ class B_product extends MX_Controller {
 		
 		$this->dodol_theme->render()->build('page/store/product/listprod_v',$data);
 	}
+	
+	function label_list(){
+		$render = array();
+		$render['pT'] = 'Product Label and Tag';
+		
+		$this->dodol_theme->render()->build('page/store/product/label_list',$render);
+	}
 	// Edit Media View
-	function editmedia(){
-		$idmedia = $this->uri->segment(5);
-		$media = $this->product_m->getMediaById($idmedia);
-		if(!$media) return $this->dodol_theme->not_found();
-		$pram = array('id'=> $media->prod_id, 'select' => 'name, sku');
-		$prod =  $this->product_m->getProdById($pram);
-		$data = array(
-			'mainLayer' => 'backend/page/store/product/editmedia_v',
-			'pt'        => 'Update Media',
-			'ht'        => 'Update Media - '.$media->name. '<small> product : '.$prod['prod']->name.' | sku :'.$prod['prod']->sku.'</small>',
-			'media'		=> $media,
-				);
-		$this->dodol_theme->render()->build('page/store/product/editmedia_v', $data);
-		if($this->input->post('submit')){
-			if($this->input->post('default') == '1'){$def = 1;}else{$def = 0;}
-			if($this->input->post('publish') == 'y'){ $pub = 'y';}else{ $pub = 'n';}
-			$ins_data = array(
-				'publish' => $pub,
-				'default' => $def,
-				'name'    => $this->input->post('name'));
-			$q = $this->exe_editmedia($ins_data, 'media_file', $this->input->post('id-media'));
-			redirect('backend/store/b_product/editmedia/'.$this->input->post('id-media'),'refresh');
-		}
-	}
-	
-	
-	function exe_editmedia($data ,$input_name, $idmedia){
-	
-		if($_FILES[$input_name]['name']){
-			$media = $this->product_m->getMediaById($idmedia);
-			//$current_media = './assets/modules/store/product_img/'.$media->path;
-			$name_media = 'p_'.$media->prod_id.'_m_'.$media->id.'_'.$media->name;
-			$up = $this->product_m->uploadMedia($input_name,$name_media);
-			if (!isset($up['error'])){
-		//	$del = unlink($current_media);
-			$data['path'] = $up['file_name'];
-			$this->product_m->editMedia($data, $idmedia);
-			$this->messages->add('media with name <strong>'.$data['name'].'</strong> success be updated', 'success');
-			}else{
-			
-				$this->messages->add('media with name <strong>'.$data['name'].'</strong> failed be updated <br/> error detail : '.$up['error']['error'], 'warning');
-			}
-		}else{
-			$this->product_m->editMedia($data, $idmedia);
-			$this->messages->add('media with name <strong>'.$data['name'].'</strong> success be updated', 'success');
-		}
-	}
 	function delete_media(){
 		if($id = $this->uri->segment(5)){
 			if( $del = modules::run('store/product/api_media_delete', $id)):
@@ -495,6 +459,7 @@ class B_product extends MX_Controller {
 				$update = modules::run('store/product/api_media_update', $value, $data );
 			endforeach;
 		endif;
+		return true;
 	}
 
 	// EXE Function

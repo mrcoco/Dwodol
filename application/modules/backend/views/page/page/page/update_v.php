@@ -3,7 +3,7 @@
 	<input type="text" name="title" value="<?=$page->title;?>" class="text-input">
 	<br/>
 	<br/>
-	<?=ck_editor('page_content', false, $page->content)?>
+	<?=ck_editor('content', false, $page->content)?>
 	<br/>
 	<select name="category_id" id="category_id">
 		<option value="">Select Category</option>

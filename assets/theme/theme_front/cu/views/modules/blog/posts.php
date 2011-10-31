@@ -11,9 +11,9 @@
 		<div class="author right"><span>by : <?=$post->first_name.' '.$post->last_name?></span></div>
 		<div class="clear"></div>
 		<div class="content">
-		<div class="left"><a href="<?=post_link();?>"><img src="<?=post_img_thumb('200_100_crop');?>" alt="<?=post_title();?>"/></a></div>
+		<div class="left"><a href="<?=post_link();?>"><img src="<?=post_img_thumb('200_150_crop');?>" alt="<?=post_title();?>"/></a></div>
 		
-		<div class="post_content_pre right grid_500"><?=post_content_prev(50)?></div>
+		<div class="post_content_pre right grid_450"><?=post_content_prev(70)?></div>
 	
 		<div class="clear"></div>
 		</div>

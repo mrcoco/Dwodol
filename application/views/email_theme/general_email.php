@@ -22,8 +22,7 @@
 			<!-- COntent -->
 		<td valign="top" width="700" id="tableConten" >
 			<div id="mainLayer">
-				<?if (isset($template)){ $this->load->view($template);}?>
-				<?if (isset($mailmsg)){ echo $mailmsg ;}?>
+				<?=$body?>
 			
 			</div>	
 		</td>

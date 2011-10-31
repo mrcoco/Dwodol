@@ -17,7 +17,7 @@
 					<div class="clear"></div>
 				</div>
 				<div class="comp_content">
-					<div class="main_layer left grid_720">
+					<div class="main_layer left grid_670">
 						<?=$template['body'];?>
 					</div>
 					<div class="sideBar right">

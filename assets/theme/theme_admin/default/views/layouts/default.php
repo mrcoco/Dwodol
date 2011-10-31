@@ -110,8 +110,9 @@
 <!END OF PAGE HEADING>
 		
 <!component start here/>
-
-<?=element('body', $template)?>
+	<div class="main_body_component">
+	<?=element('body', $template)?>
+	</div>
 <!component end here/>
 </div>
 </div>

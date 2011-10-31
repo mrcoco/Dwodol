@@ -1,10 +1,10 @@
 <div class="form-Ui addPage">
 <form action="" method="post" accept-charset="utf-8">
-	<input type="text" name="title" value="Title" class="text-input">
+	<input type="text" name="title" value="Title" class="grid_500" class="text-input">
 	<br/>
 	<br/>
 
-	<?ck_editor('page_content')?>
+	<?ck_editor('content')?>
 	<br/>
 	<select name="category_id" id="category_id">
 		<option value="">Select Category</option>

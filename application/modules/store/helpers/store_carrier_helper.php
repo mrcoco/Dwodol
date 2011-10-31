@@ -9,7 +9,9 @@ class Store_carrier_helper
 	$this->_ci_obj =& get_instance();
 	$this->source_data 	= ($ship = $this->_ci_obj->session->userdata('shipto_data')) ? $ship : $this->_ci_obj->session->userdata('billing_data');
 	}
-	
+	function get_detail(){
+		return $this->detail;
+	}
 	function load($file){
 		
 		if(strpos($file, '/') !== false){
@@ -50,7 +52,23 @@ class Store_carrier_helper
         extract($data);
         include $this->carrier_path.'views/'.$view.EXT;
     }
-
+	function caller(){
+		$_ci_obj =& get_instance();
+		$all_carriers = scandir(APPPATH.'modules/store/extensions/carriers/');
+		$loaded = array();
+		if(count($all_carriers) > 0){
+			foreach($all_carriers as $item){
+				if(
+					$item == '.'  		|| 
+					$item == '..' 		|| 
+					$item == '.DS_Store'
+					) continue;
+				array_push($loaded , $item);
+			}
+			
+		}
+		return $loaded;
+	}
 	function registry($func = null){
 		$_ci_obj =& get_instance();
 		$func = ($func != null) ? $func : 'get_rate';

@@ -1,7 +1,7 @@
 <?=$this->dodol_theme->partial('head');?>
 <div class="wrapper">
 	<div class="inner_wrap ctr grid_960">
-			<div class="header">
+			<div class="header" id="some">
 				<div class="logo ctr">
 					<img src="<?=$this->dodol_theme->path();?>/img/top_logo_width.png" width="870" height="33" alt="Top Logo Width">
 				</div>

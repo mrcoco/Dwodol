@@ -170,7 +170,8 @@ margin-bottom: 10px;
 .post_list .post_item .post_title {
 	font-size: 28px;
     line-height: 28px;
-    margin: 0;
+    margin-bottom: 15;
+    
 }
 .post_list .post_item .content{
 	padding-bottom: 20px;
@@ -218,7 +219,7 @@ margin-bottom: 10px;
 	margin-top: 10px;
 }
 #blog_single .comment_content textarea{
-	width: 683px;
+	width: 660px;
 	height: 100px;
 }
 #blog_single .comment_list .item {
@@ -240,7 +241,7 @@ margin-bottom: 10px;
 	padding: 3px;
 }
 #blog_single .comment_list .item .content{
-	width: 580px;
+	width: 539px;
 	border: 1px solid #e4e1ea;
 	padding: 10px;
 	border-radius: 3px;

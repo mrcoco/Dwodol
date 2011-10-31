@@ -73,6 +73,7 @@
 
 .component .topBar .barRight {
 	height: 30px;
+	padding: 0 10px;
 }
 
 /* @end */
@@ -244,7 +245,7 @@ ul.horizontal li {
 .productSnap .productDetail { border-top:1px solid #ccc;  border-bottom:1px solid #ccc; padding: 5px 0px; margin-top:5px;}
 .productSnap .productPrice {float: right;}
 .productSnap .productImg {position: relative;}
-.productSnap .productImg .snap_tool {width:150px; left: 30px;position:absolute; top:200px; ; padding:15px 10px 0px; display:none;
+.productSnap .productImg .snap_tool {width:150px; left: 30px;position:absolute; top:215px; ; padding:15px 10px 0px; display:none;
 	background-color: rgba(1, 1, 1, 0.72);
 	border-radius: 3px;
 }

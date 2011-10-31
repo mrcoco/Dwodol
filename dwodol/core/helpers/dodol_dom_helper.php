@@ -33,6 +33,11 @@ define('HDOM_INFO_ENDSPACE',7);
 // helper functions
 // -----------------------------------------------------------------------------
 // get html dom form file
+function file_get_url($url){
+	$html = new simple_html_dom();
+	$html->load_file($url);
+	return $html;
+}
 function file_get_html() {
     $dom = new simple_html_dom;
     $args = func_get_args();

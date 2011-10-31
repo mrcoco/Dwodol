@@ -22,6 +22,14 @@
 		return $data;
 		}
 	}
+	function prod_ext_data($id){
+		$ci =& get_instance();
+		$ci->db->select('extra_data');
+		$ci->db->where('id', $id);
+		$q = $ci->db->get('store_product');
+		if($q->num_rows() == 1) {return json_decode($q->row()->extra_data, true) ; }
+		else{ return false;}
+	}
 	function prod_prev_link($id){
 
 		$ci =& get_instance();
@@ -156,10 +164,10 @@
 		$prd = $ci->db->get('store_product');
 		$obj = new stdClass;
 		$obj = false;
-		if($prod->num_row() == 1) {
-			$obj = $prod->row();
+		if($prd->num_rows() == 1) {
+			$obj = $prd->row();
 			$obj->attr = false;
-			if($attr_id != false){
+			if($attr_id != (false || 0)){
 				$ci->db->where('id', $attr_id);
 				$attr = $ci->db->get('store_product_attribute');
 				if($attr->num_rows() == 1){

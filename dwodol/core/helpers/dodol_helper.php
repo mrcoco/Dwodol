@@ -103,6 +103,17 @@ function array_sort($a,$subkey) {
 	}
 	return $c;
 }
+function array_suff_filter($suffix, $array = array(), $keep_suffix = true){
+	$new = array();
+	foreach($array as $key => $val){
+		if(strpos($key, $suffix) === false) continue;
+		if($keep_suffix == false){
+			$new[str_replace($suffix, '', $key)] = $val; }
+		else{
+			$new[$key] = $val; }
+	}
+	return $new;
+}
 
 // TIME
 function custom_time($date, $nodate=false){

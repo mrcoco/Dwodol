@@ -1,6 +1,14 @@
 <? if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Jne_carrier extends Store_carrier_helper {
-
+	var $detail = array(
+		'name' 			=> 'JNE Carrier',
+		'file_name'		=> 'jne_carrier',
+		'description' 	=> 'fecthing the rate directly from the JNE.co.id',
+		'author'		=> 'Zidni Mubarock',
+		'author_mail'	=> 'zidmubarock@gmail.com',
+		'author_site'	=> 'http://barockprojects.com',
+	//	'logo_path'		=>  
+	);
 	var $url_getcity = 'http://www.jne.co.id/tariff.php?';
 	var $url_getrate = 'http://www.jne.co.id/index.php?mib=tariff&amp;lang=IN';
 	var $base_from_code = 'Q0dLMTAwMDBK';// jakarta base
@@ -24,6 +32,7 @@ class Jne_carrier extends Store_carrier_helper {
 	}
 	
 	// OVERIDING FUNCTION
+	
 	function get_rate(){
 		
 		if(element('country_id', $this->source_data ) != 100){

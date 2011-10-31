@@ -655,6 +655,7 @@ class Product_m extends CI_Model {
 	// RELATIONS
 	function getrelations($id_prod){
 		$this->db->where('p_own', $id_prod);
+	//	$this->db->or_where('p_rel', $id_prod);
 		$q = $this->db->get('store_product_rel');
 		if($q->num_rows() > 0){
 			return $q->result();

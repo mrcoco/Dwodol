@@ -1,6 +1,16 @@
 <? if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Bank_transfer_payment extends Store_payment_helper {
+	var $detail = array(
+		'name' 			=> 'Bank Trasfer',
+		'description' 	=> '',
+		'author'		=> 'Zidni Mubarock',
+		'author_mail'	=> 'zidmubarock@gmail.com',
+		'author_site'	=> 'http://barockprojects.com',
+		'file_name'		=> 'bank_tarnsfer_payment'
+	//	'logo_path'		=>  
+	);
+	
 	function __construct(){
 		
 	}

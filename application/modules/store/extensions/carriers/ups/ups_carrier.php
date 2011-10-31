@@ -7,6 +7,15 @@ class Ups_carrier extends Store_carrier_helper {
 	var $weight;
 	var $base_country_ID ;
 	var $base_country_ZIP ;
+	var $detail = array(
+		'name' 			=> 'UPS carrier',
+		'description' 	=> 'fetching the UPS rate from the http://www.neox.net/ups/upsrate.php',
+		'file_name'		=> 'ups_carrier',
+		'author'		=> 'Zidni Mubarock',
+		'author_mail'	=> 'zidmubarock@gmail.com',
+		'author_site'	=> 'http://barockprojects.com',
+	//	'logo_path'		=>  
+	);
 	
 	function __construct(){
 		parent::__construct();
@@ -161,9 +170,6 @@ class Ups_carrier extends Store_carrier_helper {
 				ksort($rate_detail);
 				$this->session->set_userdata('shipping_data', $rate_detail );
 		endif;
-		
-
-
 	}
 	
 	function load()

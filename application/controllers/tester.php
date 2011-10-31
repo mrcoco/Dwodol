@@ -14,38 +14,20 @@ class Tester extends MX_Controller {
 		parent::__construct();
 	}
 	function index(){
-		$this->load->library('curl');
-		$this->curl->create('http://service.ecocoma.com/shipping/dhl.asmx');
-		$this->curl->option(CURLOPT_BUFFERSIZE, 10);
-		$xml = '<?xml version="1.0" encoding="utf-8"?>
-		<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-		  <soap:Body>
-		    <GetDHLRate xmlns="http://service.ecocoma.com/shipping/dhl">
-		      <KeyID>SHP-T36470756O</KeyID>
-		      <DomainID></DomainID>
-		      <SenderAddress>Jl Anggrek XI Blok l 4 No 55</SenderAddress>
-		      <SenderCity>Tangerang</SenderCity>
-		      <SenderState>NV</SenderState>
-		      <SenderPostalCode>45566</SenderPostalCode>
-		      <SenderCountry>US</SenderCountry>
-		      <ReceiverCity>New York</ReceiverCity>
-		      <ReceiverState>NV</ReceiverState>
-		      <ReceiverPostalCode>78999</ReceiverPostalCode>
-		      <ReceiverCountry>ID</ReceiverCountry>
-		      <Weight>2</Weight>
-		      <ProtectionValue>true</ProtectionValue>
-		    </GetDHLRate>
-		  </soap:Body>
-		</soap:Envelope>';
 		
-		$this->curl->post($xml);
-		$this->curl->http_header('Content-Type: text/xml; charset=utf-8,Content-Length: length,	SOAPAction: "http://service.ecocoma.com/shipping/dhl/GetDHLRate"');
-		echo $this->curl->execute();
-		$this->curl->debug();
+		$pre_data['order'] = $this->load->controller('store/order')->api_getbyid(148, array('billing' => true, 'shipto' =>true, 'product_item' => true)); 
+		$data['body'] = $this->dodol_theme->view('store/mail_theme/order/recieve_order', $pre_data, true)	;	
+		$this->load->view('email_theme/general_email', $data);
+
+	}
+	function dhl(){
+		//$data = $this->dodol_theme->view('store/mail_theme/order/recieve_order', $data)
 	}
 	function jancok(){
 		$data = array('suh' => 'jncok');
 		$this->load->view('tester', $data);
+		
+		
 	}
 	
 	function test_md5(){
@@ -66,6 +48,29 @@ class Tester extends MX_Controller {
 		$this->upload->initialize($config);
 		$this->upload->do_upload('file');
 		}
+	}
+	function add_post(){
+		if($this->input->post('title')){
+			$data = array('title' => $this->input->post('title'), 'content' => $this->input->post('content'));
+		
+
+			$q = $this->db->insert('post', $data);
+			
+			
+			if($q){
+				$return = array('status' => 'success');
+			}else{
+				$return = array('status' => 'failed');
+			}
+			echo json_encode($return);
+		}else{
+			$return = array('status' => 'failed');
+			echo json_encode($return);
+		}
+		
+	}
+	function add_post_view(){
+		$this->dodol_theme->render()->build('addpost_view');
 	}
 	function test(){
 		$this->load->library('mailer');

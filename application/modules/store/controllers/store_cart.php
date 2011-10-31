@@ -366,7 +366,7 @@ class Store_cart extends MX_Controller {
 			'items' => $this->cart->contents(),
 			'pT'	=> 'Cart'
 			);
-		$this->dodol_theme->set_layout('extend/store/store');
+	//	$this->dodol_theme->set_layout('extend/store/store');
 		$this->dodol_theme->render()->build('page/cart/cartView_v', $data);
 		$this->updateCart();
 	}

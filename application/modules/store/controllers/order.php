@@ -240,10 +240,26 @@ if(!$data){
 		$order->billing_data 	= $bill;
 		$order->shipto_data 	= $shipto;
 		$order->product_item 	= $product_item;
+		
+		// SENDING Mail
+		// For Customer;
+		$email_data['heading'] 	= 'Order Recieved - #'.$order->id;
+		$email_data['msg'] 		= 'We just recieved your order '.show_date($order->c_date).'Please do the payment if yet do this';
+		$email_data['template'] = 'test';
+		
+		
+		
+		//for shop keeper, and owner
+		$email_data['heading'] 	= 'Purchase Order - #'.$order->id;
+		$email_data['msg']		= 'there is a order at '.show_date($order->c_date).' placed by'.$order->billing_data->first_name.' '.$order->billing_data->last_name;
+		$email;
+		
+		
 		return $order;
 		//do some order listener
 		
 	}
+
 	function api_getbyid($id, $depend = array()){
 		return $this->order_m->getbyid($id, $depend);
 	}

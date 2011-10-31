@@ -221,6 +221,10 @@ class B_product extends MX_Controller {
 		$is_ajax = ($this->input->get('ajx')) ? true : false;
 		$main_info 	= post_filter('main_');
 		$attrs    	= post_filter('attr_');
+		$extra		= array_suff_filter('rel_',post_filter('ext_'));
+		
+		$main_info['extra_data'] = json_encode($extra);
+		
 		$relations  = explode(',',$this->input->post('relations'));
 		$medias     = explode(',',$this->input->post('medias'));
 		$main_q = modules::run('store/product/api_create', $main_info) ;
@@ -264,6 +268,9 @@ class B_product extends MX_Controller {
 		$is_ajax = ($this->input->get('ajx')) ? true : false;
 		$main_info 	= post_filter('main_');
 		$attrs    	= post_filter('attr_');
+		$extra		= array_suff_filter('rel_',post_filter('ext_'));
+		$main_info['extra_data'] = json_encode($extra);
+		
 		$relations  = explode(',',$this->input->post('relations'));
 		$medias     = explode(',',$this->input->post('medias'));
 		$main_q = modules::run('store/product/api_update', $this->input->post('prodid'), $main_info) ;

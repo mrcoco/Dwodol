@@ -1,4 +1,4 @@
-<div class="viewCartWidget widget smallcart">
+<div class="viewCartWidget widget smallcart" id="cart_wid">
 	<?if($total_item == 0){?>
 	<p>Your Cart Is Empty</p>
 		<?}else{?>

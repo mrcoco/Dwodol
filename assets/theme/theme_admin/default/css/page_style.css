@@ -222,4 +222,11 @@
 	width: 650px;
 	height: 600px;
 }
+
+#b_store_config #mainArea .main_body_component h4 {
+	font-size: 14px;
+	border-bottom: 1px solid #DDD;
+	padding-bottom: 10px;
+}
+
 	

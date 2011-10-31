@@ -15,7 +15,25 @@ class Store_payment_helper
 		function payment_action(){
 
 		}
-
+		function get_detail(){
+			return $this->detail;
+		}
+		function caller(){
+			$_ci_obj =& get_instance();
+			$all_payments = scandir(APPPATH.'modules/store/extensions/payments/');
+			$loaded = array();
+			if(count($all_payments) > 0){
+				foreach($all_payments  as $item){
+					if(
+						$item == '.'  		|| 
+						$item == '..' 		|| 
+						$item == '.DS_Store'
+						) continue;
+					array_push($loaded , $item);
+				}
+			}
+			return $loaded;
+		}
 		function load($file){
 
 

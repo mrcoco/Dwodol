@@ -419,7 +419,7 @@ $(document).ready(function () {
         var tool = $(this).find('.snap_tool');
 		var img = $(this).find('img.prod');
 		img.animate({opacity : '0.5'},500);
-        tool.show('drop', {
+        tool.show('slide', {
             direction: "down"
         }, 500);
 
@@ -428,7 +428,10 @@ $(document).ready(function () {
         var tool = $(this).find('.snap_tool');
 		var img = $(this).find('img.prod');
 		img.animate({opacity : '1'},500);
-        tool.hide('fade', 500);
+        tool.hide('slide', {
+            direction: "down"
+        }, 500);
+
 
 
 
@@ -592,13 +595,15 @@ $(document).ready(function(){
 	var inputset = form.find('.inputSet:visible');
 	inputset.each(function(index){
 		var field_wrap = $(this).find('.input');
-		var field_input = $(this).find('input');
-		if(field_input.attr('type') == ('text' || 'password')){
+		var field_input = $(this).find(':input');
+		
+		if(field_input.attr('type') != ('radio' || 'checkbox')){
 			var w = field_wrap.width() - (field_input.css('padding-left').replace('px', '')*2);
 			field_input.css({
 				width : w,
 			});
 		}
+		
 
 
 	});

@@ -47,7 +47,22 @@
 				success : function(data){
 					
 					if(data.status == 'on'){
-						cart.replaceWith(data.new_cart);	
+						cart.replaceWith(data.new_cart);
+						$('.barRight').css('background-color' , '#fff');
+						$('.barRight').animate(
+							{
+								'backgroundColor' : '#efefef'
+								
+							},
+							500,
+							function() {
+							    $('.barRight').delay(1000).animate(
+									{
+										'backgroundColor' : '#fff'
+									},
+									500)
+							  }
+							)
 					}else if(data.status == 'off'){
 						$('.cart_form.form-Ui').hide('fade' ,{} , 500, function(){
 							$(data.request_form).appendTo('.form_area').hide().show('fade', {}, 500);

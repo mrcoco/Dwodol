@@ -15,6 +15,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }
 body {
 	line-height: 1;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 }
 ol, ul {
 	list-style: none;
@@ -375,7 +376,8 @@ body {
 ----------------------------------------------------------------------------------------------------*/
 
 body {
-	font: 13px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
+	font-size: 13px;
+	line-height: 1.5;
 }
 
 
@@ -451,6 +453,9 @@ fieldset {
 	color:#727272;
 	}
 
+.bold {
+	font-weight: bold;
+}
 
 
 /* @end */
@@ -473,7 +478,7 @@ td#tableContent {
 }
 #mainLayer {
 	padding: 10px 0px 20px;
-	font-family: Georgia, Palatino, Palatino Linotype, Times, Times New Roman, serif;
+	
 }
 #mainLayer .font70 {
 	font-size: 70%;

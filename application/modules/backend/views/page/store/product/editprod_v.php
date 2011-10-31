@@ -381,6 +381,11 @@
 			<h3>Product Relations</h3>
 			<div class="form_engine left grid_280">
 				<div class="box2">
+				<small>Relations wording label</small>
+				<input type="text" name="ext_rel_label" value="<?=element('rel_label', prod_ext_data($prod->id));?>" class="w_90">
+				</div>
+				<br/>
+				<div class="box2">
 				<small>Search The product by Name or SKU, to add relation with </small>
 				<input type="text" name="src_prod" value="" class="w_90">
 				</div>

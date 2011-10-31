@@ -249,8 +249,9 @@
 }
 #product_view .product_relation .productSnap .productImg .snap_tool{
 	width: 140px;
-	top: 140px;
+	top: 175px;
 	left: 15px;
+	
 }
 #product_view .view_product span.nav{
 	background: transparent;

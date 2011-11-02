@@ -1,4 +1,5 @@
 <div id="addeditprod">
+	
 <div class="tab-Ui" id="product_tab">
 	<div class="right submit_tool">
 		<span class="button" id="submitprod">Publish</span>
@@ -111,7 +112,7 @@
 				</fieldset>
 				<script type="text/javascript" charset="utf-8">
 					$(document).ready(function(){
-						
+					
 						var trigger = $('#clone_attr');
 
 						$('#clone_attr').live('click', function(){
@@ -351,6 +352,9 @@
 									action_url : '<?=site_url("backend/store/b_product/ajx_media?func=upload");?>',
 									data_post :{p_id : <?=$prod->id;?>},
 									files_key : 'image',
+									start : function(){
+										alert('start');
+									},
 									oncomplete : function(res){
 										if(res.status == 'success'){
 											add_media_res(res.uploaded);

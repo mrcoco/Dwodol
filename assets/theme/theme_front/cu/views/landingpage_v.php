@@ -1,5 +1,5 @@
 <div class="mod_main">
-	<?=modules::run('store/new_arrival_mod', 4)?>
+	<?=load_widget('front_main')?>
 </div>
 <div class="mod_bottom">
 	<div class="left_grid grid_600 left relative">

@@ -1,6 +1,6 @@
 <div class="form-Ui updPage">
 <form action="" method="post" accept-charset="utf-8">
-	<input type="text" name="title" value="<?=$page->title;?>" class="text-input">
+	<input type="text" name="title" value="<?=$page->title;?>" class="grid_500">
 	<br/>
 	<br/>
 	<?=ck_editor('content', false, $page->content)?>

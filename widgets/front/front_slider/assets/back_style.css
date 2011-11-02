@@ -1,0 +1,31 @@
+.itemSlide {
+	padding: 5px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #E4E4E4;
+}
+
+.del_trig span {
+	padding: 3px;
+	font-size: 11px;
+}
+.itemSlide .title, .itemSlide .link {
+	margin-bottom: 10px;
+	
+}
+.itemSlide input {
+	width: 100%;
+}
+.itemSlide .drop_area {
+	padding: 5px;
+	font-size: 11px;
+	width: 90%;
+	height: 50px;
+	background-color: #fff;
+	text-align: center;
+	vertical-align: middle;
+	border: 1px inset #e0dfdf;
+	-moz-box-shadow: 1px 1px 1px #dbdada;
+	-webkit-box-shadow: 1px 1px 1px #dbdada;
+	box-shadow: 1px 1px 1px #dbdada;
+	border-radius: 3px;
+}

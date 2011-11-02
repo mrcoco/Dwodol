@@ -110,6 +110,7 @@ class Widget_helper
 	 	$widget->base_path = base_url().str_replace('./widgets/', 'widgets/', $path);
 		$widget->parameter = element('0', array_slice($args, 1));
 		$widget->meta = element('1', array_slice($args, 1));
+		
 	    return call_user_func_array(array($widget, $func), array_slice($args, 1));    
 	}
 	function render($view, $data = array()){

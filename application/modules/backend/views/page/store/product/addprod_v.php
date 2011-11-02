@@ -299,7 +299,11 @@
 								evt.dataTransfer.files, {
 									action_url : '<?=site_url("backend/store/b_product/ajx_media?func=upload");?>',
 									files_key : 'image',
+									start : function(){
+										$('body').append('<h1 class="loding">loading</h1>');
+									},
 									oncomplete : function(res){
+										$('.loding').hide();
 										if(res.status == 'success'){
 											add_media_res(res.uploaded);
 											add_error_show(res.errors);

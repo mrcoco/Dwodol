@@ -623,6 +623,9 @@ function dw_ajxUpload (file, user_opt) {
 		oncomplete : function (res) {
 		alert(res.status);
 		},
+		start: function(){
+				
+		},
 	}
 	// oVeriding the default parameter
 	var options = $.extend({}, default_opt, user_opt);
@@ -665,7 +668,9 @@ function dw_ajxUpload (file, user_opt) {
 	else {
 		return false;
 	}
-						
+	
+	
+	dw_show_ajaxLoad();		
 	// execution the ajax,
 	$.ajax({
 		url: options.action_url,
@@ -674,9 +679,13 @@ function dw_ajxUpload (file, user_opt) {
 		dataType : 'json',
 		processData: false,
 		contentType: false,
+	
 		success: function (res) {
+			dw_hide_ajaxload();
 			options.oncomplete.call(this, res);
 		},
+		
+		
 		
 	});
 
@@ -691,6 +700,15 @@ json[n['name']] = n['value'];
 return json;
 };
 })( jQuery );
+
+function dw_show_ajaxLoad(){
+var tpl = '<div class="ajax_load_global" id="ajaxload">Please Wait</div>';
+$(tpl).appendTo('body');
+}
+function dw_hide_ajaxload(){
+	var suspect = $('#ajaxload');
+	suspect.hide('fade', null, 500, function(){ suspect.remove()});
+}
 
 
 (function(){

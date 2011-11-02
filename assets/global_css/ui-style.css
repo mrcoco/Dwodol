@@ -38,6 +38,21 @@
 /** AJX Stle **/
 .ajax_loader_small { background:url(../global_img/ajax_loader_small.gif) center no-repeat; width:16px; height:16px;}
 .ajax_loader_big { background:url(../global_img/ajax_loader_big.gif) center no-repeat; width:16px; height:16px;}
+#ajaxload {
+	width: 200px;
+	padding: 10px;
+	color: #000;
+	text-align: center;
+	border: 3px solid #a7a6a7;
+	border-radius: 5px;
+	background: url(../global_img/ajax_loader_small.gif) no-repeat 20px center rgba(255, 255, 255, 0.84);
+	position: fixed;
+	top: 60%;
+	left: 40%;
+	-moz-box-shadow: 0 0 10px #999999;
+	-webkit-box-shadow: 0 0 10px #999999;
+	box-shadow: 0 0 10px #999999;
+}
 
 
 /* Typo
